@@ -4,4 +4,4 @@
 🌏 English | [🇨🇳 中文](README.zh-CN.md)
 
 
-Now we only have DialogueSystem
+Now we only have a easy DialogueSystem
