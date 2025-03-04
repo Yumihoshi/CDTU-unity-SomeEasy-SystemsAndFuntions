@@ -5,5 +5,6 @@
 
 
 Now we only have a easy DialogueSystem
-I chose an easy-to-understand approach to writing dialogue systems
+I chose an easy-to-understand approach to writing a dialogue system that was freely customizable
+
 
