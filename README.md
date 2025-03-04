@@ -1,12 +1,7 @@
 # unity-c#自学自写自用的代码
-# 项目名称 (Project Name)
+# 项目名称 (自学自做自用)
 
-## 🌏 English | [🇨🇳 简体中文](#简体中文)
+🌏 English | [🇨🇳 中文](README.zh-CN.md)
+
 
 Now we only have DialogueSystem
-
----
-
-## 🇨🇳 简体中文
-
-现在只有中文系统
