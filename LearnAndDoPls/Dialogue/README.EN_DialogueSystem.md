@@ -175,6 +175,14 @@ public class VoiceDialogueController : DialogueController
 ```
 
 ## Advanced Usage
+(joke)
+
+1. **Custom dialogue line templates**: You can create custom dialogue line templates to implement more complex dialogue content.
+2. **Extension of dialogue line templates**: You can extend dialogue line templates to implement more complex dialogue content.
+3. **Combination of dialogue line templates**: You can combine multiple dialogue line templates to implement more complex dialogue content.
+4. **Combination and extension of dialogue line templates**: You can combine and extend dialogue line templates to implement more complex dialogue content.
+5. **Combination of combinations and extensions of dialogue line templates**: You can combine, extend, and combine multiple dialogue line templates to implement more complex dialogue content.
+(smiley face)(hahaha,just joke,all depends yourself)
 
 ### Dialogue Event Listening
 
