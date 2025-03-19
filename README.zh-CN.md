@@ -4,7 +4,7 @@ CN 中文 | [🌏 English](README.md)
 
 如果你想学unity你应该先去看SomePlayerController中的GameInput来了解我们怎么尽量让我们的代码更加的简洁干净
 
-# 现在我们只有一个简单的对话系统
+# 现在我们只有一个简单的对话系统哦，~(￣▽￣)~*.
 
 [DialogueSystem](LearnAndDoPls/Dialogue//README.CN_DialogueSystem.md)
 

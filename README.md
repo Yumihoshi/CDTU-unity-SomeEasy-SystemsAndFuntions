@@ -1,4 +1,3 @@
-# 项目名称 (自学自做自用)
 # ProjectName(Learn to do and do to use)
 
 🌏 English | [CN 中文](README.zh-CN.md)
@@ -8,7 +7,7 @@ if you want to learn unity, maybe you can learn the GameInput in SomePlayerContr
 
 Happy Coding.
 
-# Now we only have a easy DialogueSystem.
+## Now we only have a easy DialogueSystem and some skills,haha.
 
 [DialogueSystem](LearnAndDoPls/Dialogue/README.EN_DialogueSystem.md)
 
