@@ -44,15 +44,9 @@ CN 中文 | [🌏 English](README.md)
 - PlayerController - 基本的玩家移动和控制
 - TriggerObject - 轻松处理基于触发器的交互
 
-### 5.[美术资源管理(Art)](Art/README.zh-CN_Art.md)
+### 5.[美术(Art)](Art/README.CN_Art.md)
 
-一个规范化的美术资源管理系统，提供：
-
-- 标准化的目录结构
-- 统一的命名规范
-- 资源优化建议
-- 导入设置指南
-- 最佳实践指导
+Shader
 
 由[@Yumihoshi](https://github.com/Yumihoshi)写的来自原版[艺术资产管理](https://github.com/Yumihoshi/Art-Asset-Management)项目。我只是添加了一些评论，使其更具可读性。
 
