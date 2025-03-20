@@ -1,18 +1,57 @@
-# ProjectName(Learn to do and do to use)
+# Unity Simple Systems & Functions
 
 🌏 English | [CN 中文](README.zh-CN.md)
-中文文档请在[这里](README.zh-CN.md)
 
-For unity. Maybe you can check the contents of the "skills" folder to help improve your code..
+A collection of simple, reusable systems and functions for Unity projects. This repository contains ready-to-use modules that can help streamline your Unity game development.
 
-Happy Coding.
+## Available Systems
 
-## Now we only have a easy DialogueSystem and some skills,haha.
+### [DialogueSystem](LearnAndDoPls/Dialogue/README.EN_DialogueSystem.md)
 
-[DialogueSystem](LearnAndDoPls/Dialogue/README.EN_DialogueSystem.md)
+A modular, easy-to-understand dialogue system for Unity. The system uses a Control-Controller pattern that makes it highly customizable while remaining simple to use. Features include:
 
-I have chosen an easy-to-understand approach to writing the dialogue system. The Control serves as a controller, and by adding a Controller template, we can freely customize dialogues while keeping it easy to use. If you have a large amount of dialogue content, you can create prefabs, which will make your work much easier and more enjoyable.
+- Linear dialogues
+- Branching dialogues with multiple options
+- Voice-synchronized dialogues
+- Easy prefab creation for dialogue sequences
 
+### [ObjectPool](LearnAndDoPls/ObjectPool/README.EN_ObjectPool.md)
 
-##@whatevertogo I welcome anyone to point out the shortcomings of my code to help me improve.
+An efficient object pooling system to reduce instantiation/destruction overhead and improve performance. Perfect for frequently spawned objects like:
+
+- Projectiles
+- Particle effects
+- Enemies
+- Collectables
+
+### Thanks to @Yuan-Zzzz [UI System for UGUI](LearnAndDoPls/UI-System-for-UGUI/README.EN.md)
+
+A clean, structured UI management system built for Unity's UGUI. Features include:
+
+- View-based UI architecture
+- UI layer management
+- Easy view transitions
+- View lifecycle management
+
+All of these codes are written by @Yuan-Zzzz. I just added some comments and made it more readable.
+
+### [Utility Skills](LearnAndDoPls/SomeSkills/README.EN_SomeSkills.md)
+
+A collection of useful scripts that can be used in any project:
+
+- EventManager - A simple event system for communication between components
+- GameInput - Input handling utilities
+- PlayerController - Basic player movement and control
+- TriggerObject - Easily handle trigger-based interactions
+
+## How to Use
+
+1. Simply copy the folders you need into your Unity project
+2. Check the individual README files in each system folder for detailed usage instructions
+
+## Contribution
+
+@whatevertogo I welcome anyone to point out the shortcomings of my code to help me improve.
+
+Happy Coding!
 

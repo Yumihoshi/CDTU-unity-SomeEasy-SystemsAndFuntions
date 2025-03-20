@@ -1,13 +1,56 @@
-# 项目名称 (自学自做自用)
+# Unity简易系统与功能集合
 
 CN 中文 | [🌏 English](README.md)
 
-For unity.你也许可以看skills文件夹的内容来帮助你的代码更好..
+这是一个为Unity项目设计的简易可复用系统与功能的集合。该仓库包含了即插即用的模块，可以帮助您简化Unity游戏开发流程。
 
-## 现在我们只有一个简单的对话系统哦，和一些小小的skills。~(￣▽￣)~*.
+## 可用系统
 
-[DialogueSystem](LearnAndDoPls/Dialogue//README.CN_DialogueSystem.md)
+### [对话系统(DialogueSystem)](LearnAndDoPls/Dialogue/README.CN_DialogueSystem.md)
 
-我选择了一种易于理解的方法来编写对话系统，Control作为一个控制器，加入一个Controller模板使我们可以自由定制对话并且它易于使用，如果你有大量对话内容，你可以制作预制体，这将让你的工作更加轻松愉快。
+一个模块化、易于理解的Unity对话系统。该系统采用Control-Controller模式设计，使其既高度可定制又简单易用。功能特点包括：
 
-##@whatevertogo欢迎任何人说出我代码的不足来帮助我提高.
+- 线性对话
+- 带多选项的分支对话
+- 语音同步对话
+- 对话序列的预制体创建功能
+
+### [对象池(ObjectPool)](LearnAndDoPls/ObjectPool/README.CN_ObjectPool.md)
+
+一个高效的对象池系统，可减少实例化/销毁的开销，提高性能。特别适用于频繁生成的对象，如：
+
+- 投射物
+- 粒子效果
+- 敌人
+- 可收集物品
+
+### 谢谢老老老老老老老社长的提供 @Yuan-Zzzz [UGUI的UI系统](LearnAndDoPls/UI-System-for-UGUI/README.md)
+
+一个为Unity的UGUI设计的整洁、结构化的UI管理系统。功能特点包括：
+
+- 基于视图的UI架构
+- UI层级管理
+- 简易的视图转换
+- 视图生命周期管理
+
+所有代码均由@Yuan-Zzzz编写，我只是添加了一些注释，使其更易读。
+
+### [实用技能(SomeSkills)](LearnAndDoPls/SomeSkills/README.CN_SomeSkills.md)
+
+一系列可用于任何项目的实用脚本：
+
+- EventManager - 用于组件间通信的简单事件系统
+- GameInput - 输入处理工具
+- PlayerController - 基本的玩家移动和控制
+- TriggerObject - 轻松处理基于触发器的交互
+
+## 使用方法
+
+1. 只需将您需要的文件夹复制到Unity项目中
+2. 查看每个系统文件夹中的单独README文件，获取详细使用说明
+
+## 贡献
+
+@whatevertogo 欢迎任何人指出我代码的不足之处，帮助我提高。
+
+祝编码愉快！
