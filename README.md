@@ -24,7 +24,7 @@ An efficient object pooling system to reduce instantiation/destruction overhead 
 - Enemies
 - Collectables
 
-### 3.[UI System for UGUI](LearnAndDoPls/UI-System-for-UGUI/README.EN.md)
+### 3.[UI System for UGUI](LearnAndDoPls/Systems/UI-System-for-UGUI/UI-System-for-UGUI/README.EN.md)
 
 A clean, structured UI management system built for Unity's UGUI. Features include:
 
