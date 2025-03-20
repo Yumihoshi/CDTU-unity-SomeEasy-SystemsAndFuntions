@@ -49,9 +49,8 @@ These scripts show some skills of c# :
 A comprehensive collection of utility functions and helper classes including:
 
 - Singleton implementations
-- Extension methods
-- Math utilities
-- File operation helpers
+- ObjectPool
+
 
 ### 6.[Art](Art/README.EN_Art.md)
 
