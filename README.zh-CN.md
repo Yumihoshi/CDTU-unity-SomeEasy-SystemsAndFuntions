@@ -37,7 +37,7 @@ CN 中文 | [🌏 English](README.md)
 
 ### 4.[实用技能(SomeSkills)](LearnAndDoPls/SomeSkills/README.CN_SomeSkills.md)
 
-一系列可用于任何项目的实用脚本：
+这些脚本展示了一些c#的skills：
 
 - EventManager - 用于组件间通信的简单事件系统
 - GameInput - 输入处理工具

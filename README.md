@@ -37,7 +37,7 @@ All of these codes are written by [@Yuan-Zzzz](https://github.com/Yuan-Zzzz) fro
 
 ### 4.[Utility Skills](LearnAndDoPls/SomeSkills/README.EN_SomeSkills.md)
 
-A collection of useful scripts that can be used in any project:
+These scripts show some skills of c# :
 
 - EventManager - A simple event system for communication between components
 - GameInput - Input handling utilities
