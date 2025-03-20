@@ -101,9 +101,9 @@ public class DialogueControlView : MonoBehaviour
     /// 打字
     /// </summary>
     /// <param name="line"></param>
-    /// <param name="delayBeforeNext"></param>
+    /// <param name="delayNextWord"></param>
 
-    public void TypeDialogueLine(string line, float delayBeforeNext = 0)
+    public void TypeDialogueLine(string line, float delayNextWord = default)
     {
         dialogueText.text = ""; // 清空文本
         currentLine = line;//设置currenLine等于当前的对话句子
@@ -113,7 +113,7 @@ public class DialogueControlView : MonoBehaviour
             StopCoroutine(_typingCoroutine);
 
         // 启动新的打字效果
-        _typingCoroutine = StartCoroutine(TypeLineCoroutine(line, delayBeforeNext));
+        _typingCoroutine = StartCoroutine(TypeLineCoroutine(line, delayNextWord));
     }
 
     /// <summary>
@@ -135,10 +135,10 @@ public class DialogueControlView : MonoBehaviour
     /// 标记正在打字,通过协程控制打字机效果
     /// </summary>
     /// <param name="line"></param>
-    /// <param name="delayBeforeNext"></param>
+    /// <param name="delayNextWord"></param>
     /// <returns></returns>
 
-    private IEnumerator TypeLineCoroutine(string line, float delayBeforeNext)
+    private IEnumerator TypeLineCoroutine(string line, float delayNextWord)
     {
         _isTyping = true;
 
@@ -151,9 +151,9 @@ public class DialogueControlView : MonoBehaviour
         _isTyping = false;
 
         // 如果设置了延迟，等待后自动请求下一行
-        if (delayBeforeNext > 0)
+        if (delayNextWord > 0)
         {
-            yield return new WaitForSeconds(delayBeforeNext);
+            yield return new WaitForSeconds(delayNextWord);
             OnNextLineRequested?.Invoke(this, EventArgs.Empty);//激活下一行的事件未使用哦 
         }
     }

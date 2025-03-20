@@ -272,7 +272,7 @@ Check:
 
 Check:
 - nextLineDelay value is set to a positive number
-- delayBeforeNext parameter is correctly passed to TypeDialogueLine
+- delayNextWord parameter is correctly passed to TypeDialogueLine
 
 ## Extending the System
 

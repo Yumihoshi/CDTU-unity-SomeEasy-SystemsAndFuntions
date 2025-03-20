@@ -273,7 +273,7 @@ if (dialogueControl != null)
 
 检查：
 - nextLineDelay 值是否设置为正数
-- TypeDialogueLine 的 delayBeforeNext 参数是否传递正确
+- TypeDialogueLine 的 delayNextWord 参数是否传递正确
 
 ## 拓展系统
 
