@@ -24,7 +24,7 @@ An efficient object pooling system to reduce instantiation/destruction overhead 
 - Enemies
 - Collectables
 
-### 3.Fixing Bug Now [UI System for UGUI](LearnAndDoPls/UI-System-for-UGUI/README.EN.md)  Thanks to [@Yuan-Zzzz](https://github.com/Yuan-Zzzz)
+### 3.[UI System for UGUI](LearnAndDoPls/UI-System-for-UGUI/README.EN.md)
 
 A clean, structured UI management system built for Unity's UGUI. Features include:
 
@@ -53,10 +53,23 @@ A comprehensive collection of utility functions and helper classes including:
 - Math utilities
 - File operation helpers
 
+### 6.[Art Asset Management](Art/README.EN_Art.md)
+
+A standardized art asset management system that provides:
+
+- Standardized directory structure
+- Unified naming conventions
+- Asset optimization guidelines
+- Import settings guide
+- Best practices guidance
+
+ Written by [@Yumihoshi](https://github.com/Yumihoshi) from the original [Art Asset Management](https://github.com/Yumihoshi/Art-Asset-Management) project. I just added some comments and made it more readable.
+
 ## How to Use
 
 1. Simply copy the folders you need into your Unity project
 2. Check the individual README files in each system folder for detailed usage instructions
+3. Follow the conventions to organize and manage project assets
 
 ## Contribution
 

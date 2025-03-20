@@ -1,52 +1,53 @@
-# UI-System-for-UGUI
+# UI-System-for-UGUI Written by @Yuan-Zzzz
 
-A UGUI-based Unity UI framework, developed and refined through game projects, designed to improve UI development efficiency and simplify UI management processes.
+A UGUI-based Unity UI framework, iteratively developed through game projects, designed to improve UI development efficiency and simplify UI management processes.
 
 [中文](README.md)
 
 ## System Features
 
+- **Stack-based UI Management**: Each layer uses a stack to manage UI panels, automatically handling opening, closing, and hierarchy relationships
 - **Layer Management**: Multi-level UI management through UILayer, including Scene Layer, Background Layer, Normal Layer, Info Layer, Top Layer, and Tip Layer
-- **MVC Architecture**: Designed with View-ViewController-Model architecture, clear responsibilities, easy to maintain
 - **Lifecycle Management**: Complete UI lifecycle (OnOpen, OnResume, OnPause, OnClose, OnUpdate)
 - **Data-Driven**: Supports IUIData interface for data transmission, decoupling UI and data
 - **Editor Extensions**: Provides visual UI management tools for quick creation and editing of UI panels
+- **Editor Component Binding**: Visual UI component selection and binding tools, automatic binding code generation
 
 ## Core Functions
 
 ### 1. Automated UI Controller Generation
-- One-click generation of controller code corresponding to UI panels
+- Visual UI panel creation tool
+- One-click generation of UI prefabs and controller code
 - Automatic creation of standard lifecycle method templates
 
-### 2. Automated UI Control Binding Process
-- Visual control selection and binding
-- Automatic generation of control reference code
-- Support for nested UI element management
+### 2. UI Component Binding Process
+- Visual component selection and binding
+- Support for component type selection
+- Automatic generation of component references and binding code
+- Support for nested UI component binding
 
-### 3. Visual UI Panel Management
-- Support for viewing, creating, and deleting UI panels in the editor
-- Visual UI hierarchy management
-- Dynamic preview of UI panel structure
-
-### 4. Support for 3D Models on UI
-- Achieve mixed display of 3D models and UI through UILayer.SceneLayer
+### 3. Stack-based UI Management
+- Layer-specific UI stack management
+- Automatic handling of UI panel hierarchy relationships
+- Support for pausing and resuming UI panels within the same layer
+- Support for getting the top panel of the current layer
 
 ## System Architecture
 
 ```
 UI-System-for-UGUI/
 ├── Runtime/                   # Runtime core code
-│   ├── UIView.cs              # UI view base class
-│   ├── UIViewController.cs    # UI controller component
-│   ├── UISystem.cs            # UI system management class
-│   ├── UILayer.cs             # UI layer enum definition
-│   ├── UIConfig.cs            # UI system configuration
-│   └── IUIData.cs             # UI data interface
-├── Editor/                    # Editor extension code
-│   ├── UIViewEditor.cs        # UI view editor
-│   └── UIViewManager.cs       # UI manager window
-└── Extension/                 # Extension code
-    └── UIViewExtension.cs     # UI view extension methods
+│   ├── UIView.cs             # UI view base class
+│   ├── UIViewController.cs   # UI controller component
+│   ├── UISystem.cs          # UI system management class
+│   ├── UILayer.cs           # UI layer enum definition
+│   ├── UIConfig.cs          # UI system configuration
+│   └── IUIData.cs           # UI data interface
+├── Editor/                   # Editor extension code
+│   ├── UIViewEditor.cs      # UI view editor
+│   └── UIViewManager.cs     # UI manager window
+└── Extension/               # Extension code
+    └── UIViewExtension.cs   # UI view extension methods
 ```
 
 ## Usage
@@ -60,10 +61,11 @@ UI-System-for-UGUI/
 
 ### 2. Edit UI Panel
 
-1. Drag the created UI prefab into the scene
-2. Add required UI elements (buttons, text, images, etc.)
-3. Use the UI manager's control list panel for control binding
-4. Click "Generate UI Binding Code" to generate binding code
+1. Select the UI panel to edit in the UI manager
+2. Use the control list panel to view and select UI components
+3. Click the "+" button next to components to add them to the binding list
+4. Select the component type to bind in the binding list
+5. Click "Generate UI Binding Code" to generate binding code
 
 ### 3. Open UI Panel
 
@@ -77,6 +79,11 @@ public class PlayerInfoData : IUIData
     public string playerName;
     public int level;
     public float hp;
+    
+    public bool IsValid()
+    {
+        return !string.IsNullOrEmpty(playerName);
+    }
 }
 
 var playerData = new PlayerInfoData { 
@@ -86,7 +93,7 @@ var playerData = new PlayerInfoData {
 };
 UISystem.Instance.OpenPanel<PlayerInfoPanel, PlayerInfoData>(playerData, UILayer.InfoLayer);
 
-// Open a scene UI (e.g., 3D model display)
+// Open a scene UI
 UISystem.Instance.OpenViewInScene<CharacterPreviewPanel, CharacterData>(characterData);
 ```
 
@@ -100,11 +107,18 @@ public partial class LoginPanel : UIView
     private InputField usernameInput;
     private InputField passwordInput;
     
+    private void BindUI()
+    {
+        // Automatically generated binding code
+        loginButton = GetOrAddComponentInChildren<Button>("LoginButton");
+        usernameInput = GetOrAddComponentInChildren<InputField>("UsernameInput");
+        passwordInput = GetOrAddComponentInChildren<InputField>("PasswordInput");
+    }
+    
     public override void OnOpen()
     {
-        // Control binding
+        // Bind UI components
         BindUI();
-        
         // Add event listeners
         loginButton.onClick.AddListener(OnLoginButtonClick);
     }
@@ -127,14 +141,13 @@ public partial class LoginPanel : UIView
     
     public override void OnUpdate()
     {
-        // Per-frame update logic
+        // Per-frame update logic (triggered by UIViewController)
     }
     
     private void OnLoginButtonClick()
     {
         string username = usernameInput.text;
         string password = passwordInput.text;
-        
         // Login logic...
     }
 }
@@ -156,8 +169,7 @@ UISystem.Instance.CloseAll();
 ## Best Practices
 
 1. **UI Layer Management**
-   - Assign different UI functions to appropriate layers
-   - Scene Layer: 3D model display, in-scene UI
+   - Scene Layer: UI elements within the scene
    - Background Layer: Full-screen backgrounds, main menu backgrounds
    - Normal Layer: Main function panels
    - Info Layer: Information display, status panels
@@ -165,20 +177,21 @@ UISystem.Instance.CloseAll();
    - Tip Layer: Hints, notifications, tooltips
 
 2. **Data-Driven**
-   - Create an IUIData implementation class for each complex UI panel
-   - Use NoneUIData instances as parameters for UI panels with no data
-   - Update UI when data changes, rather than directly modifying UI
+   - Create an IUIData implementation class for each UI panel that needs data
+   - Use IsValid() method to validate data
+   - Use NoneUIData.noneUIData for UI panels without data
 
 3. **UI Lifecycle**
    - OnOpen: Initialize UI, bind events
    - OnResume: Restore UI state, resubscribe to events
-   - OnPause: Pause UI state, unsubscribe from some events
-   - OnClose: Completely clean up resources, unsubscribe from all events
-   - OnUpdate: Handle UI logic that needs to be updated every frame
+   - OnPause: Pause UI state, pause some functionality
+   - OnClose: Clean up resources, remove event subscriptions
+   - OnUpdate: UI logic that needs to be updated every frame
 
 ## Notes
 
-1. UI prefabs should be stored in the Resources/UIPrefabs directory
-2. UI scripts are generated by default in the Assets/UI/UIScripts directory
-3. UI binding code is generated by default in the Assets/UI/UIBind directory
-4. Ensure a Canvas exists in the scene or allow the system to create one automatically
+1. UI prefabs must include the UIViewController component
+2. Ensure correct path configuration in UIConfig
+3. UI scripts and binding code will be automatically generated to the configured directories
+4. Access UI system functionality through UISystem.Instance singleton
+5. Must call SetData() to pass data before calling OnOpen()

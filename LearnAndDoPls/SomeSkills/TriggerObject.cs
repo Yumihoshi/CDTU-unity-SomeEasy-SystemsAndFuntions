@@ -1,4 +1,4 @@
-using Interfaces;
+/*using Interfaces;
 using Managers;
 using UnityEngine;
 
@@ -90,4 +90,4 @@ public abstract class TriggerObject : MonoBehaviour, IInteract
     }
 
     #endregion
-}
+}*/

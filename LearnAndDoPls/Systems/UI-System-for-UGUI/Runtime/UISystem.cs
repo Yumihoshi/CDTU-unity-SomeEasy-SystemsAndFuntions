@@ -100,7 +100,11 @@ public class UISystem : IUISystem
             PanelObject = newPanelObject
         };
         newPanel.UILayer = uiLayer;
-        newPanel.PanelObject.GetComponent<UIViewController>().onUpdate += newPanel.OnUpdate;
+        var viewController = newPanel.PanelObject.GetComponent<UIViewControllerBase>();
+        if (viewController != null)
+        {
+            viewController.OnUpdateEvent += newPanel.OnUpdate;
+        }
         
         //传入数据
      
@@ -138,8 +142,13 @@ public class UISystem : IUISystem
         topPanel.OnClose();
         _panelStack[uiLayer].Pop();
         if (_panelStack[uiLayer].Count == 0) return;
-        GetTopPanel(uiLayer).PanelObject.GetComponent<UIViewController>().onUpdate += GetTopPanel(uiLayer).OnUpdate;
-        GetTopPanel(uiLayer).OnResume();
+        var nextTopPanel = GetTopPanel(uiLayer);
+        var viewController = nextTopPanel.PanelObject.GetComponent<UIViewControllerBase>();
+        if (viewController != null)
+        {
+            viewController.OnUpdateEvent += nextTopPanel.OnUpdate;
+        }
+        nextTopPanel.OnResume();
     }
 
     public void CloseAll()
@@ -196,7 +205,7 @@ public class UISystem : IUISystem
         var graphicRaycaster = panelCanvasGameObject.AddComponent<GraphicRaycaster>();
 
         // 判断场景中是否存在EventSystem
-        if (!Object.FindObjectOfType<EventSystem>())
+        if (!Object.FindFirstObjectByType<EventSystem>())
         {
             var eventSystem = new GameObject("EventSystem");
             eventSystem.AddComponent<EventSystem>();
@@ -205,7 +214,7 @@ public class UISystem : IUISystem
 
         var uIRoot = new GameObject("UIRoot");
         panelCanvasGameObject.transform.SetParent(uIRoot.transform);
-        Object.FindObjectOfType<EventSystem>().transform.SetParent(uIRoot.transform);
+        Object.FindFirstObjectByType<EventSystem>().transform.SetParent(uIRoot.transform);
         return canvas;
     }
 
