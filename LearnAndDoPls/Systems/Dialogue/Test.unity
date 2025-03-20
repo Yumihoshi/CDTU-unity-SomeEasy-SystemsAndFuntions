@@ -349,7 +349,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 634580075}
-  - component: {fileID: 634580076}
+  - component: {fileID: 634580077}
   m_Layer: 0
   m_Name: DialogueControl
   m_TagString: Untagged
@@ -372,7 +372,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1304250898}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &634580076
+--- !u!114 &634580077
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -381,12 +381,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 634580074}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 622e63d3cf3cdad46ac64659b10a2af1, type: 3}
+  m_Script: {fileID: 11500000, guid: 49b8cb38f08b4e14ebd8a9a44a6ecfd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue_SO: {fileID: 11400000, guid: f083bf13e335d9d4bb58702bab2eacbc, type: 2}
+  dialogue_SO: {fileID: 11400000, guid: da9bd7f6cb1ab524e93d3adaedb52924, type: 2}
   nextLineDelay: 2
-  dialogueView: {fileID: 792083210}
+  dialogueView: {fileID: 792083211}
 --- !u!1 &792083208
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,7 +396,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 792083209}
-  - component: {fileID: 792083210}
+  - component: {fileID: 792083211}
   m_Layer: 0
   m_Name: DialogueControlView
   m_TagString: Untagged
@@ -419,7 +419,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1304250898}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &792083210
+--- !u!114 &792083211
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -428,7 +428,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 792083208}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa41952f451e9a84d993a9b786ba180b, type: 3}
+  m_Script: {fileID: 11500000, guid: e0576474ee5cccd40bd5658d59d508e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dialoguePanel: {fileID: 1812663471}
@@ -800,6 +800,9 @@ GameObject:
   - component: {fileID: 1812663476}
   - component: {fileID: 1812663475}
   - component: {fileID: 1812663478}
+  - component: {fileID: 1812663481}
+  - component: {fileID: 1812663480}
+  - component: {fileID: 1812663479}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -877,10 +880,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe74e8e1f5c63db4ba669a70037477ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueControl: {fileID: 0}
-  NextLinebutton: {fileID: 0}
-  audioSource: {fileID: 0}
-  voiceClips: []
 --- !u!114 &1812663476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -893,8 +892,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce16eb4161a79e41916c12b00553a6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueControl: {fileID: 634580076}
-  NextLinebutton: {fileID: 2042772037}
 --- !u!114 &1812663477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -907,15 +904,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839e05e84d85d1142bc4ff0d93fc4d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueControl: {fileID: 634580076}
-  NextLinebutton: {fileID: 0}
-  branchOptionsList:
-  - optionText: "\u4E09\u5E74\u4E4B\u671F\u5DF2\u5230"
-    optionKey: 
-    dialogueData: {fileID: 0}
-  optionsPanel: {fileID: 0}
-  optionButtonPrefab: {fileID: 0}
-  optionsContainer: {fileID: 0}
 --- !u!82 &1812663478
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1013,6 +1001,57 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1812663479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812663471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0909387d0a4c5934c8319e97ea6c8f84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueControl: {fileID: 634580077}
+  audioSource: {fileID: 1812663478}
+  dialogueAudioClips:
+  - lineIndex: 0
+    audioClip: {fileID: 0}
+  - lineIndex: 0
+    audioClip: {fileID: 0}
+  - lineIndex: 0
+    audioClip: {fileID: 0}
+--- !u!114 &1812663480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812663471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35df4ec1d203da94d962d063dbdbef29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueControl: {fileID: 634580077}
+--- !u!114 &1812663481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812663471}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee6846f6a0918ff4ea13ed1f50fd17df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueControl: {fileID: 0}
+  branchOptionsList: []
+  optionsPanel: {fileID: 0}
+  optionButtonPrefab: {fileID: 0}
+  optionsContainer: {fileID: 0}
 --- !u!1 &2042772035
 GameObject:
   m_ObjectHideFlags: 0

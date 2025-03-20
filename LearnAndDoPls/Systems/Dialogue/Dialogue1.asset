@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646c091b9b4c4c741bfc4318c7022ac1, type: 3}
-  m_Name: Dialogue1_SO
+  m_Script: {fileID: 11500000, guid: 0a5153debaf72ed48a57a32d314414c2, type: 3}
+  m_Name: Dialogue1
   m_EditorClassIdentifier: 
-  characterName: "\u53EF\u4EE5\u4E3Anull"
-  characterName2: "\u53EF\u4EE5\u4E3Anull"
+  characterName: 
+  characterName2: 
   Character_Image: {fileID: 0}
   Character_Image2: {fileID: 0}
   dialoguelinesList:
-  - Hello
-  - No Hello
-  - Is she good
-  - She is not good
-  - Then why aren't you good
+  - are you good
+  - no
+  - are you bad
+  - no
+  "\u5BF9\u8BDD\u4ECB\u7ECD": 

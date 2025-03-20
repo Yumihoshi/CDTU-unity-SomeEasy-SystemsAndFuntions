@@ -15,7 +15,7 @@ A modular, easy-to-understand dialogue system for Unity. The system uses a Contr
 - Voice-synchronized dialogues
 - Easy prefab creation for dialogue sequences
 
-### 2.[ObjectPool](LearnAndDoPls/ObjectPool/README.EN_ObjectPool.md)
+### 2.[ObjectPool](LearnAndDoPls/Utils/ObjectPool/README.EN_ObjectPool.md)
 
 An efficient object pooling system to reduce instantiation/destruction overhead and improve performance. Perfect for frequently spawned objects like:
 

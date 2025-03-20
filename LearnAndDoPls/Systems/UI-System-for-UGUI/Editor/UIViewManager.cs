@@ -268,7 +268,7 @@ private void BindUI()
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-            if (prefab.GetComponent<UIViewController>())
+            if (prefab.GetComponent<UIViewControllerBase>())
             {
                 _prefabList.Add(prefab);
             }
@@ -312,7 +312,7 @@ public class UIViewCreateWindow : EditorWindow
                 {
                     GameObject panel = new GameObject(_panelName);
                     panel.AddComponent<RectTransform>();
-                    panel.AddComponent<UIViewController>();
+                    panel.AddComponent<UIViewControllerBase>();
                     PrefabUtility.SaveAsPrefabAsset(panel, prefabPath);
                     string codeContent = $@"public partial class {_panelName}:UIView
 {{
