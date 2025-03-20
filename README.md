@@ -57,8 +57,7 @@ A comprehensive collection of utility functions and helper classes including:
 
 Shader
 
- Written by [@Yumihoshi](https://github.com/Yumihoshi) from the original [Art Asset Management](https://github.com/Yumihoshi/Art-Asset-Management) project. I just added some comments and made it more readable.
-
+ Written by [@Yumihoshi](https://github.com/Yumihoshi) from the original [Art Asset Management](https://github.com/Yumihoshi/Art-Asset-Management) project. 
 ## How to Use
 
 1. Simply copy the folders you need into your Unity project

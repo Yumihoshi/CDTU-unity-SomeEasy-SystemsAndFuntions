@@ -48,7 +48,7 @@ CN 中文 | [🌏 English](README.md)
 
 Shader
 
-由[@Yumihoshi](https://github.com/Yumihoshi)写的来自原版[艺术资产管理](https://github.com/Yumihoshi/Art-Asset-Management)项目。我只是添加了一些评论，使其更具可读性。
+由[@Yumihoshi](https://github.com/Yumihoshi)写的来自原版[艺术资产管理](https://github.com/Yumihoshi/Art-Asset-Management)项目。
 
 ## 使用方法
 
