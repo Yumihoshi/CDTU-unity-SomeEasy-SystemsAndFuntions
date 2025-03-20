@@ -24,7 +24,7 @@ CN 中文 | [🌏 English](README.md)
 - 敌人
 - 可收集物品
 
-### 谢谢老老老老老老老社长的提供 @Yuan-Zzzz [UGUI的UI系统](LearnAndDoPls/UI-System-for-UGUI/README.md)
+### 谢谢老老老老老老老社长的提供 [@Yuan-Zzzz](https://github.com/Yuan-Zzzz) [UGUI的UI系统](LearnAndDoPls/UI-System-for-UGUI/README.md)
 
 一个为Unity的UGUI设计的整洁、结构化的UI管理系统。功能特点包括：
 
