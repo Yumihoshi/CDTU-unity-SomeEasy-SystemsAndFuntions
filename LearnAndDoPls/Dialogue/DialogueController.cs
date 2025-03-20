@@ -30,7 +30,7 @@ public class DialogueController : MonoBehaviour
             // 先尝试从当前对象获取
             if (TryGetComponent<DialogueControl>(out DialogueControl dialogueControl))
             {
-                Debug.Log("有对话组件");
+                Debug.Log("本对象有对话组件");
             }
             else
             {

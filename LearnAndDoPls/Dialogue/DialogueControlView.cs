@@ -42,13 +42,9 @@ public class DialogueControlView : MonoBehaviour
 
 
     /// <summary>
-    /// 下一行事件
+    /// 未使用 
     /// </summary>
     public event EventHandler OnNextLineRequested;
-
-    /// <summary>
-    /// 跳过对话事件
-    /// </summary>
     public event EventHandler OnDialogueSkipped;
 
     /// <summary>
@@ -142,7 +138,7 @@ public class DialogueControlView : MonoBehaviour
     /// <param name="delayBeforeNext"></param>
     /// <returns></returns>
 
-    private IEnumerator TypeLineCoroutine(string line, float delayBeforeNext=default)
+    private IEnumerator TypeLineCoroutine(string line, float delayBeforeNext)
     {
         _isTyping = true;
 
@@ -172,7 +168,7 @@ public class DialogueControlView : MonoBehaviour
             StopCoroutine(_typingCoroutine);
 
         _isTyping = false;
-        OnDialogueSkipped?.Invoke(this, EventArgs.Empty);//激活跳过对话的事件未使用哦
+        OnDialogueSkipped?.Invoke(this, EventArgs.Empty);
     }
 
     // 暂停打字效果

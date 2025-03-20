@@ -1,16 +1,26 @@
 /*播放对话的同时会播放声音
-    目前需要手动添加声音片段
+    目前需要手动添加声音片段和索引
     添加一个AudioSource组件
 */
 
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(AudioSource))]
 public class VoiceDialogueController : DialogueController
 {
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private List<AudioClip> voiceClips;
+
+    [Serializable]
+    public class DialogueAudioClip
+    {
+        public int lineIndex; // 对话行索引
+        public AudioClip audioClip; // 对应的语音片段
+    }
+
+    [SerializeField] private List<DialogueAudioClip> dialogueAudioClips; // 对话行与语音片段的映射
+    private Dictionary<int, AudioClip> DialogueClipDictionary=new(); // 用于快速查找语音片段的字典
 
     // 初始化语音对话控制器
     // 说明：
@@ -20,7 +30,7 @@ public class VoiceDialogueController : DialogueController
     protected override void Awake()
     {
         base.Awake();
-        if (audioSource == null) 
+        if (audioSource == null)
         {
             audioSource = GetComponent<AudioSource>();
             if (audioSource == null)
@@ -28,6 +38,10 @@ public class VoiceDialogueController : DialogueController
                 Debug.LogWarning("没有找到 AudioSource 组件，正在自动添加");
                 audioSource = gameObject.AddComponent<AudioSource>();
             }
+        }
+        foreach (var dialogueAudioClip in dialogueAudioClips)
+        {
+            DialogueClipDictionary[dialogueAudioClip.lineIndex] = dialogueAudioClip.audioClip;
         }
     }
 
@@ -46,14 +60,14 @@ public class VoiceDialogueController : DialogueController
             dialogueControl.OnDialogueEnded += OnDialogueEnded;
         }
     }
-    
+
     // 处理对话行变更事件
     private void OnDialogueLineChanged(object sender, DialogueControl.DialogueLineChangedEventArgs e)
     {
         // 播放与当前行对应的语音
         PlayVoice(e.LineIndex);
     }
-    
+
     // 处理对话结束事件
     private void OnDialogueEnded(object sender, System.EventArgs e)
     {
@@ -62,7 +76,7 @@ public class VoiceDialogueController : DialogueController
         {
             audioSource.Stop();
         }
-        
+
         // 取消事件订阅
         if (dialogueControl != null)
         {
@@ -79,32 +93,32 @@ public class VoiceDialogueController : DialogueController
             Debug.LogError("AudioSource 组件不存在，无法播放语音");
             return;
         }
-        
-        if (voiceClips == null || voiceClips.Count == 0)
+
+        if (DialogueClipDictionary == null || DialogueClipDictionary.Count == 0)
         {
             Debug.LogWarning("没有可用的语音片段");
             return;
         }
-        
-        // 检查索引是否有效
-        if (lineIndex >= 0 && lineIndex < voiceClips.Count)
+
+        // 检查字典中是否包含该索引的语音片段
+        if (DialogueClipDictionary.TryGetValue(lineIndex, out AudioClip clip))
         {
             // 停止当前播放的语音
             if (audioSource.isPlaying)
             {
                 audioSource.Stop();
             }
-            
+
             // 播放对应索引的语音
-            audioSource.clip = voiceClips[lineIndex];
+            audioSource.clip = clip;
             audioSource.Play();
         }
         else
         {
-            Debug.LogWarning($"语音片段索引 {lineIndex} 超出范围 (0-{voiceClips.Count - 1})");
+            Debug.LogWarning($"未找到索引为 {lineIndex} 的语音片段");
         }
     }
-    
+
     private void OnDisable()
     {
         // 确保在组件禁用时取消事件订阅
