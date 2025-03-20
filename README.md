@@ -33,8 +33,7 @@ A clean, structured UI management system built for Unity's UGUI. Features includ
 - Easy view transitions
 - View lifecycle management
 
-All of these codes are written by [@Yuan-Zzzz](https://github.com/Yuan-Zzzz) from the original [UI-System-for-UGUI]
-(https://github.com/Yuan-Zzzz/UI-System-for-UGUI) project. I just added some comments and made it more readable.
+All of these codes are written by [@Yuan-Zzzz](https://github.com/Yuan-Zzzz) from the original [UI-System-for-UGUI](https://github.com/Yuan-Zzzz/UI-System-for-UGUI) project. I just added some comments and made it more readable.
 
 ### [Utility Skills](LearnAndDoPls/SomeSkills/README.EN_SomeSkills.md)
 
