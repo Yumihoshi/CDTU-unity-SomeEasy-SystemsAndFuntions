@@ -53,15 +53,9 @@ A comprehensive collection of utility functions and helper classes including:
 - Math utilities
 - File operation helpers
 
-### 6.[Art Asset Management](Art/README.EN_Art.md)
+### 6.[Art](Art/README.EN_Art.md)
 
-A standardized art asset management system that provides:
-
-- Standardized directory structure
-- Unified naming conventions
-- Asset optimization guidelines
-- Import settings guide
-- Best practices guidance
+Shader
 
  Written by [@Yumihoshi](https://github.com/Yumihoshi) from the original [Art Asset Management](https://github.com/Yumihoshi/Art-Asset-Management) project. I just added some comments and made it more readable.
 
