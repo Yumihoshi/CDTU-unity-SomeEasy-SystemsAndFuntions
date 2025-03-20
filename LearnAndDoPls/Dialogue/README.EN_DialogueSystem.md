@@ -170,9 +170,28 @@ Dialogue with synchronized voice playback:
 public class VoiceDialogueController : DialogueController
 {
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private List<AudioClip> voiceClips; // Need to configure voice clips matching the number of dialogue lines
+    
+    [Serializable]
+    public class DialogueAudioClip
+    {
+        public int lineIndex;          // Dialogue line index
+        public AudioClip audioClip;     // Corresponding voice clip
+    }
+    
+    [SerializeField] private List<DialogueAudioClip> dialogueAudioClips; // Mapping between dialogue lines and voice clips
+    private Dictionary<int, AudioClip> DialogueClipDictionary = new(); // Dictionary for quick lookup of voice clips
+    
+    // Important methods
+    // PlayVoice(int lineIndex) - Play voice for a specific index
+    // OnDialogueLineChanged - Subscribe to dialogue line change events to play voice
 }
 ```
+
+Usage:
+1. Add VoiceDialogueController to a game object
+2. Ensure the game object has an AudioSource component (will be added automatically if missing)
+3. Configure dialogue line indices and corresponding voice clips in the Inspector
+4. The system will automatically play the voice clip for the corresponding index when a dialogue line changes
 
 ## Advanced Usage
 (joke)

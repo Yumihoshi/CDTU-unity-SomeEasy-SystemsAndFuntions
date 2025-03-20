@@ -170,9 +170,28 @@ public class BranchingDialogueController : DialogueController
 public class VoiceDialogueController : DialogueController
 {
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private List<AudioClip> voiceClips; // 需配置与对话行数量匹配的语音
+    
+    [Serializable]
+    public class DialogueAudioClip
+    {
+        public int lineIndex;          // 对话行索引
+        public AudioClip audioClip;    // 对应的语音片段
+    }
+    
+    [SerializeField] private List<DialogueAudioClip> dialogueAudioClips; // 对话行与语音片段的映射
+    private Dictionary<int, AudioClip> DialogueClipDictionary = new(); // 用于快速查找语音片段的字典
+    
+    // 重要方法
+    // PlayVoice(int lineIndex) - 播放特定索引的语音
+    // OnDialogueLineChanged - 订阅对话行变更事件以播放语音
 }
 ```
+
+使用方法：
+1. 添加VoiceDialogueController到游戏对象
+2. 确保游戏对象有AudioSource组件（会自动添加）
+3. 在Inspector中配置对话行索引和对应的语音片段
+4. 系统会自动在对话行变化时播放对应索引的语音
 
 ## 高级使用方法
 (讲个笑话)
@@ -182,6 +201,7 @@ public class VoiceDialogueController : DialogueController
 3. **对话行模板的组合**：你可以组合多个对话行模板以实现更复杂的对话行内容。
 4. **对话行模板的组合与扩展**：你可以组合和扩展对话行模板以实现更复杂的对话行内容。
 5. **对话行模板的组合与扩展的组合**：你可以组合、扩展和组合多个对话行模板以实现更复杂的对话行内容。
+
 (笑脸)(开玩笑的，扩展用法取决于你自己)
 
 ### 对话事件监听
