@@ -59,6 +59,9 @@ public class DialogueControl : MonoBehaviour
     #region 事件生命周期(用于订阅和取消事件)方便Control控制(观察者模式的体现MVC分离)
     private void OnEnable()
     {
+        /// <summary>
+        /// 下一行事件
+        /// <summary>
         if (dialogueView != null)
         {
             dialogueView.OnNextLineRequested += HandleNextLineRequested;
@@ -68,6 +71,9 @@ public class DialogueControl : MonoBehaviour
 
     private void OnDisable()
     {
+        ///<summary>
+        /// 跳过对话事件
+        /// </summary>
         if (dialogueView != null)
         {
             dialogueView.OnNextLineRequested -= HandleNextLineRequested;
@@ -100,9 +106,7 @@ public class DialogueControl : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// start测试是否成功
-    /// </summary>
+  
     private void HandleNextLineRequested(object sender, EventArgs e)
     {
         ShowNextLine();
@@ -112,6 +116,7 @@ public class DialogueControl : MonoBehaviour
     {
         SkipDialogue();
     }
+
     /// <summary>
     /// 打开对话panel激活对话事件(未使用)
     /// 这里是控制对话的主要事件
@@ -163,7 +168,6 @@ public class DialogueControl : MonoBehaviour
     /// 设置新的对话SO并默认为第0行，推荐无脑用下面的，因为下面的我默认的也是0行
     /// </summary>
     /// <param name="newDialogueSO"></param>
-
     public void SetDialogueSO(DialogueSO newDialogueSO)
     {
         if (newDialogueSO == null)
