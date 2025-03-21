@@ -33,7 +33,7 @@ CN 中文 | [🌏 English](README.md)
 - 简易的视图转换
 - 视图生命周期管理
 
-所有代码均由[@Yuan-Zzzz](https://github.com/Yuan-Zzzz)编写，我只是添加了一些注释，使其更易读。
+代码由[@Yuan-Zzzz](https://github.com/Yuan-Zzzz)编写，然后我修了一下bug，我添加了一些注释，使其更易读。
 
 ### 4.[实用技能(SomeSkills)](LearnAndDoPls/SomeSkills/README.CN_SomeSkills.md)
 
