@@ -1,6 +1,6 @@
 # Unity Simple Systems & Functions
 
-🌏 English | [CN 中文](README.zh-CN.md)
+🌏 English | [CN 中文](README.CN.md)
 
 A collection of simple, reusable systems and functions for Unity projects. This repository contains ready-to-use modules that can help streamline your Unity game development.
 
