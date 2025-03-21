@@ -6,7 +6,7 @@ A collection of simple, reusable systems and functions for Unity projects. This 
 
 ## Available Systems
 
-### 1. [SaveSettingsSystem](LearnAndDoPls/Systems/SaveSystem/SaveSettingsSystem/PlayerPrefsForSettings/README.EN.md)
+### 1. [SaveSettingsSystem](LearnAndDoPls/Systems/SaveSystem/SaveSettingsSystem/SaveSettingsSystemByPlayerPrefs/README.md)
 
 #### For the future i will add 2 more to make the systems which are 2.for saving the data of the game(not long to see it) and 3.saving the big data of the game(a little difficult,so maye a long time)
 
@@ -27,7 +27,7 @@ A flexible settings management system for Unity that handles game settings and s
 
 #### But you would better not use it for saving the data of the game, because it is not a good way to save the data of the game. You can use it for saving the settings of the game, such as audio, graphics, etc.
 
-### 2. [DialogueSystem](LearnAndDoPls/Dialogue/README.EN_DialogueSystem.md)
+### 2. [DialogueSystem](LearnAndDoPls/Systems/DialogueSystem/README.CN_DialogueSystem.md)
 
 A modular, easy-to-understand dialogue system for Unity. The system uses a Control-Controller pattern that makes it highly customizable while remaining simple to use. Features include:
 
@@ -36,7 +36,7 @@ A modular, easy-to-understand dialogue system for Unity. The system uses a Contr
 - Voice-synchronized dialogues
 - Easy prefab creation for dialogue sequences
 
-### 3. [UI System for UGUI](LearnAndDoPls/Systems/UI-System-for-UGUI/UI-System-for-UGUI/README.EN.md)
+### 3. [UI System for UGUI](LearnAndDoPls/Systems/UI-System-for-UGUI/README.EN.md)
 
 A clean, structured UI management system built for Unity's UGUI. Features include:
 
