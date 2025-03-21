@@ -30,7 +30,7 @@ A flexible settings management system for Unity that handles game settings and s
 
 ### 2. [DialogueSystem](LearnAndDoPls/Systems/DialogueSystem/README.CN_DialogueSystem.md)
 
-A modular, easy-to-understand dialogue system for Unity. The system uses a Control-Controller pattern that makes it highly customizable while remaining simple to use. Features include:
+A modular, easy-to-understand dialogue system for Unity. The system uses a Control-Controller,InterfaceYouNeed  pattern that makes it highly customizable while remaining simple to use. Features include:
 
 - Linear dialogues
 - Branching dialogues with multiple options
