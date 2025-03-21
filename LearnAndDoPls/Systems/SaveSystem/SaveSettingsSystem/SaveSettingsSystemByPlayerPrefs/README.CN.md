@@ -428,7 +428,7 @@ public class RobustSettingsManager : BaseSettingsManager<GameplaySettings>
             // 在保存前创建备份
             var currentData = settings.GetDataFromSettings();
             string backupKey = $"{settings.SettingsKey}_backup";
-            Save_SettingsSystem_Functions.SaveByPlayerPrefs(backupKey, currentData);
+            Save_Load_SettingsSystem_Functions.SaveByPlayerPrefs(backupKey, currentData);
             
             // 执行实际保存
             settings.Save();
@@ -445,7 +445,7 @@ public class RobustSettingsManager : BaseSettingsManager<GameplaySettings>
         try
         {
             string backupKey = $"{settings.SettingsKey}_backup";
-            var backupData = Save_SettingsSystem_Functions.LoadByPlayerPrefs<GameplayData>(backupKey);
+            var backupData = Save_Load_SettingsSystem_Functions.LoadByPlayerPrefs<GameplayData>(backupKey);
             if (backupData != null)
             {
                 settings.ApplyDataToSettings(backupData);

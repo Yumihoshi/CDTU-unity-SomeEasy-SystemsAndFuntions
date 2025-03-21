@@ -17,7 +17,7 @@ public class GraphicsManager : BaseSettingsManager<GraphicsSettingsSystem>
     [SerializeField] private Text frameRateText;
     
     private Resolution[] availableResolutions;
-    
+
     protected override void Awake()
     {
         base.Awake();
@@ -96,10 +96,11 @@ public class GraphicsManager : BaseSettingsManager<GraphicsSettingsSystem>
         if (frameRateText != null)
             frameRateText.text = settings.TargetFrameRate.ToString();
     }
-    
+
     /// <summary>
     /// 初始化分辨率选项
     /// </summary>
+    [System.Obsolete]
     private void InitializeResolutionOptions()
     {
         if (resolutionDropdown != null)

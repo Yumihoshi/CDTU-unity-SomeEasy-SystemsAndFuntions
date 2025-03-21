@@ -60,13 +60,13 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
         base.Awake();
         audioSettings = new AudioSettingsSystem(settingsSO);
         audioSettings.OnVolumeChanged += HandleVolumeChanged;
-        
+
         // 订阅设置变更事件
         if (audioSettings is ISaveSettings saveSettings)
         {
             saveSettings.SettingsChanged += HandleSettingsChanged;
         }
-        
+
         InitializeAudioSources();
     }
 
@@ -75,7 +75,7 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
         if (audioSettings != null)
         {
             audioSettings.OnVolumeChanged -= HandleVolumeChanged;
-            
+
             // 取消订阅事件，防止内存泄漏
             if (audioSettings is ISaveSettings saveSettings)
             {
@@ -83,7 +83,7 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
             }
         }
     }
-    
+
     /// <summary>
     /// 处理设置变更事件
     /// </summary>
@@ -98,19 +98,38 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
         // 绑定滑动条事件
         if (masterVolumeSlider != null)
             masterVolumeSlider.onValueChanged.AddListener(value => audioSettings.MasterVolume = value);
+#if UNITY_EDITOR
+        Debug.Log("masterVolumeSlider");
+#endif
         if (bgmVolumeSlider != null)
             bgmVolumeSlider.onValueChanged.AddListener(value => audioSettings.BGMVolume = value);
+        else
+#if UNITY_EDITOR
+            Debug.Log("bgmVolumeSlider is null");
+#endif
         if (sfxVolumeSlider != null)
             sfxVolumeSlider.onValueChanged.AddListener(value => audioSettings.SFXVolume = value);
+        else
+#if UNITY_EDITOR
+            Debug.Log("sfxVolumeSlider is null");
+#endif
 
         Load();
         UpdateSliders();
     }
-
+    /// <summary>
+    /// 音量改变时的处理方法.通过事件audioSettings.OnVolumeChanged激活
+    /// 更新所有音源的音量
+    /// </summary> <summary>
+    /// 更新音量条
+    /// </summary>
     private void HandleVolumeChanged()
     {
         UpdateVolumes();
+        //todo-可以自己考虑将sliders逻辑分离，但是我模块化就算了
         UpdateSliders();
+        // 触发事件通知外部监听者，外部观察者可以订阅
+        OnVolumeChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void UpdateSliders()
@@ -278,7 +297,7 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
             audioSettings.Load();
         }
     }
-    
+
     public void ResetToDefault()
     {
         audioSettings.ResetToDefault();
