@@ -31,8 +31,7 @@ namespace SaveSystem
                 if (!Mathf.Approximately(settingsSO.masterVolume, clampedValue))
                 {
                     settingsSO.masterVolume = clampedValue;
-                    OnVolumeChanged?.Invoke();
-                    NotifySettingsChanged();
+                    VolumeChanged(); // 使用统一的事件通知方法
                 }
             }
         }
@@ -46,8 +45,7 @@ namespace SaveSystem
                 if (!Mathf.Approximately(settingsSO.bgmVolume, clampedValue))
                 {
                     settingsSO.bgmVolume = clampedValue;
-                    OnVolumeChanged?.Invoke();
-                    NotifySettingsChanged();
+                    VolumeChanged(); // 使用统一的事件通知方法
                 }
             }
         }
@@ -61,10 +59,17 @@ namespace SaveSystem
                 if (!Mathf.Approximately(settingsSO.sfxVolume, clampedValue))
                 {
                     settingsSO.sfxVolume = clampedValue;
-                    OnVolumeChanged?.Invoke();
-                    NotifySettingsChanged();
+                    VolumeChanged(); // 使用统一的事件通知方法
                 }
             }
+        }
+
+        // 新增：统一的事件通知方法
+        private void VolumeChanged()
+        {
+            // 先触发特定事件，再触发通用事件
+            OnVolumeChanged?.Invoke();
+            NotifySettingsChanged();
         }
 
         // 计算实际的BGM音量（考虑主音量）
@@ -82,9 +87,11 @@ namespace SaveSystem
         // 重置所有音量到默认值
         public override void ResetToDefault()
         {
-            MasterVolume = 1f;
-            BGMVolume = 1f;
-            SFXVolume = 1f;
+            // 直接设置值，然后统一触发事件
+            settingsSO.masterVolume = 1f;
+            settingsSO.bgmVolume = 1f;
+            settingsSO.sfxVolume = 1f;
+            VolumeChanged();
         }
         #endregion
 
@@ -118,21 +125,6 @@ namespace SaveSystem
                 OnVolumeChanged?.Invoke();
                 NotifySettingsChanged();
             }
-        }
-        #endregion
-
-        #region 向后兼容的方法（可以被移除）
-        // 这些方法是为了向后兼容，使用新的Save/Load方法，将来可以删除
-        public void SaveToPlayerPrefs(string key = "AudioSettings")
-        {
-            settingsKey = key;
-            Save();
-        }
-
-        public void LoadFromPlayerPrefs(string key = "AudioSettings")
-        {
-            settingsKey = key;
-            Load();
         }
         #endregion
     }

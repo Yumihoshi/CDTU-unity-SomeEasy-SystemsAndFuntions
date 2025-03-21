@@ -263,12 +263,20 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
     #region 保存数据接口
     public void Save()
     {
-        audioSettings.SaveToPlayerPrefs();
+        // 使用基类的Save方法替代之前的向后兼容方法
+        if (audioSettings != null)
+        {
+            audioSettings.Save();
+        }
     }
 
     public void Load()
     {
-        audioSettings.LoadFromPlayerPrefs();
+        // 使用基类的Load方法替代之前的向后兼容方法
+        if (audioSettings != null)
+        {
+            audioSettings.Load();
+        }
     }
     
     public void ResetToDefault()

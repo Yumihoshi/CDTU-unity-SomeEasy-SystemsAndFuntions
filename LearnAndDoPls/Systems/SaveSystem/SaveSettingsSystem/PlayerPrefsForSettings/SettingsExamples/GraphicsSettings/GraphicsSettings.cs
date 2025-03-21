@@ -31,8 +31,7 @@ namespace SaveSystem
                 if (settingsSO.fullscreenMode != value)
                 {
                     settingsSO.fullscreenMode = value;
-                    OnGraphicsChanged?.Invoke();
-                    NotifySettingsChanged();
+                    GraphicsChanged(); // 使用统一的事件通知方法
                 }
             }
         }
@@ -45,8 +44,7 @@ namespace SaveSystem
                 if (settingsSO.resolutionIndex != value)
                 {
                     settingsSO.resolutionIndex = value;
-                    OnGraphicsChanged?.Invoke();
-                    NotifySettingsChanged();
+                    GraphicsChanged(); // 使用统一的事件通知方法
                 }
             }
         }
@@ -60,8 +58,7 @@ namespace SaveSystem
                 if (settingsSO.qualityLevel != clampedValue)
                 {
                     settingsSO.qualityLevel = clampedValue;
-                    OnGraphicsChanged?.Invoke();
-                    NotifySettingsChanged();
+                    GraphicsChanged(); // 使用统一的事件通知方法
                 }
             }
         }
@@ -75,10 +72,17 @@ namespace SaveSystem
                 if (settingsSO.targetFrameRate != clampedValue)
                 {
                     settingsSO.targetFrameRate = clampedValue;
-                    OnGraphicsChanged?.Invoke();
-                    NotifySettingsChanged();
+                    GraphicsChanged(); // 使用统一的事件通知方法
                 }
             }
+        }
+
+        // 新增：统一的事件通知方法
+        private void GraphicsChanged()
+        {
+            // 先触发特定事件，再触发通用事件
+            OnGraphicsChanged?.Invoke();
+            NotifySettingsChanged();
         }
         #endregion
 
@@ -139,10 +143,12 @@ namespace SaveSystem
 
         public override void ResetToDefault()
         {
-            FullscreenMode = true;
-            ResolutionIndex = 0;
-            QualityLevel = 1;
-            TargetFrameRate = 60;
+            // 直接设置值，然后统一触发事件
+            settingsSO.fullscreenMode = true;
+            settingsSO.resolutionIndex = 0;
+            settingsSO.qualityLevel = 1;
+            settingsSO.targetFrameRate = 60;
+            GraphicsChanged();
         }
         #endregion
     }

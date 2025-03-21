@@ -105,7 +105,7 @@ namespace SaveSystem
                 
                 if (data == null)
                 {
-                    Debug.LogWarning($"无法从PlayerPrefs加载{settingsKey}设置，使用默认设置");
+                    Debug.LogWarning($"[{GetType().Name}] 无法从PlayerPrefs加载'{settingsKey}'设置，正在使用默认值。这通常发生在首次运行时，这是正常现象。");
                     ResetToDefault();
                     return;
                 }
@@ -115,7 +115,7 @@ namespace SaveSystem
             }
             catch (Exception e)
             {
-                Debug.LogError($"加载设置失败: {e.Message}");
+                Debug.LogError($"[{GetType().Name}] 加载设置失败: {e.Message}。将使用默认值。");
                 ResetToDefault();
             }
         }
