@@ -6,6 +6,9 @@ namespace SaveSystem
     [Serializable]
     public class AudioSettings : BaseSettings<AudioSettings.AudioVolumeData, AudioSettingsSO>
     {
+        /// <summary>
+        /// AudioVolumeData是一个可序列化的类，用于存储音量设置的数据
+        /// </summary>
         [Serializable]
         public class AudioVolumeData
         {
@@ -14,14 +17,40 @@ namespace SaveSystem
             public float sfxVolume = 1f;
         }
 
+        /// <summary>
+        /// AudioSettings 类继承自 BaseSettings，用于管理音频设置数据。
+        /// <para>
+        /// 1. 继承基类构造器，通过 <c>: base(settings, "AudioSettings")</c> 调用 BaseSettings 基类的构造函数，
+        ///    需要传递两个参数：
+        ///    - <c>settings</c>：AudioSettingsSO 实例，包含音频设置的 ScriptableObject 数据；
+        ///    - <c>"AudioSettings"</c>：用于 PlayerPrefs 存储的默认键名。
+        /// </para>
+        /// <para>
+        /// 2. 确保初始化：创建 AudioSettings 实例时必须提供一个 AudioSettingsSO 对象，确保设置系统有可用的数据容器。
+        /// </para>
+        /// <para>
+        /// 3. 固定存储键：默认构造函数使用固定键 "AudioSettings"，确保数据始终存储在同一位置，
+        ///    避免因使用默认类名作为键而导致存储不一致的问题。
+        /// </para>
+        /// <para>
+        /// 4. 同时也提供了一个允许自定义键名的构造函数，调用者可以通过传入自定义键来灵活设置存储键。
+        /// </para>
+        /// </summary>
+        /// <param name="settings">AudioSettingsSO 实例，包含音频设置的数据</param>
         public AudioSettings(AudioSettingsSO settings) : base(settings, "AudioSettings")
         {
         }
+
 
         // 音量变化的特定事件，与基类的OnSettingsChanged不同
         public event Action OnVolumeChanged;
 
         #region 音量控制逻辑
+
+        /// <summary>
+        /// Get的是当前的音量值，Set是设置新的音量值
+        /// </summary>
+        /// <value></value>
         public float MasterVolume
         {
             get => settingsSO.masterVolume;
@@ -36,6 +65,10 @@ namespace SaveSystem
             }
         }
 
+        /// <summary>
+        /// Get的是当前的音量值，Set是设置新的音量值
+        /// </summary>
+        /// <value></value>
         public float BGMVolume
         {
             get => settingsSO.bgmVolume;
@@ -50,6 +83,10 @@ namespace SaveSystem
             }
         }
 
+        /// <summary>
+        /// Get的是当前的音量值，Set是设置新的音量值
+        /// </summary>
+        /// <value></value>
         public float SFXVolume
         {
             get => settingsSO.sfxVolume;
@@ -64,7 +101,9 @@ namespace SaveSystem
             }
         }
 
-        // 新增：统一的事件通知方法
+        /// <summary>
+        /// 统一的音量改变事件通知方法
+        /// </summary>
         private void VolumeChanged()
         {
             // 先触发特定事件，再触发通用事件
@@ -72,19 +111,29 @@ namespace SaveSystem
             NotifySettingsChanged();
         }
 
-        // 计算实际的BGM音量（考虑主音量）
+        /// <summary>
+        /// 考虑主音量的影响计算最终音量的值
+        /// </summary>
+        /// <returns></returns>
         public float GetActualBGMVolume()
         {
             return Mathf.Clamp01(MasterVolume * BGMVolume);
         }
 
-        // 计算实际的音效音量（考虑主音量）
+        /// <summary>
+        /// 考虑主音量的影响计算最终音量的值
+        /// </summary>
+        /// <returns></returns>
         public float GetActualSFXVolume()
         {
             return Mathf.Clamp01(MasterVolume * SFXVolume);
         }
+        #endregion
 
-        // 重置所有音量到默认值
+        #region 接口实现
+        /// <summary>
+        /// 重置所有音量到默认值，默认值音量都为1f.
+        /// </summary>
         public override void ResetToDefault()
         {
             // 直接设置值，然后统一触发事件
@@ -93,9 +142,11 @@ namespace SaveSystem
             settingsSO.sfxVolume = 1f;
             VolumeChanged();
         }
-        #endregion
 
-        #region BaseSettings实现
+        /// <summary>
+        /// 重写了BaseSettings从当前 AudioSettings 提取数据，封装成 AudioVolumeData
+        /// </summary>
+        /// <returns></returns>
         protected override AudioVolumeData GetDataFromSettings()
         {
             return new AudioVolumeData
@@ -106,6 +157,12 @@ namespace SaveSystem
             };
         }
 
+
+        /// <summary>
+        /// 将 AudioVolumeData 的数据应用到 settingsSO（音量设置 ScriptableObject）中，同时避免不必要的事件触发
+        /// 重写了 BaseSettings 的 ApplyDataToSettings 方法
+        /// </summary>
+        /// <param name="data">需要存储的数据</param>
         protected override void ApplyDataToSettings(AudioVolumeData data)
         {
             // 这里避免触发多次事件，先记录旧状态
@@ -127,5 +184,7 @@ namespace SaveSystem
             }
         }
         #endregion
+
     }
+
 }

@@ -438,7 +438,7 @@ public class RobustSettingsManager : BaseSettingsManager<GameplaySettings>
             // Create backup before saving
             var currentData = settings.GetDataFromSettings();
             string backupKey = $"{settings.SettingsKey}_backup";
-            Save_SettingsSystem_Functions.SaveByPlayerPrefs(backupKey, currentData);
+            Save_Load_SettingsSystem_Functions.SaveByPlayerPrefs(backupKey, currentData);
             
             // Perform actual save
             settings.Save();
@@ -455,7 +455,7 @@ public class RobustSettingsManager : BaseSettingsManager<GameplaySettings>
         try
         {
             string backupKey = $"{settings.SettingsKey}_backup";
-            var backupData = Save_SettingsSystem_Functions.LoadByPlayerPrefs<GameplayData>(backupKey);
+            var backupData = Save_Load_SettingsSystem_Functions.LoadByPlayerPrefs<GameplayData>(backupKey);
             if (backupData != null)
             {
                 settings.ApplyDataToSettings(backupData);
