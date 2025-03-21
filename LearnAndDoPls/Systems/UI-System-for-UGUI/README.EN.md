@@ -1,6 +1,6 @@
 # UI-System-for-UGUI Written by @Yuan-Zzzz
 
-A UGUI-based Unity UI framework, iteratively developed through game projects, designed to improve UI development efficiency and simplify UI management processes.
+A UGUI-based Unity UI framework, developed iteratively by Yuan-Zzzz during game project development, aimed at improving UI development efficiency and simplifying UI management processes.
 
 [中文](README.md)
 
@@ -12,25 +12,28 @@ A UGUI-based Unity UI framework, iteratively developed through game projects, de
 - **Data-Driven**: Supports IUIData interface for data transmission, decoupling UI and data
 - **Editor Extensions**: Provides visual UI management tools for quick creation and editing of UI panels
 - **Editor Component Binding**: Visual UI component selection and binding tools, automatic binding code generation
+- **Exception Handling**: Comprehensive error checking and exception handling with clear error messages
 
 ## Core Functions
 
-### 1. Automated UI Controller Generation
-- Visual UI panel creation tool
+### 1. UI Controller Automation
+- Visual UI panel creation tools
 - One-click generation of UI prefabs and controller code
 - Automatic creation of standard lifecycle method templates
+- Support for custom templates and code generation rules
 
-### 2. UI Component Binding Process
+### 2. UI Component Binding Automation
 - Visual component selection and binding
-- Support for component type selection
-- Automatic generation of component references and binding code
-- Support for nested UI component binding
+- Support for complex component type selection and validation
+- Auto-generation of type-safe component references and binding code
+- Support for nested UI component binding and path validation
 
 ### 3. Stack-based UI Management
-- Layer-specific UI stack management
-- Automatic handling of UI panel hierarchy relationships
-- Support for pausing and resuming UI panels within the same layer
-- Support for getting the top panel of the current layer
+- Layer-based UI stack management
+- Automatic handling of UI panel hierarchies
+- Support for pausing and resuming same-layer UIs
+- Support for getting current layer's top panel
+- Built-in panel state checking and conflict resolution
 
 ## System Architecture
 

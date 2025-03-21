@@ -1,14 +1,59 @@
 # Unity Dialogue System Documentation
 
-## System Introduction
+[中文](README.CN_DialogueSystem.md)
 
-This is a modular, extensible Unity dialogue system that supports various dialogue forms including linear dialogues, branching dialogues, and voice dialogues. The system follows an MVC architecture, separating data, logic, and view for easier maintenance and extensibility.
+## System Introduction and Architecture
 
-![Example Image](SandBox.png)
-![Example Image](image1.png)
-![Example Image](image2.png)
-![Example Image](image3.png)
+This is a modular Unity dialogue system based on MVC architecture. The system employs interface segregation and controller patterns to separate dialogue flow control from specific implementations, achieving high extensibility and maintainability.
 
+### System Features
+
+- **MVC Architecture**: Logic and UI decoupling through Control-View separation
+- **Interface-based Design**: Feature extension through IBranchingDialogue and IVoiceDialogue interfaces
+- **Data-Driven**: Dialogue data management using ScriptableObject-based DialogueSO
+- **Event System**: Complete dialogue lifecycle events (start, end, line change, etc.)
+- **Automated Components**: RequireComponent attributes ensure automatic addition of necessary components
+
+### Core Components Detailed
+
+#### DialogueControl (Core Control Class)
+```csharp
+public class DialogueControl : MonoBehaviour
+{
+    // Core Events
+    public event EventHandler OnDialogueStarted;
+    public event EventHandler OnDialogueEnded;
+    public event EventHandler<DialogueLineChangedEventArgs> OnDialogueLineChanged;
+
+    // Core Methods
+    public void ShowDialogue()
+    public void ShowNextLine()
+    public void SetDialogueSO(DialogueSO)
+    public void GoDialogueSOToLine(DialogueSO, int)
+}
+```
+
+#### DialogueController (Base Controller)
+```csharp
+public class DialogueController : MonoBehaviour
+{
+    protected DialogueControl dialogueControl;
+    
+    public virtual void StartDialogue()
+    public virtual void SkipDialogue()
+}
+```
+
+#### DialogueSO (Data Container)
+```csharp
+[CreateAssetMenu(fileName = "DialogueSO", menuName = "Scriptable Objects/DialogueSO")]
+public class DialogueSO : ScriptableObject
+{
+    public string characterName;
+    public Sprite Character_Image;
+    public List<string> dialoguelinesList;
+}
+```
 
 ## System Structure
 

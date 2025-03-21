@@ -1,4 +1,5 @@
 # Unity简易系统与功能集合
+
 # 成工CDTU出品，匠心之作
 
 CN 中文 | [🌏 English](README.md)
@@ -11,7 +12,9 @@ CN 中文 | [🌏 English](README.md)
 
 #### 将来我可能会添加另外两个系统，一个保存游戏数据(不久的将来)，另一个保存游戏的大数据（稍微有点难，所以可能需要很长时间）
 
-#### 有一些例子也被添加其中
+#### 有一些例子也被添加其中(LearnAndDoPls/Systems/SaveSystem/SaveSettingsSystem/PlayerPrefsForSettings/SettingsExamples)
+
+#### 但是请不要用这个保存你的游戏数据，因为这个方式保存游戏数据(数据稍微大点)并不好。你可以用它来保存游戏的设置，比如音频、图形等设置。
 
 #### 如果你也有一些良好的代码优秀的例子，请添加进去，阿里嘎多阔塞伊马斯.
 
@@ -28,12 +31,18 @@ CN 中文 | [🌏 English](README.md)
 
 ### 2. [对话系统(DialogueSystem)](LearnAndDoPls/Systems/DialogueSystem/README.CN_DialogueSystem.md)
 
-一个模块化、易于理解的Unity对话系统。该系统采用Control-Controller模式设计，使其既高度可定制又简单易用。功能特点包括：
+一个基于MVC架构的模块化Unity对话系统。该系统通过Control-Controller模式和接口设计实现了高度的扩展性和维护性。功能特点包括：
 
-- 线性对话
-- 带多选项的分支对话
-- 语音同步对话
-- 对话序列的预制体创建功能
+- MVC架构设计，实现了逻辑、数据和视图的分离
+- 基于接口的对话控制器设计（IBranchingDialogue和IVoiceDialogue）
+- 支持多种对话形式：
+  - 线性对话：基础的顺序对话展示
+  - 分支对话：支持多选项分支和动态切换
+  - 语音对话：支持与文本同步的语音播放
+- 完整的生命周期事件系统
+- 打字机效果和自动播放支持
+- ScriptableObject based DialogueSO数据管理
+- 编辑器友好的配置界面
 
 ### 3. [UGUI的UI系统](LearnAndDoPls/Systems/UI-System-for-UGUI/README.md)
 
@@ -43,6 +52,9 @@ CN 中文 | [🌏 English](README.md)
 - UI层级管理
 - 简易的视图转换
 - 视图生命周期管理
+- 对话面板自动化生成
+- 组件引用的自动绑定
+- 完整的UI事件系统
 
 代码由[@Yuan-Zzzz](https://github.com/Yuan-Zzzz)编写，我修复了一些bug并添加了更多注释使其更易读。
 
@@ -63,10 +75,16 @@ CN 中文 | [🌏 English](README.md)
 #### 核心工具
 
 - 单例模式实现
-- 扩展方法
+- 扩展方法集合
 - 常用辅助函数
-- 数学工具
+- 数学工具库
 - 文件操作助手
+
+#### 调试工具
+- 性能分析器
+- 内存追踪
+- 可视化调试
+- 日志系统
 
 ## 5. [实用技能(Utility Skills)](LearnAndDoPls/SomeSkills/README.CN_SomeSkills.md)
 
@@ -122,56 +140,12 @@ CN 中文 | [🌏 English](README.md)
    - 一致使用预制体
    - 实现适当的场景加载模式
 
-## 故障排除
-
-### 常见问题
-
-1. 对象池问题
-   ```
-   问题：对象未返回池中
-   解决：确保在OnDisable中正确实现池返回逻辑，检查对象是否正确禁用
-   ```
-
-2. 内存泄漏
-   ```
-   问题：内存使用量持续增长
-   解决：使用Memory Profiler进行分析，检查事件订阅是否正确解除，确保所有资源都被正确释放
-   ```
-
-3. 性能下降
-   ```
-   问题：随时间推移帧率下降
-   解决：使用Profiler识别性能瓶颈，实现对象池，优化Update循环，减少GC调用
-   ```
-
-4. UI系统问题
-   ```
-   问题：UI元素无响应
-   解决：检查Canvas设置，验证EventSystem存在并正确配置，确保RayCastTarget设置正确
-   ```
-
-5. 设置系统问题
-   ```
-   问题：设置未能正确保存或加载
-   解决：检查PlayerPrefs的键值是否正确，验证序列化数据格式，确保文件权限正确
-   ```
-
 ### 调试技巧
 
 - 启用开发版本构建以获取详细日志
 - 使用Unity的Profiler进行性能分析
 - 在关键代码处实现条件调试日志
 - 使用Unity的Debug.DrawLine进行物理和路径可视化
-- 善用断点和日志来追踪数据流
-- 实现DEBUG预处理指令来控制调试功能
-
-### 问题预防
-
-- 遵循代码规范和最佳实践
-- 定期进行性能检查和优化
-- 保持良好的错误处理和日志记录
-- 做好版本控制和备份
-- 进行充分的单元测试和集成测试
 
 ## 使用方法
 

@@ -95,6 +95,42 @@ public class GraphicsSettingsSO : ScriptableObject
 - 管理分辨率选项
 - 处理UI交互和图形设置更新
 
+### 场景特定设置支持
+
+系统现在支持全局和场景特定的设置管理，这在 AudioManager 中特别有用：
+
+#### 可配置的 DontDestroyOnLoad
+```csharp
+public class AudioManager : BaseSettingsManager<AudioSettings>
+{
+    [SerializeField] private bool dontDestroyOnLoad = false; // DontDestroyOnLoad 行为的开关
+    
+    // ...配置逻辑...
+}
+```
+
+这个特性允许你：
+- 通过禁用 DontDestroyOnLoad 来设置场景特定的音频设置
+- 通过启用 DontDestroyOnLoad 在场景之间维护全局设置
+- 避免不同场景之间的设置冲突
+- 支持特定场景的专门音频配置
+
+#### 场景特定设置最佳实践
+
+1. **全局设置**
+   - 对需要持久化的管理器在检视器中启用 dontDestroyOnLoad
+   - 用于主菜单、全局背景音乐等
+
+2. **场景特定设置**
+   - 对场景特定的管理器禁用 dontDestroyOnLoad
+   - 适用于关卡特定音频、专门配置
+   - 离开场景时管理器会被销毁
+
+3. **配置建议**
+   - 根据场景需求决定是否持久化
+   - 记录哪些场景使用全局或本地设置
+   - 测试场景转换以确保行为正确
+
 ## 使用流程
 
 ### 1. 创建设置数据容器
@@ -512,8 +548,7 @@ public class SettingsMigrationManager
 }
 ```
 
-### 使用建议
-
+## 使用建议
 1. **性能优化**
    - 避免频繁保存，考虑使用防抖动
    - 大型设置更改时批量处理
@@ -523,13 +558,16 @@ public class SettingsMigrationManager
    - 对加载的数据进行验证
    - 实现设置备份机制
    - 处理版本迁移
+   - 每个场景都明确指定是使用全局还是本地设置
 
 3. **可维护性**
    - 使用常量管理设置键
    - 实现详细的日志记录
    - 保持设置类职责单一
+   - 对场景特定设置进行清晰文档记录
 
 4. **用户体验**
    - 提供设置预览功能
    - 实现撤销/重做功能
+   - 确保场景转换时设置平滑过渡
    - 添加设置导入/导出功能

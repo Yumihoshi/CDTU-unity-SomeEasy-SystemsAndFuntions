@@ -3,6 +3,11 @@ using UnityEngine;
 using SaveSystem;
 
 
+
+
+/// <summary>
+/// 
+/// </summary>
 [Serializable]
 public class AudioSettings : BaseSettings<AudioSettings.AudioVolumeData, AudioSettingsSO>
 {

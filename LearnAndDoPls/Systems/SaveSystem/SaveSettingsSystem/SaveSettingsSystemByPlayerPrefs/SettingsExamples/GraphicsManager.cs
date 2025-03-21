@@ -2,12 +2,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using SaveSystem;
-using GraphicsSettingsSystem = SaveSystem.GraphicsSettings;
 
-public class GraphicsManager : BaseSettingsManager<GraphicsSettingsSystem>
+public class GraphicsManager : BaseSettingsManager<GraphicsSettings>
 {
     [Header("图形设置数据")]
     [SerializeField] private GraphicsSettingsSO settingsSO;
+
+     private GraphicsSettings graphicsSettings;
     
     [Header("UI控制组件")]
     [SerializeField] private Toggle fullscreenToggle;
@@ -22,25 +23,26 @@ public class GraphicsManager : BaseSettingsManager<GraphicsSettingsSystem>
     {
         base.Awake();
         InitializeResolutionOptions();
+        InitializeSettings(); // 移到这里，确保在初始化分辨率选项后再初始化设置
     }
     
     protected override void InitializeSettings()
     {
-        settings = new GraphicsSettingsSystem(settingsSO);
-        settings.OnGraphicsChanged += HandleGraphicsChanged;
+        graphicsSettings = new GraphicsSettings(settingsSO);
+        graphicsSettings.OnGraphicsChanged += HandleGraphicsChanged;
         
         // 绑定UI事件
         if (fullscreenToggle != null)
-            fullscreenToggle.onValueChanged.AddListener(value => settings.FullscreenMode = value);
+            fullscreenToggle.onValueChanged.AddListener(value => graphicsSettings.FullscreenMode = value);
             
         if (resolutionDropdown != null)
-            resolutionDropdown.onValueChanged.AddListener(value => settings.ResolutionIndex = value);
+            resolutionDropdown.onValueChanged.AddListener(value => graphicsSettings.ResolutionIndex = value);
             
         if (qualityDropdown != null)
-            qualityDropdown.onValueChanged.AddListener(value => settings.QualityLevel = value);
+            qualityDropdown.onValueChanged.AddListener(value => graphicsSettings.QualityLevel = value);
             
         if (frameRateSlider != null)
-            frameRateSlider.onValueChanged.AddListener(value => settings.TargetFrameRate = Mathf.RoundToInt(value));
+            frameRateSlider.onValueChanged.AddListener(value => graphicsSettings.TargetFrameRate = Mathf.RoundToInt(value));
         
         UpdateUI();
     }
@@ -48,9 +50,9 @@ public class GraphicsManager : BaseSettingsManager<GraphicsSettingsSystem>
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        if (settings != null)
+        if (graphicsSettings != null)
         {
-            settings.OnGraphicsChanged -= HandleGraphicsChanged;
+            graphicsSettings.OnGraphicsChanged -= HandleGraphicsChanged;
         }
     }
     
@@ -62,7 +64,7 @@ public class GraphicsManager : BaseSettingsManager<GraphicsSettingsSystem>
     
     public override void ResetToDefault()
     {
-        ((BaseSettings<GraphicsSettings.GraphicsData, GraphicsSettingsSO>)settings).ResetToDefault();
+        ((BaseSettings<GraphicsSettings.GraphicsData, GraphicsSettingsSO>)graphicsSettings).ResetToDefault();
         Save();
         UpdateUI();
         ApplyGraphicsSettings();
@@ -73,7 +75,7 @@ public class GraphicsManager : BaseSettingsManager<GraphicsSettingsSystem>
     /// </summary>
     private void ApplyGraphicsSettings()
     {
-        settings.ApplyGraphicsSettings();
+        graphicsSettings.ApplyGraphicsSettings();
     }
     
     /// <summary>
@@ -82,19 +84,19 @@ public class GraphicsManager : BaseSettingsManager<GraphicsSettingsSystem>
     private void UpdateUI()
     {
         if (fullscreenToggle != null)
-            fullscreenToggle.isOn = settings.FullscreenMode;
+            fullscreenToggle.isOn = graphicsSettings.FullscreenMode;
             
-        if (resolutionDropdown != null && resolutionDropdown.options.Count > settings.ResolutionIndex)
-            resolutionDropdown.value = settings.ResolutionIndex;
+        if (resolutionDropdown != null && resolutionDropdown.options.Count > graphicsSettings.ResolutionIndex)
+            resolutionDropdown.value = graphicsSettings.ResolutionIndex;
             
         if (qualityDropdown != null)
-            qualityDropdown.value = settings.QualityLevel;
+            qualityDropdown.value = graphicsSettings.QualityLevel;
             
         if (frameRateSlider != null)
-            frameRateSlider.value = settings.TargetFrameRate;
+            frameRateSlider.value = graphicsSettings.TargetFrameRate;
             
         if (frameRateText != null)
-            frameRateText.text = settings.TargetFrameRate.ToString();
+            frameRateText.text = graphicsSettings.TargetFrameRate.ToString();
     }
 
     /// <summary>
@@ -111,7 +113,8 @@ public class GraphicsManager : BaseSettingsManager<GraphicsSettingsSystem>
             for (int i = 0; i < availableResolutions.Length; i++)
             {
                 Resolution resolution = availableResolutions[i];
-                string option = $"{resolution.width} x {resolution.height} @{resolution.refreshRate}Hz";
+                float refreshRate = (float)resolution.refreshRateRatio.numerator / resolution.refreshRateRatio.denominator;
+                string option = $"{resolution.width} x {resolution.height} @{refreshRate:F2}Hz";
                 options.Add(option);
             }
             

@@ -1,21 +1,57 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Managers;
 using UnityEngine.UI;
 using System;
 using System.Collections;
 using SaveSystem;
 
-public class AudioManager : Singleton<AudioManager>, ISaveSettings
+/// <summary>
+/// 音频设置管理类，负责处理和存储所有音频相关的设置。
+/// <para>
+/// 该类管理三种音量设置：
+/// - 主音量 (Master Volume)
+/// - 背景音乐音量 (BGM Volume)
+/// - 音效音量 (SFX Volume)
+/// </para>
+/// <para>
+/// 特性：
+/// - 实现数据持久化存储（通过 PlayerPrefs）
+/// - 提供音量范围限制（0-1）
+/// - 支持音量设置的事件通知
+/// - 提供实际音量计算（考虑主音量影响）
+/// </para>
+/// </summary>
+public class AudioManager : BaseSettingsManager<AudioSettings>
 {
+    // 添加单例实现
+    private static AudioManager instance;
+    [SerializeField] private bool dontDestroyOnLoad = false; // 添加可选的DontDestroyOnLoad标志
+
+    public static AudioManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindFirstObjectByType<AudioManager>();
+                if (instance == null)
+                {
+                    GameObject go = new GameObject("AudioManager");
+                    instance = go.AddComponent<AudioManager>();
+                }
+            }
+            return instance;
+        }
+    }
+
     [Header("音量数据")]
-    [SerializeField] private AudioSettingsSO settingsSO;
+    [SerializeField] private AudioSettingsSO audioSettingsSO;
     private AudioSettings audioSettings;
 
-    /// <summary>
-    /// 设置变更时触发的事件
-    /// </summary>
-    public event EventHandler SettingsChanged;
+    // 重命名事件以避免与基类冲突
+    public event EventHandler<EventArgs> AudioVolumeChanged;
+
+    public override event EventHandler SettingsChanged;
 
     #region 音频源配置
     [Header("音频源/播放器")]
@@ -54,10 +90,19 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
     public event EventHandler<EventArgs> OnVolumeChanged;
     #endregion
 
-    protected override void Awake()
+    protected override void InitializeSettings()
     {
-        base.Awake();
-        audioSettings = new AudioSettings(settingsSO);
+        if (audioSettingsSO == null)
+        {
+            Debug.LogError($"{nameof(AudioManager)}: audioSettingsSO is not assigned!");
+            return;
+        }
+        if (bgmSource == null)
+        {
+            Debug.LogError($"{nameof(AudioManager)}: bgmSource is not assigned!");
+        }
+
+        audioSettings = new AudioSettings(audioSettingsSO);
         audioSettings.OnVolumeChanged += HandleVolumeChanged;
 
         // 订阅设置变更事件
@@ -65,12 +110,34 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
         {
             saveSettings.SettingsChanged += HandleSettingsChanged;
         }
-
-        InitializeAudioSources();
+        
+        // 初始化完成后绑定UI和加载设置
+        BindVolumeSliders();
+        Load();
+        UpdateUI();
     }
 
-    private void OnDestroy()
+    protected override void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
+        instance = this;
+        if (dontDestroyOnLoad)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+        
+        base.Awake();
+        InitializeAudioSources(); // 在base.Awake()之后初始化音频源
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
         if (audioSettings != null)
         {
             audioSettings.OnVolumeChanged -= HandleVolumeChanged;
@@ -86,36 +153,38 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
     /// <summary>
     /// 处理设置变更事件
     /// </summary>
-    private void HandleSettingsChanged(object sender, EventArgs e)
+    protected override void HandleSettingsChanged(object sender, EventArgs e)
     {
+        base.HandleSettingsChanged(sender, e);
         // 将设置变更事件向上传播
         SettingsChanged?.Invoke(this, e);
     }
 
-    private void Start()
+    private void BindVolumeSliders()
     {
         // 绑定滑动条事件
         if (masterVolumeSlider != null)
             masterVolumeSlider.onValueChanged.AddListener(value => audioSettings.MasterVolume = value);
 #if UNITY_EDITOR
-        Debug.Log("masterVolumeSlider");
-#endif
-        if (bgmVolumeSlider != null)
-            bgmVolumeSlider.onValueChanged.AddListener(value => audioSettings.BGMVolume = value);
         else
-#if UNITY_EDITOR
-            Debug.Log("bgmVolumeSlider is null");
-#endif
-        if (sfxVolumeSlider != null)
-            sfxVolumeSlider.onValueChanged.AddListener(value => audioSettings.SFXVolume = value);
-        else
-#if UNITY_EDITOR
-            Debug.Log("sfxVolumeSlider is null");
+            Debug.LogWarning("masterVolumeSlider is null");
 #endif
 
-        Load();
-        UpdateSliders();
+        if (bgmVolumeSlider != null)
+            bgmVolumeSlider.onValueChanged.AddListener(value => audioSettings.BGMVolume = value);
+#if UNITY_EDITOR
+        else
+            Debug.LogWarning("bgmVolumeSlider is null");
+#endif
+
+        if (sfxVolumeSlider != null)
+            sfxVolumeSlider.onValueChanged.AddListener(value => audioSettings.SFXVolume = value);
+#if UNITY_EDITOR
+        else
+            Debug.LogWarning("sfxVolumeSlider is null");
+#endif
     }
+
     /// <summary>
     /// 音量改变时的处理方法.通过事件audioSettings.OnVolumeChanged激活
     /// 更新所有音源的音量
@@ -128,7 +197,7 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
         //todo-可以自己考虑将sliders逻辑分离，但是我模块化就算了
         UpdateSliders();
         // 触发事件通知外部监听者，外部观察者可以订阅
-        OnVolumeChanged?.Invoke(this, EventArgs.Empty);
+        AudioVolumeChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void UpdateSliders()
@@ -139,6 +208,12 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
             bgmVolumeSlider.value = audioSettings.BGMVolume;
         if (sfxVolumeSlider != null)
             sfxVolumeSlider.value = audioSettings.SFXVolume;
+    }
+
+    private void UpdateUI()
+    {
+        UpdateSliders();
+        UpdateVolumes();
     }
 
     #region 初始化方法
@@ -279,27 +354,28 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
     #endregion
 
     #region 保存数据接口
-    public void Save()
+    public override void Save()
     {
-        // 使用基类的Save方法替代之前的向后兼容方法
         if (audioSettings != null)
         {
             audioSettings.Save();
         }
     }
 
-    public void Load()
+    public override void Load()
     {
-        // 使用基类的Load方法替代之前的向后兼容方法
         if (audioSettings != null)
         {
             audioSettings.Load();
         }
     }
 
-    public void ResetToDefault()
+    public override void ResetToDefault()
     {
-        audioSettings.ResetToDefault();
+        if (audioSettings != null)
+        {
+            audioSettings.ResetToDefault();
+        }
     }
     #endregion
 }
