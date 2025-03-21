@@ -1,14 +1,23 @@
 # Unity对话系统使用文档
-[English](README.EN_DialogueSystem.md)
-## 系统简介
 
-这是一个模块化、可扩展的Unity对话系统，支持线性对话、分支对话和语音对话等多种对话形式。系统采用MVC结构设计，将数据、逻辑和视图分离，便于维护和扩展。
+[English](README.EN_DialogueSystem.md)
+
+## 系统简介与架构
+
+这是一个基于MVC架构的模块化Unity对话系统。系统采用接口分离和控制器模式设计，将对话流程的控制与具体实现分离，实现了高度的可扩展性和维护性。
+
+### 系统特点
+
+- **MVC架构**：通过Control-View分离，实现了逻辑和UI的解耦
+- **接口化设计**：使用IBranchingDialogue和IVoiceDialogue接口实现功能扩展
+- **数据驱动**：基于ScriptableObject的DialogueSO实现对话数据管理
+- **事件系统**：完整的对话生命周期事件（开始、结束、行变更等）
+- **自动化组件**：包含RequireComponent特性，确保必要组件的自动添加
 
 ![示例图片](SandBox.png)
 ![示例图片](image1.png)
 ![示例图片](image2.png)
 ![示例图片](image3.png)
-
 
 ## 系统结构
 
@@ -86,36 +95,44 @@ Hierarchy:
 
 ## 核心组件详解
 
-### DialogueSO
-
-对话数据容器，存储对话内容和角色信息：
-
+### DialogueControl（核心控制类）
 ```csharp
-public class DialogueSO : ScriptableObject
+public class DialogueControl : MonoBehaviour
 {
-    public string characterName;        // 角色名称1
-    public string characterName2;       // 角色名称2
-    public Sprite Character_Image;      // 角色立绘1
-    public Sprite Character_Image2;     // 角色立绘2
-    public List<string> dialoguelinesList; // 对话行列表
+    // 核心事件
+    public event EventHandler OnDialogueStarted;
+    public event EventHandler OnDialogueEnded;
+    public event EventHandler<DialogueLineChangedEventArgs> OnDialogueLineChanged;
+
+    // 核心方法
+    public void ShowDialogue()
+    public void ShowNextLine()
+    public void SetDialogueSO(DialogueSO)
+    public void GoDialogueSOToLine(DialogueSO, int)
 }
 ```
 
-### DialogueControl
+### DialogueController（控制器基类）
+```csharp
+public class DialogueController : MonoBehaviour
+{
+    protected DialogueControl dialogueControl;
+    
+    public virtual void StartDialogue()
+    public virtual void SkipDialogue()
+}
+```
 
-核心控制类，管理对话流程：
-
-重要公共方法：
-- `ShowDialogue()` - 显示对话
-- `ShowNextLine()` - 显示下一行对话
-- `SetDialogueSO(DialogueSO)` - 切换对话数据
-- `GoDialogueSOToLine(DialogueSO, int)` - 跳转到特定对话行
-- `SkipDialogue()` - 跳过当前对话
-
-重要事件：
-- `OnDialogueStarted` - 对话开始事件
-- `OnDialogueEnded` - 对话结束事件
-- `OnDialogueLineChanged` - 对话行变更事件
+### DialogueSO（数据容器）
+```csharp
+[CreateAssetMenu(fileName = "DialogueSO", menuName = "Scriptable Objects/DialogueSO")]
+public class DialogueSO : ScriptableObject
+{
+    public string characterName;
+    public Sprite Character_Image;
+    public List<string> dialoguelinesList;
+}
+```
 
 ### DialogueControlView
 

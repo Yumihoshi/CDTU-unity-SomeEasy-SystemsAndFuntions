@@ -101,6 +101,42 @@ public class GraphicsSettingsSO : ScriptableObject
 - Manages resolution options
 - Handles UI interaction and graphics settings updates
 
+### Scene-Specific Settings Support
+
+The system now supports both global and scene-specific settings management, particularly useful for the AudioManager:
+
+#### Configurable DontDestroyOnLoad
+```csharp
+public class AudioManager : BaseSettingsManager<AudioSettings>
+{
+    [SerializeField] private bool dontDestroyOnLoad = false; // Toggle for DontDestroyOnLoad behavior
+    
+    // ...configuration logic...
+}
+```
+
+This feature allows you to:
+- Set up scene-specific audio settings by disabling DontDestroyOnLoad
+- Maintain global settings across scenes by enabling DontDestroyOnLoad
+- Avoid settings conflicts between different scenes
+- Support specialized audio configurations for specific scenes
+
+#### Best Practices for Scene-Specific Settings
+
+1. **Global Settings**
+   - Enable dontDestroyOnLoad in the inspector for managers that need to persist
+   - Use this for main menu, global BGM, etc.
+
+2. **Scene-Specific Settings**
+   - Disable dontDestroyOnLoad for scene-specific managers
+   - Useful for level-specific audio, specialized configurations
+   - Managers will be destroyed when leaving the scene
+
+3. **Configuration Tips**
+   - Consider scene requirements when deciding persistence
+   - Document which scenes use global vs local settings
+   - Test scene transitions to ensure proper behavior
+
 ## Usage Flow
 
 ### 1. Create Settings Data Container

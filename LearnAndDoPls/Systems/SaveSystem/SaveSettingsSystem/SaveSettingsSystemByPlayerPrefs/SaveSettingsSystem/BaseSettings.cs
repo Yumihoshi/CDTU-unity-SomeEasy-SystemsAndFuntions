@@ -109,12 +109,6 @@ namespace SaveSystem
         {
             try
             {
-
-                /// <summary>
-                /// 使用工具类存储
-                /// </summary>
-                /// <typeparam name="TData">存储的数据</typeparam>
-                /// <returns></returns>
                 var data = Save_Load_SettingsSystem_Functions.LoadByPlayerPrefs<TData>(settingsKey);
 
                 if (data == null)
