@@ -33,6 +33,8 @@ The system consists of the following core components:
   - **BranchingDialogueController** - Branching dialogue implementation
   - **VoiceDialogueController** - Voice dialogue implementation
 
+  To maintain a good code structure, use IBranchingDialogue for branching dialogues and IVoiceDialogue for voice dialogues. If you need both, you can implement both interfaces. You can customize the interface or directly inherit from the DialogueController class to implement your own dialogue controller. It is recommended to add interfaces to maintain a good code structure.
+
 ### View Layer
 - **DialogueControlView** - User interface control
   - Responsible for the visual presentation of dialogue content

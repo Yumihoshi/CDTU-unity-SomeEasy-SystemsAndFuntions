@@ -54,12 +54,35 @@ namespace Utils
 
         #region 私有字段
 
+        /// <summary>
+        /// 存储未使用的池化对象的队列，当Get方法被调用时从队列前端获取对象，Release时将对象添加到队列末端
+        /// </summary>
         private readonly Queue<T> _pool;
+
+        /// <summary>
+        /// 对象池使用的原始预制体，所有池化对象都基于此预制体实例化
+        /// </summary>
         private readonly T _prefab;
+
+        /// <summary>
+        /// 池化对象的父级Transform，所有池化对象都将被设置为此Transform的子物体
+        /// </summary>
         private readonly Transform _parent;
+
+        /// <summary>
+        /// 对象池的默认初始容量，决定预热时创建的对象数量
+        /// </summary>
         private readonly int _defaultSize;
-        private readonly bool _collectionChecks = true; // 是否检查重复回收
-        private readonly HashSet<T> _activeObjects; // 当前活跃的对象
+
+        /// <summary>
+        /// 是否启用重复回收检查，启用后可防止同一对象被多次回收或回收非池内对象
+        /// </summary>
+        private readonly bool _collectionChecks = true;
+
+        /// <summary>
+        /// 当前处于活跃状态（已从池中取出但尚未回收）的对象集合，用于跟踪和验证对象状态
+        /// </summary>
+        private readonly HashSet<T> _activeObjects;
 
         #endregion
 

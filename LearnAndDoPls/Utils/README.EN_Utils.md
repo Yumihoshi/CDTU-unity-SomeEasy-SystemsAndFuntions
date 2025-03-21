@@ -1,65 +1,87 @@
-# Unity Utility Functions
+# Unity Utility Collection
 
-🌏 English | [CN 中文](README.zh-CN_Utils.md)
+🌏 [中文](README.zh-CN_Utils.md) | English
 
-A collection of useful utility functions and helper classes for Unity projects.
+A collection of utility tools developed for Unity projects, providing multiple commonly used utility classes and functions to simplify development process and improve code quality.
 
-## Features
+## 📚 Features
 
-### 1. Singleton
-- Generic singleton implementation
-- Thread-safe singleton pattern
-- MonoBehaviour singleton support
+### 🎯 Singleton
+A generic singleton base class with features:
+- Automatic instance creation (if not exists)
+- Persistent across scenes (DontDestroyOnLoad)
+- Prevention of duplicate instantiation
+- Thread-safe implementation
 
-### 2. Extensions
-- Transform extensions for easy manipulation
-- GameObject extensions for common operations
-- Vector3 helper functions
-- String utility methods
-
-### 3. Math Utilities
-- Common mathematical calculations
-- Interpolation functions
-- Random number generation helpers
-- Geometry calculations
-
-### 4. File Operations
-- File reading/writing utilities
-- JSON serialization helpers
-- Path manipulation functions
-
-## Usage Examples
-
-### Singleton Implementation
+Usage example:
 ```csharp
-public class GameManager : Singleton<GameManager>
-{
-    protected override void Awake()
-    {
+public class GameManager : Singleton<GameManager> {
+    protected override void Awake() {
         base.Awake();
         // Your initialization code
     }
+    
+    public void GameLogic() {
+        // Game logic
+    }
 }
+
+// Usage elsewhere
+GameManager.Instance.GameLogic();
 ```
 
-### Extension Methods
+### 🎮 ObjectPool
+Efficient object pooling system to reduce runtime instantiation/destruction overhead:
+- Supports any Unity Object type
+- Automatic object activation state management
+- Pre-warming and dynamic expansion support
+- Built-in safety checks
+
+Usage example:
 ```csharp
-// Transform position setting
-transform.SetPositionX(5f);
+// Create object pool
+public GameObject bulletPrefab;
+private ObjectPool<GameObject> bulletPool;
 
-// GameObject finding with type
-var player = gameObject.FindComponentInChildren<Player>();
+void Start() {
+    // Initialize pool (prefab, initial size, parent transform)
+    bulletPool = new ObjectPool<GameObject>(bulletPrefab, 20, transform);
+}
+
+// Get object from pool
+GameObject bullet = bulletPool.Get();
+
+// Return to pool when done
+bulletPool.Release(bullet);
 ```
 
-## Installation
+## 💡 Best Practices
 
-1. Copy the Utils folder into your Unity project's Assets folder
-2. Import the necessary namespaces in your scripts
+### Singleton
+1. Only make manager classes that truly need global access singletons
+2. Initialize in Awake
+3. Avoid circular dependencies between singletons
 
-## Dependencies
+### Object Pool
+1. Set appropriate initial pool size based on object usage frequency
+2. Pre-warm pools at game start
+3. Always return objects when no longer needed
+4. Use parent transforms to organize pooled objects
+
+## 🔧 Installation
+
+1. Copy the `Utils` folder into your project's `Assets` folder
+2. Add the appropriate namespace references:
+```csharp
+using Utils; // For ObjectPool
+using Managers; // For Singleton base class
+```
+
+## ⚙️ Requirements
 
 - Unity 2019.4 or higher
+- .NET Standard 2.0 or higher
 
-## License
+## 📝 License
 
 This project is licensed under the MIT License - see the LICENSE file for details

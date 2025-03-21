@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class BranchingDialogueController : DialogueController
+public class BranchingDialogueController : DialogueController,IBranchingDialogue
 {
 
     /// <summary>
