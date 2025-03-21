@@ -8,7 +8,7 @@ using UnityEngine;
 using System;
 
 [RequireComponent(typeof(AudioSource))]
-public class VoiceDialogueController : DialogueController
+public class VoiceDialogueController : DialogueController,IVoiceDialogue
 {
     [SerializeField] private AudioSource audioSource;
 

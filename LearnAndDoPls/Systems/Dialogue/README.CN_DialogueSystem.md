@@ -33,6 +33,10 @@
   - **BranchingDialogueController** - 分支对话实现
   - **VoiceDialogueController** - 语音对话实现
 
+  通过接口实现不同的对话控制器，便于扩展和维护。
+  为保持良好的代码结构，实现分支对话就请用IBranchingDialogue，实现语音对话就请用IVoiceDialogue，如果两个都需要可以实现两个接口。
+  可以自定义接口或者直接继承DialogueController类来实现自己的对话控制器。推荐增加接口，保持良好的代码结构。
+
 ### 视图层
 - **DialogueControlView** - 用户界面控制
   - 负责对话内容的可视化呈现
