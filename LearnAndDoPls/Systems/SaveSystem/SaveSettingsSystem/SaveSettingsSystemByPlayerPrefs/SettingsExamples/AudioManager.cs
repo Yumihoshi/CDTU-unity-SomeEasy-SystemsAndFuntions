@@ -5,13 +5,12 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 using SaveSystem;
-using AudioSettingsSystem = SaveSystem.AudioSettings;
 
 public class AudioManager : Singleton<AudioManager>, ISaveSettings
 {
     [Header("音量数据")]
     [SerializeField] private AudioSettingsSO settingsSO;
-    private AudioSettingsSystem audioSettings;
+    private AudioSettings audioSettings;
 
     /// <summary>
     /// 设置变更时触发的事件
@@ -29,14 +28,14 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
     private Dictionary<string, AudioClip> bgmClipDictionary = new();
     private Dictionary<string, AudioClip> sfxClipDictionary = new();
 
-    [System.Serializable]
+    [Serializable]
     public class BGMClipData
     {
         public string name;
         public AudioClip clip;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class SFXClipData
     {
         public string name;
@@ -58,7 +57,7 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
     protected override void Awake()
     {
         base.Awake();
-        audioSettings = new AudioSettingsSystem(settingsSO);
+        audioSettings = new AudioSettings(settingsSO);
         audioSettings.OnVolumeChanged += HandleVolumeChanged;
 
         // 订阅设置变更事件
@@ -172,36 +171,36 @@ public class AudioManager : Singleton<AudioManager>, ISaveSettings
     /// <summary>
     /// 通过名称播放背景音乐
     /// </summary>
-    /// <param name="name">背景音乐名称</param>
-    public void PlayBGMByName(string name)
+    /// <param name="BGMname"></param>
+    public void PlayBGMByName(string BGMname)
     {
-        if (string.IsNullOrEmpty(name)) return;
+        if (string.IsNullOrEmpty(BGMname)) return;
 
-        if (bgmClipDictionary.TryGetValue(name, out AudioClip clip))
+        if (bgmClipDictionary.TryGetValue(BGMname, out AudioClip clip))
         {
             PlayBGM(clip);
         }
         else
         {
-            Debug.LogWarning($"未找到名为 {name} 的背景音乐");
+            Debug.LogWarning($"未找到名为 {BGMname} 的背景音乐");
         }
     }
 
     /// <summary>
     /// 通过名称播放音效
     /// </summary>
-    /// <param name="name">音效名称</param>
-    public void PlaySFXByName(string name)
+    /// <param name="SFXname">音效名称</param>
+    public void PlaySFXByName(string SFXname)
     {
-        if (string.IsNullOrEmpty(name)) return;
+        if (string.IsNullOrEmpty(SFXname)) return;
 
-        if (sfxClipDictionary.TryGetValue(name, out AudioClip clip))
+        if (sfxClipDictionary.TryGetValue(SFXname, out AudioClip clip))
         {
             PlaySFX(clip);
         }
         else
         {
-            Debug.LogWarning($"未找到名为 {name} 的音效");
+            Debug.LogWarning($"未找到名为 {SFXname} 的音效");
         }
     }
 

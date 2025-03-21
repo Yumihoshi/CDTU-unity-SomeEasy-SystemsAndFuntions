@@ -1,4 +1,3 @@
-using UnityEngine;
 using Managers;
 using System;
 
@@ -42,7 +41,7 @@ namespace SaveSystem
         }
 
         /// <summary>
-        /// 设定类的初始化方法，因为是抽象类所以大家都要实现
+        /// 设定类的初始化方法，因为是一个抽象类所以大家都要实现
         /// </summary>
         protected abstract void InitializeSettings();
 

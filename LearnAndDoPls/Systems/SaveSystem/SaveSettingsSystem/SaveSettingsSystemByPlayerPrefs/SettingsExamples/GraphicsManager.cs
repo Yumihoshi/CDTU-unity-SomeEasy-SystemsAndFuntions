@@ -100,7 +100,6 @@ public class GraphicsManager : BaseSettingsManager<GraphicsSettingsSystem>
     /// <summary>
     /// 初始化分辨率选项
     /// </summary>
-    [System.Obsolete]
     private void InitializeResolutionOptions()
     {
         if (resolutionDropdown != null)

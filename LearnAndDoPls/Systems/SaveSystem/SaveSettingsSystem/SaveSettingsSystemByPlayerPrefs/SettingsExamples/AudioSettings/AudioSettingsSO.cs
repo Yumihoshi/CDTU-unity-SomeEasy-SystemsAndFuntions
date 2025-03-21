@@ -1,9 +1,8 @@
-using System;
 using UnityEngine;
 
 namespace SaveSystem
 {
-    [CreateAssetMenu(fileName = "AudioVolumeSettingsSO", menuName = "Settings/Audio SettingsSO")]
+    [CreateAssetMenu(fileName = "AudioSettingsSO", menuName = "Settings/Audio SettingsSO")]
     public class AudioSettingsSO : ScriptableObject
     {
         [Header("音量数据")]
