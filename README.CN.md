@@ -31,7 +31,7 @@ CN 中文 | [🌏 English](README.md)
 
 ### 2. [对话系统(DialogueSystem)](LearnAndDoPls/Systems/DialogueSystem/README.CN_DialogueSystem.md)
 
-一个基于MVC架构的模块化Unity对话系统。该系统通过Control-Controller模式和接口设计实现了高度的扩展性和维护性。功能特点包括：
+一个基于MVC架构的模块化Unity对话系统。该系统通过Control-Controller,可选接口 模式和接口设计实现了高度的扩展性和维护性。功能特点包括：
 
 - MVC架构设计，实现了逻辑、数据和视图的分离
 - 基于接口的对话控制器设计（IBranchingDialogue和IVoiceDialogue）

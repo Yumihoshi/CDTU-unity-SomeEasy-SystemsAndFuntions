@@ -7,7 +7,8 @@ A collection of simple, reusable systems and functions for Unity projects. This 
 
 ## Available Systems
 
-### 1. [SaveSettingsSystem](LearnAndDoPls/Systems/SaveSystem/SaveSettingsSystem/SaveSettingsSystemByPlayerPrefs/README.md)
+<<<<<<< HEAD
+### 1. [SaveSettingsSystem](LearnAndDoPls/Systems/SaveSystem/SaveSettingsSystem/SaveSettingsSystemByPlayerPrefs/README.EN.md)
 
 #### For the future i will add 2 more to make the systems which are 2.for saving the data of the game(not long to see it) and 3.saving the big data of the game(a little difficult,so maye a long time)
 
@@ -30,7 +31,7 @@ A flexible settings management system for Unity that handles game settings and s
 
 ### 2. [DialogueSystem](LearnAndDoPls/Systems/DialogueSystem/README.CN_DialogueSystem.md)
 
-A modular, easy-to-understand dialogue system for Unity. The system uses a Control-Controller pattern that makes it highly customizable while remaining simple to use. Features include:
+A modular, easy-to-understand dialogue system for Unity. The system uses a Control-Controller,InterfaceYouNeed  pattern that makes it highly customizable while remaining simple to use. Features include:
 
 - Linear dialogues
 - Branching dialogues with multiple options
