@@ -80,12 +80,6 @@ CN 中文 | [🌏 English](README.md)
 - 数学工具库
 - 文件操作助手
 
-#### 调试工具
-- 性能分析器
-- 内存追踪
-- 可视化调试
-- 日志系统
-
 ## 5. [实用技能(Utility Skills)](LearnAndDoPls/SomeSkills/README.CN_SomeSkills.md)
 
 这些脚本展示了一些C#的实用技能：
@@ -140,12 +134,6 @@ CN 中文 | [🌏 English](README.md)
    - 一致使用预制体
    - 实现适当的场景加载模式
 
-### 调试技巧
-
-- 启用开发版本构建以获取详细日志
-- 使用Unity的Profiler进行性能分析
-- 在关键代码处实现条件调试日志
-- 使用Unity的Debug.DrawLine进行物理和路径可视化
 
 ## 使用方法
 
