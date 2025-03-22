@@ -7,7 +7,7 @@ A collection of simple, reusable systems and functions for Unity projects. This 
 
 ## Available Systems
 
-### 1. [SaveSettingsSystem](LearnAndDoPls/Systems/SaveSystem/SaveSettingsSystem/SaveSettingsSystemByPlayerPrefs/README.md)
+### 1. [SaveSettingsSystem](LearnAndDoPls/Systems/SaveSystem/SaveSettingsSystem/SaveSettingsSystemByPlayerPrefs/README.CN.md)
 
 #### For the future i will add 2 more to make the systems which are 2.for saving the data of the game(not long to see it) and 3.saving the big data of the game(a little difficult,so maye a long time)
 
