@@ -125,13 +125,6 @@ Written by [@Yumihoshi](https://github.com/Yumihoshi) from the original [Art Ass
    - Implement proper scene loading patterns
 
 
-### Debug Tips
-
-- Enable development builds for detailed logs
-- Use Unity's Profiler for performance analysis
-- Implement debug logging in critical sections
-- Utilize Unity's Debug.DrawLine for physics visualization
-
 ## How to Use
 
 1. Simply copy the System-folders you need into your Unity project
