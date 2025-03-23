@@ -7,7 +7,7 @@ A collection of simple, reusable systems and functions for Unity projects. This 
 
 ## Available Systems
 
-<<<<<<< HEAD
+
 ### 1. [SaveSettingsSystem](LearnAndDoPls/Systems/SaveSystem/SaveSettingsSystem/SaveSettingsSystemByPlayerPrefs/README.EN.md)
 
 #### For the future i will add 2 more to make the systems which are 2.for saving the data of the game(not long to see it) and 3.saving the big data of the game(a little difficult,so maye a long time)
@@ -124,13 +124,6 @@ Written by [@Yumihoshi](https://github.com/Yumihoshi) from the original [Art Ass
    - Use prefabs consistently
    - Implement proper scene loading patterns
 
-
-### Debug Tips
-
-- Enable development builds for detailed logs
-- Use Unity's Profiler for performance analysis
-- Implement debug logging in critical sections
-- Utilize Unity's Debug.DrawLine for physics visualization
 
 ## How to Use
 
