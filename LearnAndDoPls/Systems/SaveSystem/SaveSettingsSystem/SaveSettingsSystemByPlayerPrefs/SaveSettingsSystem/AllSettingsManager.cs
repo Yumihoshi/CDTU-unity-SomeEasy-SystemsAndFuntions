@@ -48,6 +48,10 @@ namespace SaveSettingsSystem
         }
         #endregion
 
+        /// <summary>
+        /// 注册Manager
+        /// </summary>
+        /// <param name="manager"></param>
         public void RegisterManager(ISaveSettings manager)
         {
             if (manager == null || !(manager is MonoBehaviour monoBehaviour)) return;
@@ -60,6 +64,11 @@ namespace SaveSettingsSystem
                 SettingsLogger.Log($"注册管理器: {type.Name}");
             }
         }
+
+        /// <summary>
+        /// 取消注册Manager
+        /// </summary>
+        /// <param name="manager"></param>
 
         public void UnregisterManager(ISaveSettings manager)
         {
@@ -74,6 +83,11 @@ namespace SaveSettingsSystem
             }
         }
 
+        /// <summary>
+        /// 得到特定Manager示例，提过了一个同意
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public T GetManager<T>() where T : MonoBehaviour
         {
             return managerCache.TryGetValue(typeof(T), out var manager) ? manager as T : null;
