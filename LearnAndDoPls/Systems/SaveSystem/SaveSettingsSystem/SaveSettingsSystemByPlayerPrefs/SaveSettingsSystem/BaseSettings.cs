@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace SaveSystem
+namespace SaveSettingsSystem
 {
     /// <summary>
     /// 所有设置系统的抽象基类

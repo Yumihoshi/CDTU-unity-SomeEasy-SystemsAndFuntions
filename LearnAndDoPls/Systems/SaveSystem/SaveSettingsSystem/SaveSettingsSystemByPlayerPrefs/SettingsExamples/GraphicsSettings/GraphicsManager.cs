@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using SaveSystem;
+using SaveSettingsSystem;
 
 public class GraphicsManager : BaseSettingsManager<GraphicsSettings>
 {
@@ -37,7 +37,7 @@ public class GraphicsManager : BaseSettingsManager<GraphicsSettings>
     {
         if (settingsSO == null)
         {
-            AllSettingsManager.Logger.LogError($"{nameof(GraphicsManager)}: settingsSO is not assigned!");
+            AllSettingsManager.SettingsLogger.LogError($"{nameof(GraphicsManager)}: settingsSO is not assigned!");
             return;
         }
         

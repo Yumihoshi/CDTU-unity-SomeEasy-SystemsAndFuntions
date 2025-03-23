@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Managers;
 
-namespace SaveSystem
+namespace SaveSettingsSystem
 {
     /// <summary>
     /// 总的设置管理器，用于管理所有子设置管理器
@@ -10,16 +10,31 @@ namespace SaveSystem
     public class AllSettingsManager : SingletonDD<AllSettingsManager>
     {
         public static bool HasInstance => Instance != null;
-        
-        private HashSet<ISaveSettings> allSettings = new HashSet<ISaveSettings>();
-        private Dictionary<System.Type, MonoBehaviour> managerCache = new Dictionary<System.Type, MonoBehaviour>();
+        /// <summary>
+        /// 所有注册的设置管理器
+        /// 使用哈希表来避免重复注册，因为哈希值都是唯一的
+        /// 这样可以提高性能，因为哈希表的查找速度比列表快
+        /// </summary>
+        /// <typeparam name="ISaveSettings"></typeparam>
+        /// <returns></returns>
+        private HashSet<ISaveSettings> allSettings = new HashSet<ISaveSettings>();//使用哈希表
+        /// <summary>
+        /// 所有注册的设置管理器
+        /// </summary>
+        public IReadOnlyCollection<ISaveSettings> AllSettings => allSettings;
 
         /// <summary>
-        /// 
+        /// 通过用于缓存注册的管理器
         /// </summary>
-        public static class Logger
+        private Dictionary<System.Type, MonoBehaviour> managerCache = new Dictionary<System.Type, MonoBehaviour>();
+
+        #region 简易日志分类记录器
+        /// <summary>
+        /// 简易日志分类记录器
+        /// </summary>
+        public static class SettingsLogger
         {
-            [System.Diagnostics.Conditional("UNITY_EDITOR")]
+            [System.Diagnostics.Conditional("UNITY_EDITOR")]//
             [System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
             public static void Log(string message)
             {
@@ -31,6 +46,7 @@ namespace SaveSystem
                 Debug.LogError($"[Settings] {message}");
             }
         }
+        #endregion
 
         public void RegisterManager(ISaveSettings manager)
         {
@@ -41,7 +57,7 @@ namespace SaveSystem
             {
                 managerCache[type] = monoBehaviour;
                 allSettings.Add(manager);
-                Logger.Log($"注册管理器: {type.Name}");
+                SettingsLogger.Log($"注册管理器: {type.Name}");
             }
         }
 
@@ -54,7 +70,7 @@ namespace SaveSystem
             {
                 allSettings.Remove(manager);
                 managerCache.Remove(type);
-                Logger.Log($"注销管理器: {type.Name}");
+                SettingsLogger.Log($"注销管理器: {type.Name}");
             }
         }
 
@@ -71,7 +87,7 @@ namespace SaveSystem
             }
             catch (System.Exception e)
             {
-                Logger.LogError($"{operationName}失败: {e.Message}");
+                SettingsLogger.LogError($"{operationName}失败: {e.Message}");
             }
         }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 using System.Collections;
-using SaveSystem;
+using SaveSettingsSystem;
 
 /// <summary>
 /// 音频设置管理类，负责处理和存储所有音频相关的设置。
@@ -64,12 +64,12 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
     {
         if (audioSettingsSO == null)
         {
-            AllSettingsManager.Logger.LogError($"{nameof(AudioManager)}: audioSettingsSO is not assigned!");
+            AllSettingsManager.SettingsLogger.LogError($"{nameof(AudioManager)}: audioSettingsSO is not assigned!");
             return;
         }
         if (bgmSource == null)
         {
-            AllSettingsManager.Logger.LogError($"{nameof(AudioManager)}: bgmSource is not assigned!");
+            AllSettingsManager.SettingsLogger.LogError($"{nameof(AudioManager)}: bgmSource is not assigned!");
         }
 
         audioSettings = new AudioSettings(audioSettingsSO);

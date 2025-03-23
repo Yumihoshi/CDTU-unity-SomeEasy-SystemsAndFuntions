@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using SaveSystem;
+using SaveSettingsSystem;
 
 [Serializable]
 public class GraphicsSettings : BaseSettings<GraphicsSettings.GraphicsData, GraphicsSettingsSO>

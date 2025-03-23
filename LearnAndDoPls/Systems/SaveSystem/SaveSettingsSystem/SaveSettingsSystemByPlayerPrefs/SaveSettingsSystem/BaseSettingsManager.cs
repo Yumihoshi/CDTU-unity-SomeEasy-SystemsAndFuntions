@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-namespace SaveSystem
+namespace SaveSettingsSystem
 {
     public abstract class BaseSettingsManager<TSettings> : MonoBehaviour, ISaveSettings
         where TSettings : class, ISaveSettings
