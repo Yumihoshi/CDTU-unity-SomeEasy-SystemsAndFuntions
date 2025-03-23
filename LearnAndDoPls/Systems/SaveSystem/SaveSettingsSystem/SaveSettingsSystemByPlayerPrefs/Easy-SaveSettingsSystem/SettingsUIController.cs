@@ -1,15 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 
- namespace SaveSettingsSystem{
+namespace SaveSettingsSystem
+{
 
     /// <summary>
-    /// Controls the UI elements for audio settings in the game.
+    ///控制游戏中音频设置的 UI 元素。
     /// </summary>
     /// <remarks>
-    /// This controller manages the connection between UI sliders and the audio settings system.
-    /// It handles initialization of slider values, updates UI when settings change,
-    /// and propagates user interactions to the settings system.
+    ///此控制器管理 UI 滑块和音频设置系统之间的连接。
+    ///它处理滑块值的初始化，在设置更改时更新 UI，
+    ///并将用户交互传播到设置系统。
     /// </remarks>
     public class SettingsUIController : MonoBehaviour
     {

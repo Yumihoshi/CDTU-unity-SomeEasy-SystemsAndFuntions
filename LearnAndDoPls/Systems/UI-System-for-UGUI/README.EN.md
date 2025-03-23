@@ -17,18 +17,21 @@ A UGUI-based Unity UI framework, developed iteratively by Yuan-Zzzz during game 
 ## Core Functions
 
 ### 1. UI Controller Automation
+
 - Visual UI panel creation tools
 - One-click generation of UI prefabs and controller code
 - Automatic creation of standard lifecycle method templates
 - Support for custom templates and code generation rules
 
 ### 2. UI Component Binding Automation
+
 - Visual component selection and binding
 - Support for complex component type selection and validation
 - Auto-generation of type-safe component references and binding code
 - Support for nested UI component binding and path validation
 
 ### 3. Stack-based UI Management
+
 - Layer-based UI stack management
 - Automatic handling of UI panel hierarchies
 - Support for pausing and resuming same-layer UIs

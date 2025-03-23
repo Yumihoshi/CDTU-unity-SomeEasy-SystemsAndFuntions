@@ -35,7 +35,7 @@ public abstract class UIView
        _uiData = uiData;
    }
 }
-public abstract class UIView<T>:UIView where T: class, IUIData
+public abstract class UIView<T> : UIView where T : class, IUIData
 {
     
     public T UIData

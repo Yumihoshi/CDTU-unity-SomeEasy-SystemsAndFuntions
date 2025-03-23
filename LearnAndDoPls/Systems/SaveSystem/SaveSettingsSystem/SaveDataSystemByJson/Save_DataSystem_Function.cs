@@ -16,9 +16,6 @@ namespace SaveDataSystem
                    type == typeof(decimal);
         }
 
-
-
-
         public static void SaveToJson<T>(string filePath, T data)
         {
             if (!IsSerializable<T>())

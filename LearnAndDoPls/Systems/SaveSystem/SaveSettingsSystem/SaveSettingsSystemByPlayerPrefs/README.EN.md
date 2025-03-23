@@ -21,6 +21,7 @@ SaveSettingsSystem is a settings management system for Unity that provides a uni
 ### 1. Core Interfaces and Base Classes
 
 #### ISaveSettings Interface
+
 ```csharp
 public interface ISaveSettings
 {
@@ -30,6 +31,7 @@ public interface ISaveSettings
     void ResetToDefault();
 }
 ```
+
 - Defines basic settings operations: save, load, reset
 - Provides settings change event notification mechanism
 
@@ -53,6 +55,7 @@ public interface ISaveSettings
 #### Audio Settings System
 
 ##### AudioSettingsSO (Data Container)
+
 ```csharp
 [CreateAssetMenu(fileName = "AudioVolumeSettingsSO", menuName = "Settings/Audio SettingsSO")]
 public class AudioSettingsSO : ScriptableObject
@@ -78,6 +81,7 @@ public class AudioSettingsSO : ScriptableObject
 #### Graphics Settings System
 
 ##### GraphicsSettingsSO (Data Container)
+
 ```csharp
 [CreateAssetMenu(fileName = "GraphicsSettingsSO", menuName = "Settings/Graphics SettingsSO")]
 public class GraphicsSettingsSO : ScriptableObject
@@ -106,6 +110,7 @@ public class GraphicsSettingsSO : ScriptableObject
 The system now supports both global and scene-specific settings management, particularly useful for the AudioManager:
 
 #### Configurable DontDestroyOnLoad
+
 ```csharp
 public class AudioManager : BaseSettingsManager<AudioSettings>
 {
@@ -116,6 +121,7 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
 ```
 
 This feature allows you to:
+
 - Set up scene-specific audio settings by disabling DontDestroyOnLoad
 - Maintain global settings across scenes by enabling DontDestroyOnLoad
 - Avoid settings conflicts between different scenes
@@ -140,6 +146,7 @@ This feature allows you to:
 ## Usage Flow
 
 ### 1. Create Settings Data Container
+
 ```csharp
 // 1. Create ScriptableObject asset
 [CreateAssetMenu(fileName = "YourSettingsSO", menuName = "Settings/Your Settings")]
@@ -151,6 +158,7 @@ public class YourSettingsSO : ScriptableObject
 ```
 
 ### 2. Implement Settings Class
+
 ```csharp
 public class YourSettings : BaseSettings<YourData, YourSettingsSO>
 {
@@ -166,6 +174,7 @@ public class YourSettings : BaseSettings<YourData, YourSettingsSO>
 ```
 
 ### 3. Create Manager
+
 ```csharp
 public class YourManager : BaseSettingsManager<YourSettings>
 {
@@ -222,4 +231,3 @@ public class YourManager : BaseSettingsManager<YourSettings>
    - Gracefully handle load failures
    - Provide sensible default values
    - Use try-catch to catch potential exceptions
-

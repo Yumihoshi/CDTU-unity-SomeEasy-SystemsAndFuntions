@@ -191,7 +191,7 @@ public class YourManager : BaseSettingsManager<YourSettings>
 ### 4.示例
 
 Hierarchy结构：
-├── SettingsManager (空物体)
+├── AllSettingsManager (全局访问点)
 │   ├── AudioManager (组件)
 │   │   └── Audio Settings SO (引用)
 │   ├── GraphicsManager (组件)
@@ -242,4 +242,3 @@ Hierarchy结构：
    - 优雅处理加载失败的情况
    - 提供合理的默认值
    - 使用try-catch捕获可能的异常
-
