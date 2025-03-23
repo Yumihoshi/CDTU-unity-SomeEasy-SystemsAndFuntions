@@ -2,9 +2,6 @@ using System;
 using UnityEngine;
 using SaveSystem;
 
-
-
-
 /// <summary>
 /// 
 /// </summary>

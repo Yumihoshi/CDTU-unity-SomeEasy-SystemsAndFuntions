@@ -58,9 +58,7 @@ public class DialogueControl : MonoBehaviour
 
     #region 事件生命周期(用于订阅和取消事件)方便Control控制(观察者模式的体现MVC分离)
     private void OnEnable()
-    {
-        
-        
+    { 
         if (dialogueView != null)
         {
             dialogueView.OnNextLineRequested += HandleNextLineRequested;
@@ -158,7 +156,7 @@ public class DialogueControl : MonoBehaviour
     }
 
     /// <summary>
-    /// 设置新的对话SO并默认为第0行，推荐无脑用下面的，因为下面的我默认的也是0行
+    /// 设置新的对话SO并默认为第0行，推荐无脑用GoDialogueSOToLine而不是SetDialogueSO，因为下面的我默认的也是0行
     /// </summary>
     /// <param name="newDialogueSO"></param>
 
@@ -184,19 +182,19 @@ public class DialogueControl : MonoBehaviour
     /// </summary>
     /// <param name="oldDialogueSO"></param>
     /// <param name="lineIndex"></param>
-    public void GoDialogueSOToLine(DialogueSO oldDialogueSO, int lineIndex = 0)
+    public void GoDialogueSOToLine(DialogueSO newDialogueSO, int lineIndex = 0)
     {
-        if (oldDialogueSO == null)
+        if (newDialogueSO == null)
         {
             Debug.LogError("旧对话数据为空");
             return;
         }
 
-        dialogue_SO = oldDialogueSO;
+        dialogue_SO = newDialogueSO;
         dialogueLinesList = dialogue_SO.dialoguelinesList;
         _currentLineIndex = lineIndex;
 
-        Debug.Log($"返回对话数据: {oldDialogueSO.name}");
+        Debug.Log($"返回对话数据: {newDialogueSO.name}");
 
         ShowDialogue();
     }

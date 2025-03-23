@@ -21,6 +21,7 @@ SaveSettingsSystem 是一个用于Unity的设置管理系统，它提供了一�
 ### 1. 核心接口和基类
 
 #### ISaveSettings 接口
+
 ```csharp
 public interface ISaveSettings
 {
@@ -30,10 +31,12 @@ public interface ISaveSettings
     void ResetToDefault();
 }
 ```
+
 - 定义设置系统的基本操作：保存、加载、重置
 - 提供设置变更事件通知机制
 
 #### BaseSettings<TData, TSettingsSO>
+
 - 所有具体设置类的抽象基类
 - 实现通用的序列化和持久化逻辑
 - 提供设置变更事件处理
@@ -42,6 +45,7 @@ public interface ISaveSettings
   - TSettingsSO: ScriptableObject设置类型
 
 #### BaseSettingsManager<TSettings>
+
 - 管理具体设置实例的抽象基类
 - 实现单例模式
 - 处理UI绑定和事件传递
@@ -51,6 +55,7 @@ public interface ISaveSettings
 #### 音频设置系统
 
 ##### AudioSettingsSO（数据容器）
+
 ```csharp
 [CreateAssetMenu(fileName = "AudioVolumeSettingsSO", menuName = "Settings/Audio SettingsSO")]
 public class AudioSettingsSO : ScriptableObject
@@ -62,11 +67,13 @@ public class AudioSettingsSO : ScriptableObject
 ```
 
 ##### AudioSettings（设置逻辑）
+
 - 继承自BaseSettings<AudioVolumeData, AudioSettingsSO>
 - 实现音量控制逻辑
 - 提供实际音量计算方法
 
 ##### AudioManager（管理器）
+
 - 继承自BaseSettingsManager<AudioSettings>
 - 管理音频源和音频剪辑
 - 处理UI交互和音量更新
@@ -74,6 +81,7 @@ public class AudioSettingsSO : ScriptableObject
 #### 图形设置系统
 
 ##### GraphicsSettingsSO（数据容器）
+
 ```csharp
 [CreateAssetMenu(fileName = "GraphicsSettingsSO", menuName = "Settings/Graphics SettingsSO")]
 public class GraphicsSettingsSO : ScriptableObject
@@ -86,11 +94,13 @@ public class GraphicsSettingsSO : ScriptableObject
 ```
 
 ##### GraphicsSettings（设置逻辑）
+
 - 继承自BaseSettings<GraphicsData, GraphicsSettingsSO>
 - 实现图形设置逻辑
 - 提供分辨率和质量设置方法
 
 ##### GraphicsManager（管理器）
+
 - 继承自BaseSettingsManager<GraphicsSettings>
 - 管理分辨率选项
 - 处理UI交互和图形设置更新
@@ -100,6 +110,7 @@ public class GraphicsSettingsSO : ScriptableObject
 系统现在支持全局和场景特定的设置管理，这在 AudioManager 中特别有用：
 
 #### 可配置的 DontDestroyOnLoad
+
 ```csharp
 public class AudioManager : BaseSettingsManager<AudioSettings>
 {
@@ -110,6 +121,7 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
 ```
 
 这个特性允许你：
+
 - 通过禁用 DontDestroyOnLoad 来设置场景特定的音频设置
 - 通过启用 DontDestroyOnLoad 在场景之间维护全局设置
 - 避免不同场景之间的设置冲突
@@ -134,6 +146,7 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
 ## 使用流程
 
 ### 1. 创建设置数据容器
+
 ```csharp
 // 1. 创建 ScriptableObject 资产
 [CreateAssetMenu(fileName = "YourSettingsSO", menuName = "Settings/Your Settings")]
@@ -145,6 +158,7 @@ public class YourSettingsSO : ScriptableObject
 ```
 
 ### 2. 实现设置类
+
 ```csharp
 public class YourSettings : BaseSettings<YourData, YourSettingsSO>
 {
@@ -160,6 +174,7 @@ public class YourSettings : BaseSettings<YourData, YourSettingsSO>
 ```
 
 ### 3. 创建管理器
+
 ```csharp
 public class YourManager : BaseSettingsManager<YourSettings>
 {
@@ -172,6 +187,17 @@ public class YourManager : BaseSettingsManager<YourSettings>
     }
 }
 ```
+
+### 4.示例
+
+Hierarchy结构：
+├── SettingsManager (空物体)
+│   ├── AudioManager (组件)
+│   │   └── Audio Settings SO (引用)
+│   ├── GraphicsManager (组件)
+│   │   └── Graphics Settings SO (引用)
+│   └── GameplayManager (组件)
+│       └── Gameplay Settings SO (引用)
 
 ## 数据流向
 
@@ -549,6 +575,7 @@ public class SettingsMigrationManager
 ```
 
 ## 使用建议
+
 1. **性能优化**
    - 避免频繁保存，考虑使用防抖动
    - 大型设置更改时批量处理

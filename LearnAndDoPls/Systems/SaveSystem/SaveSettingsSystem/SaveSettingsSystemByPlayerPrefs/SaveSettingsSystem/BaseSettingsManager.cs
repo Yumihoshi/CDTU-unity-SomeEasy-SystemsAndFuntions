@@ -3,17 +3,14 @@ using System;
 
 namespace SaveSystem
 {
-    /// <summary>
-    /// 所有设置管理器的抽象基类
-    /// </summary>
     public abstract class BaseSettingsManager<TSettings> : MonoBehaviour, ISaveSettings
         where TSettings : class, ISaveSettings
     {
         protected TSettings settings;
+        
+        [Tooltip("是否在Awake时自动注册到AllSettingsManager")]
+        [SerializeField] protected bool autoRegister = true;
 
-        /// <summary>
-        /// 设置变更时触发的事件
-        /// </summary>
         public virtual event EventHandler SettingsChanged;
 
         protected virtual void Awake()
@@ -21,63 +18,53 @@ namespace SaveSystem
             InitializeSettings();
             Load();
 
-            // 订阅设置的变更事件
-            if (settings != null && settings is ISaveSettings saveSettings)
+            if (settings != null)
             {
-                saveSettings.SettingsChanged += HandleSettingsChanged;
+                settings.SettingsChanged += HandleSettingsChanged;
+            }
+            
+            if (autoRegister && AllSettingsManager.HasInstance)
+            {
+                AllSettingsManager.Instance.RegisterManager(this);
             }
         }
 
-        /// <summary>
-        /// 处理设置变更事件
-        /// </summary>
         protected virtual void HandleSettingsChanged(object sender, EventArgs e)
         {
-            // 将设置变更事件向上传播
-            SettingsChanged?.Invoke(this, e);
+            SettingsChanged?.Invoke(sender, e);
         }
 
-        /// <summary>
-        /// 设定类的初始化方法，因为是一个抽象类所以大家都要实现
-        /// </summary>
         protected abstract void InitializeSettings();
 
         public virtual void Save()
         {
-            if (settings != null)
-            {
-                settings.Save();
-            }
+            settings?.Save();
         }
 
         public virtual void Load()
         {
-            if (settings != null)
-            {
-                settings.Load();
-            }
+            settings?.Load();
         }
 
-        /// <summary>
-        /// 重置设置到默认值
-        /// </summary>
         public virtual void ResetToDefault()
         {
+            settings?.ResetToDefault();
+        }
+
+        protected virtual void OnDestroy()
+        {
             if (settings != null)
             {
-                settings.ResetToDefault();
+                settings.SettingsChanged -= HandleSettingsChanged;
+            }
+            
+            if (autoRegister && AllSettingsManager.HasInstance)
+            {
+                AllSettingsManager.Instance.UnregisterManager(this);
             }
         }
 
-        /// <summary>
-        /// 取消订阅事件
-        /// </summary>
-        protected virtual void OnDestroy()
-        {
-            if (settings != null && settings is ISaveSettings saveSettings)
-            {
-                saveSettings.SettingsChanged -= HandleSettingsChanged;
-            }
-        }
+        // 提供获取设置实例的方法
+        public TSettings GetSettings() => settings;
     }
 }
