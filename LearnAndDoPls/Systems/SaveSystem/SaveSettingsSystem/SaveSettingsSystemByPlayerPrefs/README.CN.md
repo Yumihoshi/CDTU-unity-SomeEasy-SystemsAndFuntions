@@ -21,6 +21,7 @@ SaveSettingsSystem 是一个用于Unity的设置管理系统，它提供了一�
 ### 1. 核心接口和基类
 
 #### ISaveSettings 接口
+
 ```csharp
 public interface ISaveSettings
 {
@@ -30,10 +31,12 @@ public interface ISaveSettings
     void ResetToDefault();
 }
 ```
+
 - 定义设置系统的基本操作：保存、加载、重置
 - 提供设置变更事件通知机制
 
 #### BaseSettings<TData, TSettingsSO>
+
 - 所有具体设置类的抽象基类
 - 实现通用的序列化和持久化逻辑
 - 提供设置变更事件处理
@@ -42,6 +45,7 @@ public interface ISaveSettings
   - TSettingsSO: ScriptableObject设置类型
 
 #### BaseSettingsManager<TSettings>
+
 - 管理具体设置实例的抽象基类
 - 实现单例模式
 - 处理UI绑定和事件传递
@@ -51,6 +55,7 @@ public interface ISaveSettings
 #### 音频设置系统
 
 ##### AudioSettingsSO（数据容器）
+
 ```csharp
 [CreateAssetMenu(fileName = "AudioVolumeSettingsSO", menuName = "Settings/Audio SettingsSO")]
 public class AudioSettingsSO : ScriptableObject
@@ -62,11 +67,13 @@ public class AudioSettingsSO : ScriptableObject
 ```
 
 ##### AudioSettings（设置逻辑）
+
 - 继承自BaseSettings<AudioVolumeData, AudioSettingsSO>
 - 实现音量控制逻辑
 - 提供实际音量计算方法
 
 ##### AudioManager（管理器）
+
 - 继承自BaseSettingsManager<AudioSettings>
 - 管理音频源和音频剪辑
 - 处理UI交互和音量更新
@@ -74,6 +81,7 @@ public class AudioSettingsSO : ScriptableObject
 #### 图形设置系统
 
 ##### GraphicsSettingsSO（数据容器）
+
 ```csharp
 [CreateAssetMenu(fileName = "GraphicsSettingsSO", menuName = "Settings/Graphics SettingsSO")]
 public class GraphicsSettingsSO : ScriptableObject
@@ -86,11 +94,13 @@ public class GraphicsSettingsSO : ScriptableObject
 ```
 
 ##### GraphicsSettings（设置逻辑）
+
 - 继承自BaseSettings<GraphicsData, GraphicsSettingsSO>
 - 实现图形设置逻辑
 - 提供分辨率和质量设置方法
 
 ##### GraphicsManager（管理器）
+
 - 继承自BaseSettingsManager<GraphicsSettings>
 - 管理分辨率选项
 - 处理UI交互和图形设置更新
@@ -100,6 +110,7 @@ public class GraphicsSettingsSO : ScriptableObject
 系统现在支持全局和场景特定的设置管理，这在 AudioManager 中特别有用：
 
 #### 可配置的 DontDestroyOnLoad
+
 ```csharp
 public class AudioManager : BaseSettingsManager<AudioSettings>
 {
@@ -110,6 +121,7 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
 ```
 
 这个特性允许你：
+
 - 通过禁用 DontDestroyOnLoad 来设置场景特定的音频设置
 - 通过启用 DontDestroyOnLoad 在场景之间维护全局设置
 - 避免不同场景之间的设置冲突
@@ -134,6 +146,7 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
 ## 使用流程
 
 ### 1. 创建设置数据容器
+
 ```csharp
 // 1. 创建 ScriptableObject 资产
 [CreateAssetMenu(fileName = "YourSettingsSO", menuName = "Settings/Your Settings")]
@@ -145,6 +158,7 @@ public class YourSettingsSO : ScriptableObject
 ```
 
 ### 2. 实现设置类
+
 ```csharp
 public class YourSettings : BaseSettings<YourData, YourSettingsSO>
 {
@@ -160,6 +174,7 @@ public class YourSettings : BaseSettings<YourData, YourSettingsSO>
 ```
 
 ### 3. 创建管理器
+
 ```csharp
 public class YourManager : BaseSettingsManager<YourSettings>
 {
@@ -172,6 +187,17 @@ public class YourManager : BaseSettingsManager<YourSettings>
     }
 }
 ```
+
+### 4.示例
+
+Hierarchy结构：
+├── AllSettingsManager (全局访问点)
+│   ├── AudioManager (组件)
+│   │   └── Audio Settings SO (引用)
+│   ├── GraphicsManager (组件)
+│   │   └── Graphics Settings SO (引用)
+│   └── GameplayManager (组件)
+│       └── Gameplay Settings SO (引用)
 
 ## 数据流向
 
@@ -216,358 +242,3 @@ public class YourManager : BaseSettingsManager<YourSettings>
    - 优雅处理加载失败的情况
    - 提供合理的默认值
    - 使用try-catch捕获可能的异常
-
-## 示例用法
-
-### 1. 基础设置管理
-
-```csharp
-// 在游戏启动时加载设置
-void Start()
-{
-    // 确保在使用设置之前加载
-    settingsManager.Load();
-    
-    // 订阅设置变更事件
-    if (settingsManager.Settings is ISaveSettings settings)
-    {
-        settings.SettingsChanged += OnSettingsChanged;
-    }
-}
-
-void OnDestroy()
-{
-    // 清理事件订阅
-    if (settingsManager.Settings is ISaveSettings settings)
-    {
-        settings.SettingsChanged -= OnSettingsChanged;
-    }
-}
-
-// 当设置发生变化时的处理
-private void OnSettingsChanged(object sender, EventArgs e)
-{
-    // 更新UI或其他相关逻辑
-    UpdateUI();
-    // 自动保存设置
-    settingsManager.Save();
-}
-
-// 手动触发设置保存
-public void OnSettingChanged()
-{
-    settingsManager.Save();
-}
-
-// 重置为默认设置
-public void ResetSettings()
-{
-    settingsManager.ResetToDefault();
-    UpdateUI(); // 确保UI反映新的设置
-}
-```
-
-### 2. UI绑定示例
-
-```csharp
-public class SettingsUI : MonoBehaviour
-{
-    [SerializeField] private Slider masterVolumeSlider;
-    [SerializeField] private Toggle fullscreenToggle;
-    [SerializeField] private TMP_Dropdown qualityDropdown;
-    
-    private AudioManager audioManager;
-    private GraphicsManager graphicsManager;
-    
-    void Start()
-    {
-        InitializeManagers();
-        SetupUIListeners();
-        LoadAndApplySettings();
-    }
-    
-    private void InitializeManagers()
-    {
-        audioManager = AudioManager.Instance;
-        graphicsManager = GraphicsManager.Instance;
-    }
-    
-    private void SetupUIListeners()
-    {
-        // 音量滑块
-        masterVolumeSlider.onValueChanged.AddListener(OnMasterVolumeChanged);
-        
-        // 全屏切换
-        fullscreenToggle.onValueChanged.AddListener(OnFullscreenChanged);
-        
-        // 质量设置
-        qualityDropdown.onValueChanged.AddListener(OnQualityChanged);
-    }
-    
-    private void LoadAndApplySettings()
-    {
-        // 加载设置并更新UI
-        audioManager.Load();
-        graphicsManager.Load();
-        
-        // 更新UI显示
-        UpdateUIValues();
-    }
-    
-    private void UpdateUIValues()
-    {
-        // 使用当前设置更新UI控件
-        masterVolumeSlider.value = audioManager.Settings.MasterVolume;
-        fullscreenToggle.isOn = graphicsManager.Settings.FullscreenMode;
-        qualityDropdown.value = graphicsManager.Settings.QualityLevel;
-    }
-    
-    // UI事件处理
-    private void OnMasterVolumeChanged(float value)
-    {
-        audioManager.Settings.MasterVolume = value;
-    }
-    
-    private void OnFullscreenChanged(bool isFullscreen)
-    {
-        graphicsManager.Settings.FullscreenMode = isFullscreen;
-    }
-    
-    private void OnQualityChanged(int qualityLevel)
-    {
-        graphicsManager.Settings.QualityLevel = qualityLevel;
-    }
-}
-```
-
-### 3. 自定义设置示例
-
-```csharp
-// 自定义设置数据
-[System.Serializable]
-public class GameplayData
-{
-    public float gameDifficulty = 1f;
-    public bool tutorialEnabled = true;
-    public string lastSelectedCharacter = "Default";
-}
-
-// 自定义设置SO
-[CreateAssetMenu(fileName = "GameplaySettingsSO", menuName = "Settings/Gameplay Settings")]
-public class GameplaySettingsSO : ScriptableObject
-{
-    public float gameDifficulty = 1f;
-    public bool tutorialEnabled = true;
-    public string lastSelectedCharacter = "Default";
-}
-
-// 自定义设置类
-public class GameplaySettings : BaseSettings<GameplayData, GameplaySettingsSO>
-{
-    public event Action<float> DifficultyChanged;
-    
-    public GameplaySettings(GameplaySettingsSO settings) : base(settings, "GameplaySettings")
-    {
-    }
-    
-    public float GameDifficulty
-    {
-        get => settingsSO.gameDifficulty;
-        set
-        {
-            float clampedValue = Mathf.Clamp(value, 0.5f, 2f);
-            if (!Mathf.Approximately(settingsSO.gameDifficulty, clampedValue))
-            {
-                settingsSO.gameDifficulty = clampedValue;
-                DifficultyChanged?.Invoke(clampedValue);
-                NotifySettingsChanged();
-            }
-        }
-    }
-    
-    protected override GameplayData GetDataFromSettings()
-    {
-        return new GameplayData
-        {
-            gameDifficulty = settingsSO.gameDifficulty,
-            tutorialEnabled = settingsSO.tutorialEnabled,
-            lastSelectedCharacter = settingsSO.lastSelectedCharacter
-        };
-    }
-    
-    protected override void ApplyDataToSettings(GameplayData data)
-    {
-        settingsSO.gameDifficulty = data.gameDifficulty;
-        settingsSO.tutorialEnabled = data.tutorialEnabled;
-        settingsSO.lastSelectedCharacter = data.lastSelectedCharacter;
-    }
-    
-    public override void ResetToDefault()
-    {
-        settingsSO.gameDifficulty = 1f;
-        settingsSO.tutorialEnabled = true;
-        settingsSO.lastSelectedCharacter = "Default";
-        NotifySettingsChanged();
-    }
-}
-```
-
-### 4. 错误处理示例
-
-```csharp
-public class RobustSettingsManager : BaseSettingsManager<GameplaySettings>
-{
-    [SerializeField] private GameplaySettingsSO settingsSO;
-    
-    protected override void InitializeSettings()
-    {
-        try
-        {
-            settings = new GameplaySettings(settingsSO);
-            LoadSettings();
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"设置初始化失败: {e.Message}");
-            HandleInitializationError();
-        }
-    }
-    
-    private void LoadSettings()
-    {
-        try
-        {
-            settings.Load();
-        }
-        catch (Exception e)
-        {
-            Debug.LogWarning($"加载设置失败，使用默认值: {e.Message}");
-            settings.ResetToDefault();
-        }
-    }
-    
-    private void HandleInitializationError()
-    {
-        // 创建应急设置
-        var emergencySettings = ScriptableObject.CreateInstance<GameplaySettingsSO>();
-        settings = new GameplaySettings(emergencySettings);
-        settings.ResetToDefault();
-        
-        // 通知用户
-        Debug.LogWarning("使用应急设置配置");
-    }
-    
-    public void SaveWithBackup()
-    {
-        try
-        {
-            // 在保存前创建备份
-            var currentData = settings.GetDataFromSettings();
-            string backupKey = $"{settings.SettingsKey}_backup";
-            Save_Load_SettingsSystem_Functions.SaveByPlayerPrefs(backupKey, currentData);
-            
-            // 执行实际保存
-            settings.Save();
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"保存设置失败: {e.Message}");
-            TryRestoreFromBackup();
-        }
-    }
-    
-    private void TryRestoreFromBackup()
-    {
-        try
-        {
-            string backupKey = $"{settings.SettingsKey}_backup";
-            var backupData = Save_Load_SettingsSystem_Functions.LoadByPlayerPrefs<GameplayData>(backupKey);
-            if (backupData != null)
-            {
-                settings.ApplyDataToSettings(backupData);
-                Debug.Log("已从备份恢复设置");
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"从备份恢复失败: {e.Message}");
-            settings.ResetToDefault();
-        }
-    }
-}
-```
-
-### 5. 设置迁移示例
-
-```csharp
-public class SettingsMigrationManager
-{
-    private const string VERSION_KEY = "SettingsVersion";
-    private const int CURRENT_VERSION = 2;
-    
-    public static void CheckAndMigrateSettings(BaseSettingsManager<GameplaySettings> manager)
-    {
-        int savedVersion = PlayerPrefs.GetInt(VERSION_KEY, 1);
-        if (savedVersion < CURRENT_VERSION)
-        {
-            MigrateSettings(savedVersion, manager);
-            PlayerPrefs.SetInt(VERSION_KEY, CURRENT_VERSION);
-            PlayerPrefs.Save();
-        }
-    }
-    
-    private static void MigrateSettings(int oldVersion, BaseSettingsManager<GameplaySettings> manager)
-    {
-        try
-        {
-            switch (oldVersion)
-            {
-                case 1:
-                    MigrateFromV1ToV2(manager);
-                    break;
-                default:
-                    Debug.LogWarning($"未知的设置版本: {oldVersion}，重置为默认值");
-                    manager.Settings.ResetToDefault();
-                    break;
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"设置迁移失败: {e.Message}");
-            manager.Settings.ResetToDefault();
-        }
-    }
-    
-    private static void MigrateFromV1ToV2(BaseSettingsManager<GameplaySettings> manager)
-    {
-        // 迁移逻辑示例
-        var settings = manager.Settings;
-        // 执行迁移操作...
-        Debug.Log("设置已成功迁移到V2");
-    }
-}
-```
-
-## 使用建议
-1. **性能优化**
-   - 避免频繁保存，考虑使用防抖动
-   - 大型设置更改时批量处理
-   - 仅在必要时序列化数据
-
-2. **安全性**
-   - 对加载的数据进行验证
-   - 实现设置备份机制
-   - 处理版本迁移
-   - 每个场景都明确指定是使用全局还是本地设置
-
-3. **可维护性**
-   - 使用常量管理设置键
-   - 实现详细的日志记录
-   - 保持设置类职责单一
-   - 对场景特定设置进行清晰文档记录
-
-4. **用户体验**
-   - 提供设置预览功能
-   - 实现撤销/重做功能
-   - 确保场景转换时设置平滑过渡
-   - 添加设置导入/导出功能

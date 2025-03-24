@@ -3,50 +3,20 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 using System.Collections;
-using SaveSystem;
+using SaveSettingsSystem;
 
 /// <summary>
 /// 音频设置管理类，负责处理和存储所有音频相关的设置。
-/// <para>
-/// 该类管理三种音量设置：
-/// - 主音量 (Master Volume)
-/// - 背景音乐音量 (BGM Volume)
-/// - 音效音量 (SFX Volume)
-/// </para>
-/// <para>
-/// 特性：
-/// - 实现数据持久化存储（通过 PlayerPrefs）
-/// - 提供音量范围限制（0-1）
-/// - 支持音量设置的事件通知
-/// - 提供实际音量计算（考虑主音量影响）
-/// </para>
 /// </summary>
 public class AudioManager : BaseSettingsManager<AudioSettings>
 {
-    // 添加单例实现
-    private static AudioManager instance;
-    [SerializeField] private bool dontDestroyOnLoad = false; // 添加可选的DontDestroyOnLoad标志
-
-    public static AudioManager Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindFirstObjectByType<AudioManager>();
-                if (instance == null)
-                {
-                    GameObject go = new GameObject("AudioManager");
-                    instance = go.AddComponent<AudioManager>();
-                }
-            }
-            return instance;
-        }
-    }
+    [SerializeField] private bool dontDestroyOnLoad = false;
 
     [Header("音量数据")]
     [SerializeField] private AudioSettingsSO audioSettingsSO;
-    private AudioSettings audioSettings;
+
+    // 直接公开为接口类型，减少类型转换
+    public AudioSettings audioSettings;
 
     // 重命名事件以避免与基类冲突
     public event EventHandler<EventArgs> AudioVolumeChanged;
@@ -94,60 +64,39 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
     {
         if (audioSettingsSO == null)
         {
-            Debug.LogError($"{nameof(AudioManager)}: audioSettingsSO is not assigned!");
+            AllSettingsManager.SettingsLogger.LogError($"{nameof(AudioManager)}: audioSettingsSO is not assigned!");
             return;
         }
         if (bgmSource == null)
         {
-            Debug.LogError($"{nameof(AudioManager)}: bgmSource is not assigned!");
+            AllSettingsManager.SettingsLogger.LogError($"{nameof(AudioManager)}: bgmSource is not assigned!");
         }
 
         audioSettings = new AudioSettings(audioSettingsSO);
         audioSettings.OnVolumeChanged += HandleVolumeChanged;
 
-        // 订阅设置变更事件
-        if (audioSettings is ISaveSettings saveSettings)
-        {
-            saveSettings.SettingsChanged += HandleSettingsChanged;
-        }
-        
-        // 初始化完成后绑定UI和加载设置
+        // 初始化完成后绑定UI和音频源
         BindVolumeSliders();
-        Load();
+        InitializeAudioSources();
         UpdateUI();
     }
 
     protected override void Awake()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        
-        instance = this;
         if (dontDestroyOnLoad)
         {
             DontDestroyOnLoad(gameObject);
         }
-        
-        base.Awake();
-        InitializeAudioSources(); // 在base.Awake()之后初始化音频源
+        base.Awake(); // 调用基类的Awake，它会初始化设置并自动注册
     }
 
     protected override void OnDestroy()
     {
-        base.OnDestroy();
         if (audioSettings != null)
         {
             audioSettings.OnVolumeChanged -= HandleVolumeChanged;
-
-            // 取消订阅事件，防止内存泄漏
-            if (audioSettings is ISaveSettings saveSettings)
-            {
-                saveSettings.SettingsChanged -= HandleSettingsChanged;
-            }
         }
+        base.OnDestroy(); // 调用基类的OnDestroy，它会自动注销
     }
 
     /// <summary>
@@ -186,17 +135,13 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
     }
 
     /// <summary>
-    /// 音量改变时的处理方法.通过事件audioSettings.OnVolumeChanged激活
-    /// 更新所有音源的音量
-    /// </summary> <summary>
-    /// 更新音量条
+    /// 处理音量变化
     /// </summary>
     private void HandleVolumeChanged()
     {
         UpdateVolumes();
-        //todo-可以自己考虑将sliders逻辑分离，但是我模块化就算了
         UpdateSliders();
-        // 触发事件通知外部监听者，外部观察者可以订阅
+        // 触发事件通知外部监听者
         AudioVolumeChanged?.Invoke(this, EventArgs.Empty);
     }
 
@@ -210,10 +155,15 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
             sfxVolumeSlider.value = audioSettings.SFXVolume;
     }
 
+
     private void UpdateUI()
     {
         UpdateSliders();
         UpdateVolumes();
+
+        // 优化：添加检查以避免不必要的事件触发
+        if (AudioVolumeChanged != null)
+            AudioVolumeChanged.Invoke(this, EventArgs.Empty);
     }
 
     #region 初始化方法
@@ -378,5 +328,6 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
         }
     }
     #endregion
+    
 }
 

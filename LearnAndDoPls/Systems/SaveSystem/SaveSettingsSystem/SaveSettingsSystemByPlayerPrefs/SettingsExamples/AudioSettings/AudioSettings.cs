@@ -1,13 +1,27 @@
 using System;
 using UnityEngine;
-using SaveSystem;
+using SaveSettingsSystem;
 
-
-
-
-/// <summary>
-/// 
-/// </summary>
+    /// <summary>
+    /// AudioSettings 类继承自 BaseSettings，用于管理音频设置数据。
+    /// <para>
+    /// 1. 继承基类构造器，通过 <c>: BaseSettings(Anysettings,AnyData,AnySettingSO")</c> 调用 BaseSettings 基类的构造函数，
+    ///    需要传递两个参数：
+    ///    - <c>settings</c>：AudioSettingsSO 实例，包含音频设置的 ScriptableObject 数据；
+    ///    - <c>"AudioSettings"</c>：用于 PlayerPrefs 存储的默认键名。
+    /// </para>
+    /// <para>
+    /// 2. 确保初始化：创建 AudioSettings 实例时必须提供一个 AudioSettingsSO 对象，确保设置系统有可用的数据容器。
+    /// </para>
+    /// <para>
+    /// 3. 固定存储键：默认构造函数使用固定键 "AudioSettings"，确保数据始终存储在同一位置，
+    ///    避免因使用默认类名作为键而导致存储不一致的问题。
+    /// </para>
+    /// <para>
+    /// 4. 同时也提供了一个允许自定义键名的构造函数，调用者可以通过传入自定义键来灵活设置存储键。
+    /// </para>
+    /// </summary>
+    /// <param name="settings">AudioSettingsSO 实例，包含音频设置的数据</param>
 [Serializable]
 public class AudioSettings : BaseSettings<AudioSettings.AudioVolumeData, AudioSettingsSO>
 {
@@ -25,7 +39,7 @@ public class AudioSettings : BaseSettings<AudioSettings.AudioVolumeData, AudioSe
     /// <summary>
     /// AudioSettings 类继承自 BaseSettings，用于管理音频设置数据。
     /// <para>
-    /// 1. 继承基类构造器，通过 <c>: base(settings, "AudioSettings")</c> 调用 BaseSettings 基类的构造函数，
+    /// 1. 继承基类构造器，通过 <c>: BaseSettings(Anysettings,AnyData,AnySettingSO")</c> 调用 BaseSettings 基类的构造函数，
     ///    需要传递两个参数：
     ///    - <c>settings</c>：AudioSettingsSO 实例，包含音频设置的 ScriptableObject 数据；
     ///    - <c>"AudioSettings"</c>：用于 PlayerPrefs 存储的默认键名。

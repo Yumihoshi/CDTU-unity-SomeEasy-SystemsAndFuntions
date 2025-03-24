@@ -195,8 +195,6 @@ public class DialogueControlView : MonoBehaviour
         }
     }
 
-
-
     // 设置打字速度
     public void SetTypingSpeed(float speed)
     {
@@ -205,8 +203,6 @@ public class DialogueControlView : MonoBehaviour
             typingSpeed = speed;
         }
     }
-
-
 
 
     public bool IsDialogueActive()

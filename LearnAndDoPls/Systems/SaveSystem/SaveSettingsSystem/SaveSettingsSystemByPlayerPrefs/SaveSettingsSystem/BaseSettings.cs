@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace SaveSystem
+namespace SaveSettingsSystem
 {
     /// <summary>
     /// 所有设置系统的抽象基类
@@ -13,10 +13,8 @@ namespace SaveSystem
         where TData : class, new()
         where TSettingsSO : ScriptableObject
     {
-        protected readonly TSettingsSO settingsSO;
-        protected string settingsKey;
-
-        // 设置变更事件，使用EventHandler
+        protected readonly TSettingsSO settingsSO;//设置SO
+        protected string settingsKey;//设置储存名
         public event EventHandler SettingsChanged;
 
         /// <summary>
@@ -27,15 +25,16 @@ namespace SaveSystem
         /// <exception cref="ArgumentNullException">如果settings为null则抛出</exception>
         protected BaseSettings(TSettingsSO settings, string defaultKey = null)
         {
-            this.settingsSO = settings ?? throw new ArgumentNullException(nameof(settings));
-            this.settingsKey = defaultKey ?? GetType().Name;
+            this.settingsSO = settings ?? throw new ArgumentNullException(nameof(settings));//如果 defaultKey 不为 null，则使用 defaultKey 的值
+
+            this.settingsKey = defaultKey ?? GetType().Name;//如果 defaultKey 为 null，则使用 GetType().Name（即当前类的名称）
 
             // 验证TData是否支持序列化
             if (!IsSerializable<TData>())
             {
 #if UNITY_EDITOR_CHINESE
                 Debug.LogError($"类型 {typeof(TData).Name} 不支持序列化，这可能导致保存失败。" +
-    "当前仅支持能够被序列化的类型，如：string、int、float、bool、enum、" +
+    "当前仅支持能够被序列化的类型,如:string、int、float、bool、enum、" +
     "以及具有公共字段/属性的 struct 或 class。");
 #else
                 Debug.LogError($"Type {typeof(TData).Name} is not serializable, which may cause save failures. " +
@@ -126,10 +125,11 @@ namespace SaveSystem
                 Debug.LogError($"[{GetType().Name}] 加载设置失败: {e.Message}。将使用默认值。");
                 ResetToDefault();
             }
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             finally
             {
                 //todo-you can delete it when you don't need to konw where the settings are saved
+                //todo-如果你不需要知道设置保存在哪里，可以删除这个代码
                 string savePath = $"{Application.persistentDataPath}/PlayerPrefs";
                 string registryPath = @"Software\Unity\UnityEditor\{Application.companyName}\{Application.productName}";
                 Debug.Log($"[SaveSettingsSystem] 保存成功\n" +
@@ -137,7 +137,7 @@ namespace SaveSystem
                           $"注册表位置: HKEY_CURRENT_USER\\{registryPath}\n" +
                           $"保存键值: {settingsKey}");
             }
-            #endif
+#endif
         }
 
         /// <summary>

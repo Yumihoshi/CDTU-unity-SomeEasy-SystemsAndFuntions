@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SaveSystem
+namespace SaveSettingsSystem
 {
 
     /// <summary>
@@ -38,5 +38,27 @@ namespace SaveSystem
             }
             return JsonUtility.FromJson<T>(json);
         }
+        /// <summary>
+        /// 删除特定Key的PlayerPrefs
+        /// </summary>
+        /// <param name="key"></param>
+        public static void DeletePlayerPrefsByKey(string key)
+        {
+            PlayerPrefs.DeleteKey(key);
+            PlayerPrefs.Save();
+#if UNITY_EDITOR
+            Debug.Log($"Deleted Successfully: {key}");
+#endif
+        }
+        /// <summary>
+        /// 为unity菜单栏添加删除所有数据的选项
+        /// </summary>
+        [UnityEditor.MenuItem("Developer/Delete Player Data Prefs")]
+        public static void DeleteAllPlayerPrefs()
+        {
+            PlayerPrefs.DeleteAll();
+
+        }
+
     }
 }

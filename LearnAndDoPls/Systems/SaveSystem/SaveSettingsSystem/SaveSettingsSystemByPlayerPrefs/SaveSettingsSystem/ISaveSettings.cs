@@ -1,6 +1,6 @@
 using System;
 
-namespace SaveSystem
+namespace SaveSettingsSystem
 {
     /// <summary>
     /// 可保存设置的接口定义
