@@ -99,6 +99,7 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
         base.OnDestroy(); // 调用基类的OnDestroy，它会自动注销
     }
 
+    #region 无关内容 Codes no need to see
     /// <summary>
     /// 处理设置变更事件
     /// </summary>
@@ -114,30 +115,25 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
         // 绑定滑动条事件
         if (masterVolumeSlider != null)
             masterVolumeSlider.onValueChanged.AddListener(value => audioSettings.MasterVolume = value);
-#if UNITY_EDITOR
         else
-            Debug.LogWarning("masterVolumeSlider is null");
-#endif
-
+            AllSettingsManager.SettingsLogger.LogWarning("masterVolumeSlider is null");
         if (bgmVolumeSlider != null)
             bgmVolumeSlider.onValueChanged.AddListener(value => audioSettings.BGMVolume = value);
-#if UNITY_EDITOR
+
         else
-            Debug.LogWarning("bgmVolumeSlider is null");
-#endif
+            AllSettingsManager.SettingsLogger.LogWarning("bgmVolumeSlider is null");
 
         if (sfxVolumeSlider != null)
             sfxVolumeSlider.onValueChanged.AddListener(value => audioSettings.SFXVolume = value);
-#if UNITY_EDITOR
         else
-            Debug.LogWarning("sfxVolumeSlider is null");
-#endif
+            AllSettingsManager.SettingsLogger.LogWarning("sfxVolumeSlider is null");
     }
 
     /// <summary>
     /// 处理音量变化
     /// </summary>
-    private void HandleVolumeChanged()
+    private void HandleVolumeChanged(object sender, EventArgs e)
+
     {
         UpdateVolumes();
         UpdateSliders();
@@ -207,7 +203,7 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
         }
         else
         {
-            Debug.LogWarning($"未找到名为 {BGMname} 的背景音乐");
+            AllSettingsManager.SettingsLogger.LogWarning($"未找到名为 {BGMname} 的背景音乐");
         }
     }
 
@@ -225,7 +221,7 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
         }
         else
         {
-            Debug.LogWarning($"未找到名为 {SFXname} 的音效");
+            AllSettingsManager.SettingsLogger.LogWarning($"未找到名为 {SFXname} 的音效");
         }
     }
 
@@ -280,6 +276,7 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
         }
         Destroy(source);
     }
+    #endregion
 
     /// <summary>
     /// 更新所有音源的音量
@@ -328,6 +325,6 @@ public class AudioManager : BaseSettingsManager<AudioSettings>
         }
     }
     #endregion
-    
+
 }
 

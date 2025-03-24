@@ -23,9 +23,9 @@ namespace SaveSettingsSystem
         /// <param name="settings">设置SO实例</param>
         /// <param name="defaultKey">用于存储的键名，默认为类型名称</param>
         /// <exception cref="ArgumentNullException">如果settings为null则抛出</exception>
-        protected BaseSettings(TSettingsSO settings, string defaultKey = null)
+        protected BaseSettings(TSettingsSO settingsSO, string defaultKey = null)
         {
-            this.settingsSO = settings ?? throw new ArgumentNullException(nameof(settings));//如果 defaultKey 不为 null，则使用 defaultKey 的值
+            this.settingsSO = settingsSO ?? throw new ArgumentNullException(paramName: nameof(settingsSO));//如果 defaultKey 不为 null，则使用 defaultKey 的值
 
             this.settingsKey = defaultKey ?? GetType().Name;//如果 defaultKey 为 null，则使用 GetType().Name（即当前类的名称）
 
@@ -33,11 +33,11 @@ namespace SaveSettingsSystem
             if (!IsSerializable<TData>())
             {
 #if UNITY_EDITOR_CHINESE
-                Debug.LogError($"类型 {typeof(TData).Name} 不支持序列化，这可能导致保存失败。" +
+                AllSettingsManager.SettingsLogger.LogError($"类型 {typeof(TData).Name} 不支持序列化，这可能导致保存失败。" +
     "当前仅支持能够被序列化的类型,如:string、int、float、bool、enum、" +
     "以及具有公共字段/属性的 struct 或 class。");
 #else
-                Debug.LogError($"Type {typeof(TData).Name} is not serializable, which may cause save failures. " +
+                AllSettingsManager.SettingsLogger.LogError($"Type {typeof(TData).Name} is not serializable, which may cause save failures. " +
     "Currently, only serializable types are supported, such as: string, int, float, bool, enum, " +
     "and structs or classes with public fields/properties.");
 #endif
@@ -112,7 +112,7 @@ namespace SaveSettingsSystem
 
                 if (data == null)
                 {
-                    Debug.LogWarning($"[{GetType().Name}] 无法从PlayerPrefs加载'{settingsKey}'设置，正在使用默认值。这通常发生在首次运行时，这是正常现象。");
+                    AllSettingsManager.SettingsLogger.LogWarning($"[{GetType().Name}] 无法从PlayerPrefs加载'{settingsKey}'设置，正在使用默认值。这通常发生在首次运行时，这是正常现象。");
                     ResetToDefault();
                     return;
                 }
@@ -162,7 +162,7 @@ namespace SaveSettingsSystem
         {
             if (data == null)
             {
-                Debug.LogError("无法应用null设置数据");
+                AllSettingsManager.SettingsLogger.LogError("无法应用null设置数据");
                 return;
             }
 

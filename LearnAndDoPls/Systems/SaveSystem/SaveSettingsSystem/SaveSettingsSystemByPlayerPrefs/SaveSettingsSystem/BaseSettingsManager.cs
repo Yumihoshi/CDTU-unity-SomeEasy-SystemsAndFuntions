@@ -7,7 +7,7 @@ namespace SaveSettingsSystem
         where TSettings : class, ISaveSettings
     {
         protected TSettings settings;
-        
+
         [Tooltip("是否在Awake时自动注册到AllSettingsManager")]
         [SerializeField] protected bool autoRegister = true;
 
@@ -22,7 +22,7 @@ namespace SaveSettingsSystem
             {
                 settings.SettingsChanged += HandleSettingsChanged;
             }
-            
+
             if (autoRegister && AllSettingsManager.HasInstance)
             {
                 AllSettingsManager.Instance.RegisterManager(this);
@@ -34,6 +34,11 @@ namespace SaveSettingsSystem
             SettingsChanged?.Invoke(sender, e);
         }
 
+
+
+        /// <summary>
+        /// 初始化settings  
+        /// </summary>
         protected abstract void InitializeSettings();
 
         public virtual void Save()
@@ -57,7 +62,7 @@ namespace SaveSettingsSystem
             {
                 settings.SettingsChanged -= HandleSettingsChanged;
             }
-            
+
             if (autoRegister && AllSettingsManager.HasInstance)
             {
                 AllSettingsManager.Instance.UnregisterManager(this);

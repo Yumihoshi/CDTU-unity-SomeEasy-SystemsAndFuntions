@@ -39,7 +39,7 @@ public class AudioSettings : BaseSettings<AudioSettings.AudioVolumeData, AudioSe
     /// <summary>
     /// AudioSettings 类继承自 BaseSettings，用于管理音频设置数据。
     /// <para>
-    /// 1. 继承基类构造器，通过 <c>: BaseSettings(Anysettings,AnyData,AnySettingSO")</c> 调用 BaseSettings 基类的构造函数，
+    /// 1. 继承基类构造器，通过 <c>: BaseSettings(AnySettingSO,defaultKey)</c> 调用 BaseSettings 基类的构造函数，
     ///    需要传递两个参数：
     ///    - <c>settings</c>：AudioSettingsSO 实例，包含音频设置的 ScriptableObject 数据；
     ///    - <c>"AudioSettings"</c>：用于 PlayerPrefs 存储的默认键名。
@@ -56,13 +56,13 @@ public class AudioSettings : BaseSettings<AudioSettings.AudioVolumeData, AudioSe
     /// </para>
     /// </summary>
     /// <param name="settings">AudioSettingsSO 实例，包含音频设置的数据</param>
-    public AudioSettings(AudioSettingsSO settings) : base(settings, "AudioSettings")
+    public AudioSettings(AudioSettingsSO settingsSO) : base(settingsSO, "AudioSettings")
     {
     }
 
 
     // 音量变化的特定事件，与基类的OnSettingsChanged不同
-    public event Action OnVolumeChanged;
+    public event EventHandler OnVolumeChanged;
 
     #region 音量控制逻辑
 
@@ -126,7 +126,7 @@ public class AudioSettings : BaseSettings<AudioSettings.AudioVolumeData, AudioSe
     private void VolumeChanged()
     {
         // 先触发特定事件，再触发通用事件
-        OnVolumeChanged?.Invoke();
+        OnVolumeChanged?.Invoke(this, EventArgs.Empty);
         NotifySettingsChanged();
     }
 
@@ -200,7 +200,7 @@ public class AudioSettings : BaseSettings<AudioSettings.AudioVolumeData, AudioSe
         // 如果有修改再触发事件
         if (changed)
         {
-            OnVolumeChanged?.Invoke();
+            OnVolumeChanged?.Invoke(this, EventArgs.Empty);
             NotifySettingsChanged();
         }
     }

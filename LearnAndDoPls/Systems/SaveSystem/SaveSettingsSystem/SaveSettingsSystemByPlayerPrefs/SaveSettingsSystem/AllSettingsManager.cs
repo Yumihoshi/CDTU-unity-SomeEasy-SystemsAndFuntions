@@ -30,20 +30,30 @@ namespace SaveSettingsSystem
 
         #region 简易日志分类记录器
         /// <summary>
-        /// 简易日志分类记录器
+        /// 简易日志分类记录器，根据编译条件控制日志输出
         /// </summary>
         public static class SettingsLogger
         {
-            [System.Diagnostics.Conditional("UNITY_EDITOR")]//
+            private const string LOG_PREFIX = "[Settings] ";
+
+            [System.Diagnostics.Conditional("UNITY_EDITOR")]
             [System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
             public static void Log(string message)
             {
-                Debug.Log($"[Settings] {message}");
+                Debug.Log($"{LOG_PREFIX}{message}");
+            }
+
+            [System.Diagnostics.Conditional("UNITY_EDITOR")]
+            [System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
+            public static void LogWarning(string message)
+            {
+                Debug.LogWarning($"{LOG_PREFIX}{message}");
             }
             
+            // 错误日志在所有版本都需要输出
             public static void LogError(string message)
             {
-                Debug.LogError($"[Settings] {message}");
+                Debug.LogError($"{LOG_PREFIX}{message}");
             }
         }
         #endregion
@@ -84,10 +94,10 @@ namespace SaveSettingsSystem
         }
 
         /// <summary>
-        /// 得到特定Manager示例，提过了一个同意
+        /// 获取特定类型的Manager实例
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">Manager类型</typeparam>
+        /// <returns>返回对应类型的Manager实例，如果不存在则返回null</returns>
         public T GetManager<T>() where T : MonoBehaviour
         {
             return managerCache.TryGetValue(typeof(T), out var manager) ? manager as T : null;
@@ -101,7 +111,7 @@ namespace SaveSettingsSystem
             }
             catch (System.Exception e)
             {
-                SettingsLogger.LogError($"{operationName}失败: {e.Message}");
+                SettingsLogger.LogError($"{operationName}失败: {e.Message}\n堆栈信息: {e.StackTrace}");
             }
         }
 
@@ -143,7 +153,15 @@ namespace SaveSettingsSystem
 
         private void OnApplicationQuit()
         {
+#if UNITY_EDITOR
+            // 在编辑器模式下，仅在真正退出游戏时保存，而不是每次退出 Play Mode 都保存
+            if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                SaveAllSettings();
+            }
+#else
             SaveAllSettings();
+#endif
         }
     }
 }
