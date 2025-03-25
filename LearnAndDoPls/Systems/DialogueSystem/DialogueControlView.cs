@@ -1,3 +1,10 @@
+using System;
+using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using Utils;
+
 /// <summary>
 /// 
 /// 实现逻辑与视觉效果的分离，本来打算用事件通知的，后来想想都差不多
@@ -22,11 +29,6 @@
 /// - 立绘淡入淡出功能需要使用DOTween实现（当前为占位方法）
 /// </summary>
 
-using System;
-using System.Collections;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
 
 public class DialogueControlView : MonoBehaviour
 {
@@ -39,13 +41,8 @@ public class DialogueControlView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText;
     [Tooltip("打字速度")]
     [SerializeField] private float typingSpeed = 0.1f;
-
-
-    /// <summary>
-    /// 未使用 
-    /// </summary>
-    public event EventHandler OnNextLineRequested;
-    public event EventHandler OnDialogueSkipped;
+     [Tooltip("对话控制器")]
+    [SerializeField] private DialogueControl dialogueControl;
 
     /// <summary>
     /// 私有变量
@@ -58,13 +55,36 @@ public class DialogueControlView : MonoBehaviour
     private void Awake()
     {
         // 检查必要UI组件
-        if (dialoguePanel == null) Debug.LogError("DialoguePanel is not assigned!");
-        if (dialogueText == null) Debug.LogError("dialogueText is not assigned!");
+        if (dialoguePanel == null) DialogueSystemLogger.LogError("DialoguePanel is not assigned!");
+        if (dialogueText == null) DialogueSystemLogger.LogError("dialogueText is not assigned!");
 
         // 设置按钮监听
         if (nextLineButton != null)
             nextLineButton.onClick.AddListener(RequestNextLine);
     }
+
+    /// </summary>
+    /// <param name="line"></param>
+    /// <param name="delayNextWord"></param>
+    /// <returns></returns>
+    /// <summary>
+    /// 完成当前行
+    /// </summary>
+    /// <param name="line"></param>
+    /// <param name="delayNextWord"></param>
+    /// <returns></returns>
+    /// <summary>
+    /// 打字
+    /// </summary>
+    /// <param name="line"></param>
+    /// <param name="delayNextWord"></param>
+    /// <returns></returns>
+    /// <summary>
+    /// 私有变量
+    /// </summary> 
+    /// <param name="line"></param>
+    /// <param name="delayNextWord"></param>
+    /// <returns></returns>
 
     private void RequestNextLine()
     {
@@ -76,7 +96,7 @@ public class DialogueControlView : MonoBehaviour
         }
 
         // 通知控制器请求下一行,未使用哦
-        OnNextLineRequested?.Invoke(this, EventArgs.Empty);
+        dialogueControl.ShowNextLine();
     }
 
     /// <summary>
@@ -98,12 +118,12 @@ public class DialogueControlView : MonoBehaviour
     }
 
     /// <summary>
-    /// 打字
+    /// 打一行字
     /// </summary>
     /// <param name="line"></param>
-    /// <param name="delayNextWord"></param>
+    /// <param name="delayBeforeNext"></param>
 
-    public void TypeDialogueLine(string line, float delayNextWord = default)
+    public void TypeDialogueLine(string line, float delayNextWord = 0)
     {
         dialogueText.text = ""; // 清空文本
         currentLine = line;//设置currenLine等于当前的对话句子
@@ -113,6 +133,7 @@ public class DialogueControlView : MonoBehaviour
             StopCoroutine(_typingCoroutine);
 
         // 启动新的打字效果
+
         _typingCoroutine = StartCoroutine(TypeLineCoroutine(line, delayNextWord));
     }
 
@@ -137,7 +158,6 @@ public class DialogueControlView : MonoBehaviour
     /// <param name="line"></param>
     /// <param name="delayNextWord"></param>
     /// <returns></returns>
-
     private IEnumerator TypeLineCoroutine(string line, float delayNextWord)
     {
         _isTyping = true;
@@ -151,10 +171,11 @@ public class DialogueControlView : MonoBehaviour
         _isTyping = false;
 
         // 如果设置了延迟，等待后自动请求下一行
+
         if (delayNextWord > 0)
         {
             yield return new WaitForSeconds(delayNextWord);
-            OnNextLineRequested?.Invoke(this, EventArgs.Empty);//激活下一行的事件未使用哦 
+            dialogueControl.ShowNextLine();
         }
     }
 
@@ -168,7 +189,8 @@ public class DialogueControlView : MonoBehaviour
             StopCoroutine(_typingCoroutine);
 
         _isTyping = false;
-        OnDialogueSkipped?.Invoke(this, EventArgs.Empty);
+        dialogueControl.SkipDialogue();
+        
     }
 
     // 暂停打字效果
@@ -194,6 +216,7 @@ public class DialogueControlView : MonoBehaviour
             }
         }
     }
+
 
     // 设置打字速度
     public void SetTypingSpeed(float speed)

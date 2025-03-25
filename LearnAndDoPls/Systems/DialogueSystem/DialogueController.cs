@@ -1,13 +1,15 @@
-/* 代码功能：对话控制器
- 作为实际功能组件的基类，用于控制对话的显示和跳过等等
- Control负责方法和数据，而Controller提供自定义控制对话
- 所有控制对话Controller的基类，可以根据对话需要个性化定制，比如声音分支普通对话等等,不一定只有3种对话方式.
- */
-
 
 using UnityEngine;
-using UnityEngine.UI;
 
+/// <summary>
+/// 代码功能：对话控制器
+///作为实际功能组件的基类，用于控制对话的显示和跳过等等
+///Control负责方法和数据，而Controller提供自定义控制对话
+/// 所有控制对话Controller的基类，可以根据对话需要个性化定制，比如声音分支普通对话等等,不一定只有3种对话方式.
+/// 作为实际功能组件的基类，用于控制对话的显示和跳过等等
+///Control负责方法和数据，而Controller提供自定义控制对话
+/// 所有控制对话Controller的基类，可以根据对话需要个性化定制，比如声音分支普通对话等等,不一定只有3种对话方式.
+/// </summary>
 public class DialogueController : MonoBehaviour
 {
 
@@ -30,18 +32,18 @@ public class DialogueController : MonoBehaviour
             // 先尝试从当前对象获取
             if (TryGetComponent<DialogueControl>(out DialogueControl dialogueControl))
             {
-                Debug.Log("本对象有对话组件");
+                DialogueSystemLogger.Log("有对话组件");
             }
             else
             {
                 dialogueControl = FindFirstObjectByType<DialogueControl>();
                 if (dialogueControl == null)
                 {
-                    Debug.LogError("无法找到 DialogueControl 组件，对话系统无法正常工作，请确保场景中有此组件");
+                    DialogueSystemLogger.LogError("无法找到 DialogueControl 组件，对话系统无法正常工作，请确保场景中有此组件");
                 }
                 else
                 {
-                    Debug.Log("已在场景中找到 DialogueControl 组件");
+                    DialogueSystemLogger.Log("已在场景中找到 DialogueControl 组件");
                 }
 
             }
@@ -62,7 +64,7 @@ public class DialogueController : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"[{gameObject.name}] 无法开始对话:DialogueControl 组件不存在");
+            DialogueSystemLogger.LogError($"[{gameObject.name}] 无法开始对话:DialogueControl 组件不存在");
         }
     }
 
@@ -79,7 +81,7 @@ public class DialogueController : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"[{gameObject.name}] 无法跳过对话:DialogueControl 组件不存在");
+            DialogueSystemLogger.LogError($"[{gameObject.name}] 无法跳过对话:DialogueControl 组件不存在");
         }
     }
 }
