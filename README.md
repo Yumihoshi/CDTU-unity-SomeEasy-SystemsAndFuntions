@@ -51,15 +51,16 @@ These codes are written by [@Yuan-Zzzz](https://github.com/Yuan-Zzzz) from the o
 
 
 ### 4.[HexGridSystem](https://github.com/whatevertogo/HexGridSystem-)
-这个项目是一个六边形网格系统，可用于在Unity游戏引擎中创建六边形地图。它提供了一组C#脚本，包括HexCell、HexCoordinates、HexGrid、HexGridHighlight、HexMesh和HexMetrics等，可以帮助开发者快速构建六边形网格地图。
 
-主要功能点
-HexCell: 定义六边形网格单元的基本属性和行为
-HexCoordinates: 实现立方体坐标系统，便于六边形网格的定位和计算
-HexGrid: 管理六边形网格的创建、布局和更新
-HexGridHighlight: 提供网格单元的高亮和选择功能
-HexMesh: 动态生成六边形网格的网格模型，支持定制外观
-HexMetrics: 定义六边形几何参数和常量，确保网格一致性
+This project is a hexagonal grid system that can be used to create hexagonal maps in the Unity game engine. It provides a set of C# scripts, including HexCell, HexCoordinates, HexGrid, HexGridHighlight, HexMesh, and HexMetrics, which help developers quickly build hexagonal grid maps.
+
+Key Features
+HexCell: Defines the basic properties and behaviors of hexagonal grid cells
+HexCoordinates: Implements a cubic coordinate system for easy positioning and calculation of hexagonal grids
+HexGrid: Manages the creation, layout, and updating of hexagonal grids
+HexGridHighlight: Provides highlighting and selection functionality for grid cells
+HexMesh: Dynamically generates mesh models for hexagonal grids with customizable appearances
+HexMetrics: Defines hexagonal geometric parameters and constants to ensure grid consistency
 
 
 ## 4. [Utils](LearnAndDoPls/Utils/README.EN_Utils.md)
