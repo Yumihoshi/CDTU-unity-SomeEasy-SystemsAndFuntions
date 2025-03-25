@@ -58,6 +58,18 @@ CN 中文 | [🌏 English](README.md)
 
 代码由[@Yuan-Zzzz](https://github.com/Yuan-Zzzz)编写，我修复了一些bug并添加了更多注释使其更易读。
 
+### 4.[HexGridSystem](https://github.com/whatevertogo/HexGridSystem-)
+
+这个项目是一个六边形网格系统，可用于在Unity游戏引擎中创建六边形地图。它提供了一组C#脚本，包括HexCell、HexCoordinates、HexGrid、HexGridHighlight、HexMesh和HexMetrics等，可以帮助开发者快速构建六边形网格地图。
+
+主要功能点
+HexCell: 定义六边形网格单元的基本属性和行为
+HexCoordinates: 实现立方体坐标系统，便于六边形网格的定位和计算
+HexGrid: 管理六边形网格的创建、布局和更新
+HexGridHighlight: 提供网格单元的高亮和选择功能
+HexMesh: 动态生成六边形网格的网格模型，支持定制外观
+HexMetrics: 定义六边形几何参数和常量，确保网格一致性
+
 ## 4. [工具库(Utils)](LearnAndDoPls/Utils/README.zh-CN_Utils.md)
 
 一个全面的实用工具和辅助类集合：
