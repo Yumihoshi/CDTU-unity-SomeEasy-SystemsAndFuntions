@@ -62,14 +62,14 @@ public class VoiceDialogueController : DialogueController,IVoiceDialogue
     }
 
     // 处理对话行变更事件
-    private void OnDialogueLineChanged(object sender, DialogueControl.DialogueLineChangedEventArgs e)
+    public void OnDialogueLineChanged(object sender, DialogueControl.DialogueLineChangedEventArgs e)
     {
         // 播放与当前行对应的语音
         PlayVoice(e.LineIndex);
     }
 
     // 处理对话结束事件
-    private void OnDialogueEnded(object sender, System.EventArgs e)
+    public void OnDialogueEnded(object sender, System.EventArgs e)
     {
         // 停止当前播放的语音
         if (audioSource != null && audioSource.isPlaying)
@@ -86,7 +86,7 @@ public class VoiceDialogueController : DialogueController,IVoiceDialogue
     }
 
     // 根据对话行索引播放相应的语音片段
-    private void PlayVoice(int lineIndex = 0)
+   public void PlayVoice(int lineIndex = 0)
     {
         if (audioSource == null)
         {
