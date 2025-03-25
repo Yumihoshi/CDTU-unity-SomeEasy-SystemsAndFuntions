@@ -63,7 +63,7 @@ HexMesh: Dynamically generates mesh models for hexagonal grids with customizable
 HexMetrics: Defines hexagonal geometric parameters and constants to ensure grid consistency
 
 
-## 4. [Utils](LearnAndDoPls/Utils/README.EN_Utils.md)
+## [Utils](LearnAndDoPls/Utils/README.EN_Utils.md)
 
 A comprehensive collection of utility functions and helper classes:
 
@@ -84,7 +84,7 @@ A comprehensive collection of utility functions and helper classes:
 - Math utilities
 - File operations helpers
 
-## 5. [Utility Skills](LearnAndDoPls/SomeSkills/README.EN_SomeSkills.md)
+## [Utility Skills](LearnAndDoPls/SomeSkills/README.EN_SomeSkills.md)
 
 A collection of practical C# implementation examples:
 
@@ -93,7 +93,7 @@ A collection of practical C# implementation examples:
 - PlayerController - Basic player movement and control
 - TriggerObject - Easily handle trigger-based interactions
 
-## 6. [Art](Art/README.EN_Art.md)
+## [Art](Art/README.EN_Art.md)
 
 Visual enhancement tools and shaders:
 
