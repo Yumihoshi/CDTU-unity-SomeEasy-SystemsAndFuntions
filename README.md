@@ -37,6 +37,7 @@ A modular, easy-to-understand dialogue system for Unity. The system uses a Contr
 - Branching dialogues with multiple options
 - Voice-synchronized dialogues
 - Easy prefab creation for dialogue sequences
+- you can build a your Dialogue Ways for you own situation
 
 ### 3. [UI System for UGUI](LearnAndDoPls/Systems/UI-System-for-UGUI/README.EN.md)
 
@@ -49,7 +50,21 @@ A clean, structured UI management system built for Unity's UGUI. Features includ
 
 These codes are written by [@Yuan-Zzzz](https://github.com/Yuan-Zzzz) from the original [UI-System-for-UGUI](https://github.com/Yuan-Zzzz/UI-System-for-UGUI) project and i fix some bugs. I added some comments and made it more readable.
 
-## 4. [Utils](LearnAndDoPls/Utils/README.EN_Utils.md)
+
+### 4.[HexGridSystem](https://github.com/whatevertogo/HexGridSystem-)
+
+This project is a hexagonal grid system that can be used to create hexagonal maps in the Unity game engine. It provides a set of C# scripts, including HexCell, HexCoordinates, HexGrid, HexGridHighlight, HexMesh, and HexMetrics, which help developers quickly build hexagonal grid maps.
+
+Key Features
+HexCell: Defines the basic properties and behaviors of hexagonal grid cells
+HexCoordinates: Implements a cubic coordinate system for easy positioning and calculation of hexagonal grids
+HexGrid: Manages the creation, layout, and updating of hexagonal grids
+HexGridHighlight: Provides highlighting and selection functionality for grid cells
+HexMesh: Dynamically generates mesh models for hexagonal grids with customizable appearances
+HexMetrics: Defines hexagonal geometric parameters and constants to ensure grid consistency
+
+
+## [Utils](LearnAndDoPls/Utils/README.EN_Utils.md)
 
 A comprehensive collection of utility functions and helper classes:
 
@@ -70,7 +85,7 @@ A comprehensive collection of utility functions and helper classes:
 - Math utilities
 - File operations helpers
 
-## 5. [Utility Skills](LearnAndDoPls/SomeSkills/README.EN_SomeSkills.md)
+## [Utility Skills](LearnAndDoPls/SomeSkills/README.EN_SomeSkills.md)
 
 A collection of practical C# implementation examples:
 
@@ -79,7 +94,7 @@ A collection of practical C# implementation examples:
 - PlayerController - Basic player movement and control
 - TriggerObject - Easily handle trigger-based interactions
 
-## 6. [Art](Art/README.EN_Art.md)
+## [Art](Art/README.EN_Art.md)
 
 Visual enhancement tools and shaders:
 

@@ -12,6 +12,8 @@ CN 中文 | [🌏 English](README.md)
 
 #### 将来我可能会添加另外两个系统，一个保存游戏数据(不久的将来)，另一个保存游戏的大数据（稍微有点难，所以可能需要很长时间）
 
+#### 如果真的要用可以用已经及其完善的[FlexiArchiveSYstem](https://github.com/wenen-creator/FlexiArchiveSystem),写的极好,就是职责分离的太开了,太晕了.
+
 #### 有一些例子也被添加其中(LearnAndDoPls/Systems/SaveSystem/SaveSettingsSystem/PlayerPrefsForSettings/SettingsExamples)
 
 #### 但是请不要用这个保存你的游戏数据，因为这个方式保存游戏数据(数据稍微大点)并不好。你可以用它来保存游戏的设置，比如音频、图形等设置。
@@ -39,6 +41,7 @@ CN 中文 | [🌏 English](README.md)
   - 线性对话：基础的顺序对话展示
   - 分支对话：支持多选项分支和动态切换
   - 语音对话：支持与文本同步的语音播放
+  - 自定义对话
 - 完整的生命周期事件系统
 - 打字机效果和自动播放支持
 - ScriptableObject based DialogueSO数据管理
@@ -58,7 +61,19 @@ CN 中文 | [🌏 English](README.md)
 
 代码由[@Yuan-Zzzz](https://github.com/Yuan-Zzzz)编写，我修复了一些bug并添加了更多注释使其更易读。
 
-## 4. [工具库(Utils)](LearnAndDoPls/Utils/README.zh-CN_Utils.md)
+### 4.[HexGridSystem](https://github.com/whatevertogo/HexGridSystem-)
+
+这个项目是一个六边形网格系统，可用于在Unity游戏引擎中创建六边形地图。它提供了一组C#脚本，包括HexCell、HexCoordinates、HexGrid、HexGridHighlight、HexMesh和HexMetrics等，可以帮助开发者快速构建六边形网格地图。
+
+主要功能点
+HexCell: 定义六边形网格单元的基本属性和行为
+HexCoordinates: 实现立方体坐标系统，便于六边形网格的定位和计算
+HexGrid: 管理六边形网格的创建、布局和更新
+HexGridHighlight: 提供网格单元的高亮和选择功能
+HexMesh: 动态生成六边形网格的网格模型，支持定制外观
+HexMetrics: 定义六边形几何参数和常量，确保网格一致性
+
+## [工具库(Utils)](LearnAndDoPls/Utils/README.zh-CN_Utils.md)
 
 一个全面的实用工具和辅助类集合：
 
@@ -80,7 +95,7 @@ CN 中文 | [🌏 English](README.md)
 - 数学工具库
 - 文件操作助手
 
-## 5. [实用技能(Utility Skills)](LearnAndDoPls/SomeSkills/README.CN_SomeSkills.md)
+## [实用技能(Utility Skills)](LearnAndDoPls/SomeSkills/README.CN_SomeSkills.md)
 
 这些脚本展示了一些C#的实用技能：
 
@@ -89,7 +104,7 @@ CN 中文 | [🌏 English](README.md)
 - PlayerController - 基本的玩家移动和控制
 - TriggerObject - 轻松处理基于触发器的交互
 
-## 6. [美术资源(Art)](Art/README.CN_Art.md)
+## [美术资源(Art)](Art/README.CN_Art.md)
 
 视觉增强工具和着色器：
 
