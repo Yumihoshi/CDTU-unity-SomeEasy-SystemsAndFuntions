@@ -1,6 +1,10 @@
 using UnityEngine;
 
-
+/// <summary>
+/// de'shde'shde'shide的时候没有debug语句
+/// </summary> <summary>
+/// 对话系统特定logger让buildde's
+/// </summary>
 public static class DialogueSystemLogger
 {
     [System.Diagnostics.Conditional("UNITY_EDITOR")]
