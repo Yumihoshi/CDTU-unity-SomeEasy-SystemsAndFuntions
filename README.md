@@ -37,7 +37,7 @@ A modular, easy-to-understand dialogue system for Unity. The system uses a Contr
 - Branching dialogues with multiple options
 - Voice-synchronized dialogues
 - Easy prefab creation for dialogue sequences
-- you can build a your DialogueSystem for you own situation
+- you can build a your Dialogue Ways for you own situation
 
 ### 3. [UI System for UGUI](LearnAndDoPls/Systems/UI-System-for-UGUI/README.EN.md)
 
