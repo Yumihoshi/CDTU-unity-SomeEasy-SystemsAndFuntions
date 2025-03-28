@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+
 /// <summary>
 /// 对话系统的核心控制类，负责管理对话流程和内容展示。
 /// 
@@ -23,11 +28,6 @@
 /// 当然单例模式也没问题，场景里面多个对话共用一个Control里面的方法也是非常的good
 /// </summary>
 
-
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class DialogueControl : MonoBehaviour
 {
     [Header("对话内容")]
@@ -45,6 +45,8 @@ public class DialogueControl : MonoBehaviour
     /// </summary>
     public event EventHandler OnDialogueStarted;
     public event EventHandler OnDialogueEnded;
+
+    
     /// <summary>
     /// 对话行变更事件，方便语音播放捏~(￣▽￣)~*
     /// </summary> 
@@ -56,25 +58,6 @@ public class DialogueControl : MonoBehaviour
         public int LineIndex;
     }
 
-    #region 事件生命周期(用于订阅和取消事件)方便Control控制(观察者模式的体现MVC分离)
-    private void OnEnable()
-    { 
-        if (dialogueView != null)
-        {
-            dialogueView.OnNextLineRequested += HandleNextLineRequested;
-            dialogueView.OnDialogueSkipped += HandleDialogueSkipped;
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (dialogueView != null)
-        {
-            dialogueView.OnNextLineRequested -= HandleNextLineRequested;
-            dialogueView.OnDialogueSkipped -= HandleDialogueSkipped;
-        }
-    }
-    #endregion
 
     /// <summary>
     /// 检查视图和SO是否为空
@@ -86,33 +69,25 @@ public class DialogueControl : MonoBehaviour
         {
             dialogueView = FindFirstObjectByType<DialogueControlView>();
             if (dialogueView == null)
-                Debug.LogError("DialogueControlView not found!");
+
+                DialogueSystemLogger.LogError("DialogueControlView not found!");
+
         }
 
         // 从SO资源中加载对话内容
         if (dialogue_SO != null)
         {
             dialogueLinesList = dialogue_SO.dialoguelinesList;
-            Debug.Log($"Loaded {dialogueLinesList.Count} dialogue lines");
+            DialogueSystemLogger.Log($"Loaded {dialogueLinesList.Count} dialogue lines");
         }
         else
-            Debug.LogError("dialogue_SO is not assigned!");
+            DialogueSystemLogger.LogError("dialogue_SO is not assigned!");
     }
 
-    private void HandleNextLineRequested(object sender, EventArgs e)
-    {
-        ShowNextLine();
-    }
-
-    private void HandleDialogueSkipped(object sender, EventArgs e)
-    {
-        SkipDialogue();
-    }
     /// <summary>
     /// 打开对话panel激活对话事件(未使用)
     /// 这里是控制对话的主要事件
     /// </summary>
-
     public void ShowDialogue()
     {
         dialogueView.ShowDialoguePanel();
@@ -125,7 +100,7 @@ public class DialogueControl : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No dialogue lines to display!");
+            DialogueSystemLogger.LogWarning("No dialogue lines to display!");
         }
     }
 
@@ -150,13 +125,13 @@ public class DialogueControl : MonoBehaviour
         }
         else
         {
-            Debug.Log("All dialogue lines have been displayed");
+            DialogueSystemLogger.Log("All dialogue lines have been displayed");
             OnDialogueEnded?.Invoke(this, EventArgs.Empty);
         }
     }
 
     /// <summary>
-    /// 设置新的对话SO并默认为第0行，推荐无脑用GoDialogueSOToLine而不是SetDialogueSO，因为下面的我默认的也是0行
+    /// 设置新的对话SO并默认为第0行，推荐无脑用下面的，因为下面的我默认的也是0行
     /// </summary>
     /// <param name="newDialogueSO"></param>
 
@@ -164,7 +139,7 @@ public class DialogueControl : MonoBehaviour
     {
         if (newDialogueSO == null)
         {
-            Debug.LogError("新对话数据为空");
+            DialogueSystemLogger.LogError("新对话数据为空");
             return;
         }
 
@@ -172,7 +147,7 @@ public class DialogueControl : MonoBehaviour
         dialogueLinesList = dialogue_SO.dialoguelinesList;
         _currentLineIndex = 0;
 
-        Debug.Log($"切换对话数据: {newDialogueSO.name}");
+        DialogueSystemLogger.Log($"切换对话数据: {newDialogueSO.name}");
 
         ShowDialogue();
     }
@@ -182,29 +157,29 @@ public class DialogueControl : MonoBehaviour
     /// </summary>
     /// <param name="oldDialogueSO"></param>
     /// <param name="lineIndex"></param>
-    public void GoDialogueSOToLine(DialogueSO newDialogueSO, int lineIndex = 0)
+    public void GoDialogueSOToLine(DialogueSO oldDialogueSO, int lineIndex = 0)
     {
-        if (newDialogueSO == null)
+        if (oldDialogueSO == null)
         {
-            Debug.LogError("旧对话数据为空");
+            DialogueSystemLogger.LogError("旧对话数据为空");
             return;
         }
 
-        dialogue_SO = newDialogueSO;
+        dialogue_SO = oldDialogueSO;
         dialogueLinesList = dialogue_SO.dialoguelinesList;
         _currentLineIndex = lineIndex;
 
-        Debug.Log($"返回对话数据: {newDialogueSO.name}");
+        DialogueSystemLogger.Log($"返回对话数据: {oldDialogueSO.name}");
 
         ShowDialogue();
     }
 
-/// <summary>
-/// 跳过所有对话，隐藏对话面板
-/// </summary>
+    /// <summary>
+    /// 跳过所有对话，隐藏对话面板
+    /// </summary>
     public void SkipDialogue()
     {
-        Debug.Log("All dialogues skipped");
+        DialogueSystemLogger.Log("All dialogues skipped");
         OnDialogueEnded?.Invoke(this, EventArgs.Empty);
 
         // 确保停止任何可能正在进行的打字效果
