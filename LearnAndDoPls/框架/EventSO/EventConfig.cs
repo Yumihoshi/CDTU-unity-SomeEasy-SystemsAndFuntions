@@ -4,6 +4,6 @@ using UnityEngine;
 public class EventConfig : ScriptableObject
 {
     public string EventName;
-    public int Power;
+    //添加你想要的
     public EventEvent EventOnCast; // 拖入 EventEvent
 }

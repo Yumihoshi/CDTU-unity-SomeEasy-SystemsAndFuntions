@@ -9,7 +9,7 @@ public class EventCaster : MonoBehaviour
         var info = new EventInfo
         {
             EventName = eventConfig.EventName,
-            Power = eventConfig.Power,
+            //todo-添加你想要的
             Caster = this.gameObject
         };
 
