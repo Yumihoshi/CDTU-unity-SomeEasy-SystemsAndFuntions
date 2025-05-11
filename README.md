@@ -49,7 +49,7 @@ A clean, structured UI management system built for Unity's UGUI. Features includ
 These codes are written by [@Yuan-Zzzz](https://github.com/Yuan-Zzzz) from the original [UI-System-for-UGUI](https://github.com/Yuan-Zzzz/UI-System-for-UGUI) project and i fix some bugs. I added some comments and made it more readable.
 
 
-### 4.[HexGridSystem](https://github.com/whatevertogo/HexGridSystem)
+### 4.[HexGridSystem][https://github.com/whatevertogo/HexGridSystem]
 
 This project is a hexagonal grid system that can be used to create hexagonal maps in the Unity game engine. It provides a set of C# scripts, including HexCell, HexCoordinates, HexGrid, HexGridHighlight, HexMesh, and HexMetrics, which help developers quickly build hexagonal grid maps.
 
