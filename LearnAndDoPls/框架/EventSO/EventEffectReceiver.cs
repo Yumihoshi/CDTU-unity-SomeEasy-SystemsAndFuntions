@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class EventEffectReceiver : MonoBehaviour
 {
-    public EventEvent eventlEvent;
+    public event event;
 
-    private void OnEnable() => eventlEvent.Register(OnEventCast);
+    private void OnEnable() => event.Register(OnEventCast);
     private void OnDisable() => eventlEvent.Unregister(OnEventCast);
     private void OnDestroy() => eventlEvent?.UnregisterListener(this);
 

@@ -63,6 +63,7 @@ namespace System.Collections.Generic
 ## 属性详解
 
 **Count**
+
 - 获取队列中包含的元素数量
 - 只读属性，不能直接修改
 - 例：`int count = queue.Count;`
@@ -187,6 +188,7 @@ foreach(string s in queue)
 ## 形象示例：队列在游戏中的应用
 
 ### 1. 餐厅排队系统
+
 想象一个餐厅经营游戏，顾客按照先来后到的顺序排队等待座位：
 
 ```csharp
@@ -233,6 +235,7 @@ public class Restaurant : MonoBehaviour
 ```
 
 ### 2. 技能连招系统
+
 在格斗游戏中，玩家输入的按键组合需要按顺序依次处理：
 
 ```csharp
@@ -285,6 +288,7 @@ public class ComboSystem : MonoBehaviour
 ```
 
 ### 3. 音乐播放队列
+
 音乐播放器中的播放列表实现：
 
 ```csharp
@@ -328,6 +332,7 @@ public class MusicPlayer : MonoBehaviour
 ```
 
 ### 4. 任务系统
+
 RPG游戏中的任务系统，确保任务按正确顺序完成：
 
 ```csharp

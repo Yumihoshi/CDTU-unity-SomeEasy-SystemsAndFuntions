@@ -13,6 +13,6 @@ public class EventCaster : MonoBehaviour
             Caster = this.gameObject
         };
 
-        eventl.EventOnCast?.Raise(info);
+        event.EventOnCast?.Raise(info);
     }
 }
