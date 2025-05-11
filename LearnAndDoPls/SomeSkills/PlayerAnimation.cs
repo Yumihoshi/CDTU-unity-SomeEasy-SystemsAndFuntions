@@ -17,7 +17,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private PlayerAnimationStates currentAnimationState;
     private Animator animator;
-    private PlayerController playerController;
+    // private PlayerController playerController;
 
     [Tooltip("Idle状态的速度倍率")]
     [SerializeField] private float IdleSpeedMultiplier = 1f; // Idle状态的速度倍率
@@ -36,7 +36,7 @@ public class PlayerAnimation : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        playerController = GetComponent<PlayerController>();
+        // playerController = GetComponent<PlayerController>();
 
         // 设置默认动画速度
         animator.speed = defaultAnimationSpeed;
@@ -114,14 +114,14 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Update()
     {
-        // 移动状态判断
-        ChangeAnimationState(GameInput.Instance.moveDir != Vector2.zero
-            ? PlayerAnimationStates.Walking
-            : PlayerAnimationStates.Idle);
-        if (GameInput.Instance.JumpPressed && playerController._rb2D.linearVelocityY != 0.01f)//防止意外触发
-        {
-            ChangeAnimationState(PlayerAnimationStates.Jumping);
-        }
+        // // 移动状态判断
+        // ChangeAnimationState(GameInput.Instance.moveDir != Vector2.zero
+        //     ? PlayerAnimationStates.Walking
+        //     : PlayerAnimationStates.Idle);
+        // if (GameInput.Instance.JumpPressed && playerController._rb2D.linearVelocityY != 0.01f)//防止意外触发
+        // {
+        //     ChangeAnimationState(PlayerAnimationStates.Jumping);
+        // }
     }
 
     // 切换动画状态

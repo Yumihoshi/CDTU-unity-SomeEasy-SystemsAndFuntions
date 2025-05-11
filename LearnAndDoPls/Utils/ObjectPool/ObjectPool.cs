@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Utils
+namespace CDTU.Utils
 {
     /// <summary>
     ///     通用对象池实现

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Managers
+namespace CDTU.Utils
 {
     /// <summary>
     ///     单例模式基类

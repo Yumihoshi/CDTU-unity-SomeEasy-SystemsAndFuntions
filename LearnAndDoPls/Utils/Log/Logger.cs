@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Utils
+namespace CDTU.Utils
 {
     /// <summary>
     /// 一个简易的日志记录器，用于在Unity编辑器和开发版本中输出日志，保证不会再发布版本中输出
