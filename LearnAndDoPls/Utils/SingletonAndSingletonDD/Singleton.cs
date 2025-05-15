@@ -21,7 +21,6 @@ namespace CDTU.Utils
                     {
                         var go = new GameObject(typeof(T).Name);
                         _instance = go.AddComponent<T>();
-                        DontDestroyOnLoad(go);
                     }
                 }
 
