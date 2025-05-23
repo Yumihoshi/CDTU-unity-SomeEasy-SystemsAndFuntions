@@ -115,6 +115,9 @@ HexMetrics: 定义六边形几何参数和常量，确保网格一致性
 
 由[@Yumihoshi](https://github.com/Yumihoshi)编写，来自原版[艺术资产管理](https://github.com/Yumihoshi/Art-Asset-Management)项目。
 
+## [Timer](https://github.com/whatevertogo/Timer)
+
+
 ## 性能考虑
 
 ### 内存管理
