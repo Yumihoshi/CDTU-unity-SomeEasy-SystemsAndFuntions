@@ -7,16 +7,32 @@ namespace CDTU.Utils
     /// </summary>
     public static class Logger
     {
-        [System.Diagnostics.Conditional("UNITY_EDITOR")]//
-        [System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
+        // 控制输出日志的级别
         public static void Log(string message)
         {
-            Debug.Log(message);
+#if UNITY_EDITOR
+            Debug.Log("[Editor Log] " + message);  // 编辑器版本输出详细日志
+#elif DEVELOPMENT_BUILD
+        Debug.Log("[Dev Log] " + message);  // 开发版本输出简洁日志
+#endif
+        }
+
+        public static void LogWarning(string message)
+        {
+#if UNITY_EDITOR
+            Debug.LogWarning("[Editor Warning] " + message);  // 编辑器版本输出详细警告
+#elif DEVELOPMENT_BUILD
+        Debug.LogWarning("[Dev Warning] " + message);  // 开发版本输出简洁警告
+#endif
         }
 
         public static void LogError(string message)
         {
-            Debug.LogError(message);
+#if UNITY_EDITOR
+            Debug.LogError("[Editor Error] " + message);  // 编辑器版本输出详细错误
+#elif DEVELOPMENT_BUILD
+        Debug.LogError("[Dev Error] " + message);  // 开发版本输出简洁错误
+#endif
         }
     }
 }
