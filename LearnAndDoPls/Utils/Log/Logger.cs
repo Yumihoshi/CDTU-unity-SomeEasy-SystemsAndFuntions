@@ -3,36 +3,39 @@ using UnityEngine;
 namespace CDTU.Utils
 {
     /// <summary>
-    /// 一个简易的日志记录器，用于在Unity编辑器和开发版本中输出日志，保证不会再发布版本中输出
+    /// Logger：在 Editor 总是输出，打包后根据 Build 类型输出。
+    /// - Editor: 所有日志输出
+    /// - Development Build: 所有日志输出
+    /// - Release Build: 仅 Warning 和 Error 输出
     /// </summary>
     public static class Logger
     {
-        // 控制输出日志的级别
-        public static void Log(string message)
+        public static void Log(object message, Object context = null)
         {
 #if UNITY_EDITOR
-            Debug.Log("[Editor Log] " + message);  // 编辑器版本输出详细日志
+            // Editor 中总是输出 Log
+            if (context != null) Debug.Log($"{message}", context);
+            else Debug.Log($"{message}");
 #elif DEVELOPMENT_BUILD
-        Debug.Log("[Dev Log] " + message);  // 开发版本输出简洁日志
+            // Development Build 中输出 Log
+            if (context != null) Debug.Log($"[Dev] {message}", context);
+            else Debug.Log($"[Dev] {message}");
 #endif
+            // Release Build 中不输出 Log
         }
 
-        public static void LogWarning(string message)
+        public static void LogWarning(object message, Object context = null)
         {
-#if UNITY_EDITOR
-            Debug.LogWarning("[Editor Warning] " + message);  // 编辑器版本输出详细警告
-#elif DEVELOPMENT_BUILD
-        Debug.LogWarning("[Dev Warning] " + message);  // 开发版本输出简洁警告
-#endif
+            // Warning 在所有情况下都输出
+            if (context != null) Debug.LogWarning($"{message}", context);
+            else Debug.LogWarning($"{message}");
         }
 
-        public static void LogError(string message)
+        public static void LogError(object message, Object context = null)
         {
-#if UNITY_EDITOR
-            Debug.LogError("[Editor Error] " + message);  // 编辑器版本输出详细错误
-#elif DEVELOPMENT_BUILD
-        Debug.LogError("[Dev Error] " + message);  // 开发版本输出简洁错误
-#endif
+            // Error 在所有情况下都输出
+            if (context != null) Debug.LogError($"{message}", context);
+            else Debug.LogError($"{message}");
         }
     }
 }
