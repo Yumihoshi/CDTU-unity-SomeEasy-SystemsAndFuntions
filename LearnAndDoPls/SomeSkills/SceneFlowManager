@@ -79,10 +79,24 @@ public class SceneFlowManager : SingletonDD<SceneFlowManager>
         onCompleted?.Invoke();
     }
 
+    /// <summary>通过场景索引同步加载场景。</summary>
+    public void LoadScene(int buildIndex, Action onCompleted = null)
+    {
+        if (IsLoading) StopCurrentLoad();
+        SceneManager.LoadScene(buildIndex, LoadSceneMode.Single);
+        onCompleted?.Invoke();
+    }
+
     /// <summary>异步加载场景（Single）。</summary>
     public void LoadSceneAsync(string sceneName, Action onCompleted = null)
     {
         StartLoad(sceneName, LoadSceneMode.Single, onCompleted);
+    }
+
+    /// <summary>通过场景索引异步加载场景（Single）。</summary>
+    public void LoadSceneAsync(int buildIndex, Action onCompleted = null)
+    {
+        StartLoad(buildIndex, LoadSceneMode.Single, onCompleted);
     }
 
     /// <summary>异步附加加载场景（Additive）。</summary>
@@ -91,10 +105,44 @@ public class SceneFlowManager : SingletonDD<SceneFlowManager>
         StartLoad(sceneName, LoadSceneMode.Additive, onCompleted);
     }
 
+    /// <summary>通过场景索引异步附加加载场景（Additive）。</summary>
+    public void LoadSceneAdditiveAsync(int buildIndex, Action onCompleted = null)
+    {
+        StartLoad(buildIndex, LoadSceneMode.Additive, onCompleted);
+    }
+
     /// <summary>重载当前场景。</summary>
     public void ReloadCurrent(Action onCompleted = null)
     {
         LoadSceneAsync(SceneManager.GetActiveScene().name, onCompleted);
+    }
+
+    /// <summary>加载下一个场景（按 Build Index 顺序）。</summary>
+    public void LoadNextScene(Action onCompleted = null)
+    {
+        int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        if (nextIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            LoadSceneAsync(nextIndex, onCompleted);
+        }
+        else
+        {
+            Debug.LogWarning("[SceneFlowManager] 已经是最后一个场景");
+        }
+    }
+
+    /// <summary>加载上一个场景（按 Build Index 顺序）。</summary>
+    public void LoadPreviousScene(Action onCompleted = null)
+    {
+        int prevIndex = SceneManager.GetActiveScene().buildIndex - 1;
+        if (prevIndex >= 0)
+        {
+            LoadSceneAsync(prevIndex, onCompleted);
+        }
+        else
+        {
+            Debug.LogWarning("[SceneFlowManager] 已经是第一个场景");
+        }
     }
 
     /// <summary>卸载附加场景。</summary>
@@ -113,10 +161,33 @@ public class SceneFlowManager : SingletonDD<SceneFlowManager>
         loadRoutine = StartCoroutine(LoadCoroutine(sceneName, mode, onCompleted));
     }
 
+    private void StartLoad(int buildIndex, LoadSceneMode mode, Action onCompleted = null)
+    {
+        if (IsLoading) StopCurrentLoad();
+        loadRoutine = StartCoroutine(LoadCoroutine(buildIndex, mode, onCompleted));
+    }
+
     private IEnumerator LoadCoroutine(string sceneName, LoadSceneMode mode, Action onCompleted = null)
     {
         LoadingProgress = 0f;
         var op = SceneManager.LoadSceneAsync(sceneName, mode);
+        op.allowSceneActivation = true;
+
+        while (!op.isDone)
+        {
+            LoadingProgress = op.progress;
+            yield return null;
+        }
+
+        LoadingProgress = 1f;
+        loadRoutine = null;
+        onCompleted?.Invoke();
+    }
+
+    private IEnumerator LoadCoroutine(int buildIndex, LoadSceneMode mode, Action onCompleted = null)
+    {
+        LoadingProgress = 0f;
+        var op = SceneManager.LoadSceneAsync(buildIndex, mode);
         op.allowSceneActivation = true;
 
         while (!op.isDone)
@@ -152,4 +223,14 @@ public class SceneFlowManager : SingletonDD<SceneFlowManager>
     }
 
     #endregion
+
+    protected override void OnDestroy()
+    {
+        // 清理跨场景数据存储
+        if (dataStore != null) dataStore.Clear();
+        if (loadRoutine != null) StopCoroutine(loadRoutine);
+        
+        base.OnDestroy();
+    }
 }
+
