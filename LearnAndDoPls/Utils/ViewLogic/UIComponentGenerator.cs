@@ -42,7 +42,7 @@ public class UIComponentGenerator : EditorWindow
         }
 
         selectedObject = (GameObject)EditorGUILayout.ObjectField("目标 UI 对象", selectedObject, typeof(GameObject), true);
-        
+
         customNamespace = EditorGUILayout.TextField("命名空间", customNamespace);
         generateEventHandlers = EditorGUILayout.Toggle("生成事件处理器", generateEventHandlers);
 
@@ -92,10 +92,10 @@ public class UIComponentGenerator : EditorWindow
         File.WriteAllText(logicPath, logicCode, Encoding.UTF8);
 
         AssetDatabase.Refresh();
-        
-        // 自动添加脚本到 GameObject 并绑定组件
+
+        // 自动添加脚本到 GameObject 并绑定组件（支持等待编译完成）
         AutoAddScriptsAndBindComponents(uiObject, components, viewPath);
-        
+
         EditorUtility.DisplayDialog("成功", $"已生成脚本并自动添加到对象：\n\nView: {viewPath}\n\nLogic: {logicPath}", "OK");
     }
 
@@ -106,34 +106,41 @@ public class UIComponentGenerator : EditorWindow
     {
         // 获取或添加 View 脚本
         string scriptName = $"{uiObject.name}View";
-        var monoBehaviour = uiObject.GetComponent(scriptName);
-        
-        if (monoBehaviour == null)
+        var viewScriptType = GetTypeFromAssembly(scriptName);
+
+        // 如果脚本类型存在且未添加，先添加它
+        MonoBehaviour scriptInstance = uiObject.GetComponent(scriptName) as MonoBehaviour;
+        if (scriptInstance == null && viewScriptType != null)
         {
-            // 加载脚本类型并添加
-            System.Type viewType = GetTypeFromAssembly(scriptName);
-            if (viewType != null && typeof(MonoBehaviour).IsAssignableFrom(viewType))
-            {
-                uiObject.AddComponent(viewType);
-            }
-            else
-            {
-                // 脚本编译可能需要时间，延迟添加
-                EditorApplication.delayCall += () =>
-                {
-                    var type = GetTypeFromAssembly(scriptName);
-                    if (type != null)
-                    {
-                        uiObject.AddComponent(type);
-                        BindComponentsToGameObject(uiObject, components);
-                    }
-                };
-                return;
-            }
+            scriptInstance = uiObject.AddComponent(viewScriptType) as MonoBehaviour;
         }
 
-        // 绑定所有组件
-        BindComponentsToGameObject(uiObject, components);
+        // 如果 View 脚本实例存在，就进行绑定操作
+        if (scriptInstance != null)
+        {
+            BindComponentsToGameObject(uiObject, components); // 绑定 UI 组件
+
+            // 在添加脚本后，确保 Unity 编辑器能够正确刷新脚本字段引用
+            EditorUtility.SetDirty(scriptInstance);  // 标记脚本为已修改，通知 Unity 进行更新
+            AssetDatabase.SaveAssets();  // 保存修改的资源
+
+            // 强制刷新和重新编译
+            AssetDatabase.Refresh();
+
+            // 延迟脚本的编译和引用更新，确保脚本完全加载
+            EditorApplication.delayCall += () =>
+            {
+                if (uiObject != null)
+                {
+                    // 确保脚本绑定完成后执行，避免引用未更新
+                    BindComponentsToGameObject(uiObject, components);
+                }
+            };
+        }
+        else
+        {
+            Debug.LogError($"[UIComponentGenerator] 无法添加或获取脚本 {scriptName}");
+        }
     }
 
     /// <summary>
@@ -145,7 +152,7 @@ public class UIComponentGenerator : EditorWindow
         {
             var type = assembly.GetType(customNamespace + "." + typeName);
             if (type != null) return type;
-            
+
             type = assembly.GetType(typeName);
             if (type != null) return type;
         }
@@ -159,16 +166,16 @@ public class UIComponentGenerator : EditorWindow
     {
         string scriptName = $"{uiObject.name}View";
         var component = uiObject.GetComponent(scriptName);
-        
+
         if (component == null) return;
 
         var serializedObject = new SerializedObject(component);
-        
+
         foreach (var kvp in components)
         {
             string fieldName = kvp.Key;
             string componentType = kvp.Value;
-            
+
             // 在子物体中查找该组件
             Component targetComponent = FindComponentByFieldName(uiObject.transform, fieldName, componentType);
             if (targetComponent != null)
@@ -180,7 +187,7 @@ public class UIComponentGenerator : EditorWindow
                 }
             }
         }
-        
+
         serializedObject.ApplyModifiedProperties();
         EditorUtility.SetDirty(component);
         AssetDatabase.SaveAssets();
@@ -194,9 +201,9 @@ public class UIComponentGenerator : EditorWindow
         foreach (Transform child in parent.GetComponentsInChildren<Transform>(true))
         {
             if (child == parent) continue;
-            
+
             string baseName = MakeSafeVariableName(child.gameObject.name);
-            
+
             // 检查是否匹配（可能是直接名字或带类型后缀的名字）
             if (fieldName == baseName || fieldName == $"{baseName}{componentType}")
             {
@@ -242,15 +249,15 @@ public class UIComponentGenerator : EditorWindow
 
             // 获取所有 UI 组件类型
             var componentTypes = GetAllUIComponentTypes(child);
-            
+
             foreach (var componentType in componentTypes)
             {
                 // 用 GameObject 的实际名字 + 组件类型作为变量名
                 string baseName = MakeSafeVariableName(child.gameObject.name);
-                string varName = componentTypes.Count > 1 
+                string varName = componentTypes.Count > 1
                     ? $"{baseName}{componentType}" // 多个组件时加后缀，如 titleText, titleImage
                     : baseName; // 单个组件直接用名字
-                
+
                 // 避免重名
                 int suffix = 1;
                 string finalName = varName;
@@ -258,7 +265,7 @@ public class UIComponentGenerator : EditorWindow
                 {
                     finalName = $"{varName}{suffix++}";
                 }
-                
+
                 components[finalName] = componentType;
             }
         }
@@ -272,7 +279,7 @@ public class UIComponentGenerator : EditorWindow
     private List<string> GetAllUIComponentTypes(Transform child)
     {
         var types = new List<string>();
-        
+
         if (child.GetComponent<Button>() != null) types.Add("Button");
         if (child.GetComponent<Text>() != null) types.Add("Text");
         if (child.GetComponent<Image>() != null) types.Add("Image");
@@ -281,7 +288,7 @@ public class UIComponentGenerator : EditorWindow
         if (child.GetComponent<Slider>() != null) types.Add("Slider");
         if (child.GetComponent<ScrollRect>() != null) types.Add("ScrollRect");
         if (child.GetComponent<Dropdown>() != null) types.Add("Dropdown");
-        
+
         return types;
     }
 
@@ -328,27 +335,11 @@ public class UIComponentGenerator : EditorWindow
             sb.AppendLine($"        [SerializeField] private {kvp.Value} {kvp.Key};");
         }
 
-        // 事件委托声明
-        if (generateEventHandlers)
-        {
-            sb.AppendLine("");
-            sb.AppendLine($"        // Events");
-            var buttons = components.Where(c => c.Value == "Button").ToList();
-            foreach (var btn in buttons)
-            {
-                sb.AppendLine($"        public event Action On{CapitalizeFirst(btn.Key)}Clicked;");
-            }
-        }
-
         // 初始化方法
         sb.AppendLine("");
         sb.AppendLine($"        private void Start()");
         sb.AppendLine($"        {{");
         sb.AppendLine($"            BindComponents();");
-        if (generateEventHandlers)
-        {
-            sb.AppendLine($"            RegisterListeners();");
-        }
         sb.AppendLine($"        }}");
 
         // 绑定组件方法
@@ -363,34 +354,6 @@ public class UIComponentGenerator : EditorWindow
             sb.AppendLine($"            }}");
         }
         sb.AppendLine($"        }}");
-
-        // 注册事件监听
-        if (generateEventHandlers)
-        {
-            var buttons = components.Where(c => c.Value == "Button").ToList();
-            if (buttons.Count > 0)
-            {
-                sb.AppendLine("");
-                sb.AppendLine($"        private void RegisterListeners()");
-                sb.AppendLine($"        {{");
-                foreach (var btn in buttons)
-                {
-                    sb.AppendLine($"            if ({btn.Key} != null)");
-                    sb.AppendLine($"                {btn.Key}.onClick.AddListener(On{CapitalizeFirst(btn.Key)});");
-                }
-                sb.AppendLine($"        }}");
-
-                // 按钮点击事件处理
-                foreach (var btn in buttons)
-                {
-                    sb.AppendLine("");
-                    sb.AppendLine($"        private void On{CapitalizeFirst(btn.Key)}()");
-                    sb.AppendLine($"        {{");
-                    sb.AppendLine($"            On{CapitalizeFirst(btn.Key)}Clicked?.Invoke();");
-                    sb.AppendLine($"        }}");
-                }
-            }
-        }
 
         // 文本更新方法（如果有 Text 组件）
         var texts = components.Where(c => c.Value == "Text").ToList();
@@ -491,6 +454,7 @@ public class UIComponentGenerator : EditorWindow
 
         return sb.ToString();
     }
+
 
     /// <summary>
     /// 首字母大写
