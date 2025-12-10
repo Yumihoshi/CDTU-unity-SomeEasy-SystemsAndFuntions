@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Linq;
+using TMPro;
 
 /// <summary>
 /// UI 组件代码生成器
@@ -15,8 +16,7 @@ using System.Linq;
 public class UIComponentGenerator : EditorWindow
 {
     private GameObject selectedObject;
-    private string customNamespace = "UI";
-    private bool generateEventHandlers = true;
+    private string customNamespace = "Game.UI";
     private string viewScriptPath = "Assets/Scripts/UI/Views";
     private string logicScriptPath = "Assets/Scripts/UI/Logic";
 
@@ -44,7 +44,6 @@ public class UIComponentGenerator : EditorWindow
         selectedObject = (GameObject)EditorGUILayout.ObjectField("目标 UI 对象", selectedObject, typeof(GameObject), true);
 
         customNamespace = EditorGUILayout.TextField("命名空间", customNamespace);
-        generateEventHandlers = EditorGUILayout.Toggle("生成事件处理器", generateEventHandlers);
 
         GUILayout.Space(10);
         GUILayout.Label("文件生成路径", EditorStyles.boldLabel);
@@ -102,7 +101,7 @@ public class UIComponentGenerator : EditorWindow
     /// <summary>
     /// 自动添加脚本到 GameObject 并绑定组件
     /// </summary>
-    private void AutoAddScriptsAndBindComponents(GameObject uiObject, Dictionary<string, string> components, string viewPath)
+    private void AutoAddScriptsAndBindComponents(GameObject uiObject, Dictionary<string, (string path, string type)> components, string viewPath)
     {
         // 获取或添加 View 脚本
         string scriptName = $"{uiObject.name}View";
@@ -162,86 +161,43 @@ public class UIComponentGenerator : EditorWindow
     /// <summary>
     /// 绑定组件到 GameObject 的脚本字段
     /// </summary>
-    private void BindComponentsToGameObject(GameObject uiObject, Dictionary<string, string> components)
+    private void BindComponentsToGameObject(GameObject uiObject, Dictionary<string, (string path, string type)> components)
     {
         string scriptName = $"{uiObject.name}View";
         var component = uiObject.GetComponent(scriptName);
-
         if (component == null) return;
-
         var serializedObject = new SerializedObject(component);
 
         foreach (var kvp in components)
         {
             string fieldName = kvp.Key;
-            string componentType = kvp.Value;
-
-            // 在子物体中查找该组件
-            Component targetComponent = FindComponentByFieldName(uiObject.transform, fieldName, componentType);
-            if (targetComponent != null)
+            string path = kvp.Value.path;
+            string type = kvp.Value.type;
+            Transform targetTransform = uiObject.transform.Find(path);
+            if (targetTransform != null)
             {
-                var property = serializedObject.FindProperty(fieldName);
-                if (property != null && property.propertyType == SerializedPropertyType.ObjectReference)
+                Component targetComponent = GetComponentOfType(targetTransform, type);
+                if (targetComponent != null)
                 {
-                    property.objectReferenceValue = targetComponent;
+                    var property = serializedObject.FindProperty(fieldName);
+                    if (property != null && property.propertyType == SerializedPropertyType.ObjectReference)
+                    {
+                        property.objectReferenceValue = targetComponent;
+                    }
                 }
             }
         }
-
         serializedObject.ApplyModifiedProperties();
         EditorUtility.SetDirty(component);
         AssetDatabase.SaveAssets();
     }
 
     /// <summary>
-    /// 根据字段名和组件类型查找组件
-    /// </summary>
-    private Component FindComponentByFieldName(Transform parent, string fieldName, string componentType)
-    {
-        foreach (Transform child in parent.GetComponentsInChildren<Transform>(true))
-        {
-            if (child == parent) continue;
-
-            string baseName = MakeSafeVariableName(child.gameObject.name);
-
-            // 检查是否匹配（可能是直接名字或带类型后缀的名字）
-            if (fieldName == baseName || fieldName == $"{baseName}{componentType}")
-            {
-                var component = GetComponentOfType(child, componentType);
-                if (component != null)
-                {
-                    return component;
-                }
-            }
-        }
-        return null;
-    }
-
-    /// <summary>
-    /// 获取指定类型的组件
-    /// </summary>
-    private Component GetComponentOfType(Transform transform, string componentTypeName)
-    {
-        switch (componentTypeName)
-        {
-            case "Button": return transform.GetComponent<Button>();
-            case "Text": return transform.GetComponent<Text>();
-            case "Image": return transform.GetComponent<Image>();
-            case "InputField": return transform.GetComponent<InputField>();
-            case "Toggle": return transform.GetComponent<Toggle>();
-            case "Slider": return transform.GetComponent<Slider>();
-            case "ScrollRect": return transform.GetComponent<ScrollRect>();
-            case "Dropdown": return transform.GetComponent<Dropdown>();
-            default: return null;
-        }
-    }
-
-    /// <summary>
     /// 扫描 UI 对象的所有子物体，找出 UI 组件
     /// </summary>
-    private Dictionary<string, string> ScanUIComponents(GameObject uiObject)
+    private Dictionary<string, (string path, string type)> ScanUIComponents(GameObject uiObject)
     {
-        var components = new Dictionary<string, string>();
+        var components = new Dictionary<string, (string, string)>();
 
         foreach (Transform child in uiObject.GetComponentsInChildren<Transform>(true))
         {
@@ -249,6 +205,7 @@ public class UIComponentGenerator : EditorWindow
 
             // 获取所有 UI 组件类型
             var componentTypes = GetAllUIComponentTypes(child);
+            string path = GetRelativePath(uiObject.transform, child);
 
             foreach (var componentType in componentTypes)
             {
@@ -266,11 +223,23 @@ public class UIComponentGenerator : EditorWindow
                     finalName = $"{varName}{suffix++}";
                 }
 
-                components[finalName] = componentType;
+                components[finalName] = (path, componentType);
             }
         }
 
         return components;
+    }
+
+    private string GetRelativePath(Transform root, Transform target)
+    {
+        var path = target.name;
+        var current = target.parent;
+        while (current != null && current != root)
+        {
+            path = $"{current.name}/{path}";
+            current = current.parent;
+        }
+        return path;
     }
 
     /// <summary>
@@ -288,8 +257,31 @@ public class UIComponentGenerator : EditorWindow
         if (child.GetComponent<Slider>() != null) types.Add("Slider");
         if (child.GetComponent<ScrollRect>() != null) types.Add("ScrollRect");
         if (child.GetComponent<Dropdown>() != null) types.Add("Dropdown");
+        if (child.GetComponent<TMP_Text>() != null) types.Add("TMP_Text");
+        if (child.GetComponent<TMP_InputField>() != null) types.Add("TMP_InputField");
 
         return types;
+    }
+
+    /// <summary>
+    /// 获取指定类型的组件实例
+    /// </summary>
+    private Component GetComponentOfType(Transform transform, string componentTypeName)
+    {
+        switch (componentTypeName)
+        {
+            case "Button": return transform.GetComponent<Button>();
+            case "Text": return transform.GetComponent<Text>();
+            case "Image": return transform.GetComponent<Image>();
+            case "InputField": return transform.GetComponent<InputField>();
+            case "Toggle": return transform.GetComponent<Toggle>();
+            case "Slider": return transform.GetComponent<Slider>();
+            case "ScrollRect": return transform.GetComponent<ScrollRect>();
+            case "Dropdown": return transform.GetComponent<Dropdown>();
+            case "TMP_Text": return transform.GetComponent<TMP_Text>();
+            case "TMP_InputField": return transform.GetComponent<TMP_InputField>();
+            default: return null;
+        }
     }
 
     /// <summary>
@@ -306,13 +298,14 @@ public class UIComponentGenerator : EditorWindow
     /// <summary>
     /// 生成 View 层代码
     /// </summary>
-    private string GenerateViewCode(GameObject uiObject, Dictionary<string, string> components)
+    private string GenerateViewCode(GameObject uiObject, Dictionary<string, (string path, string type)> components)
     {
         StringBuilder sb = new StringBuilder();
 
         // 头部
         sb.AppendLine("using UnityEngine;");
         sb.AppendLine("using UnityEngine.UI;");
+        sb.AppendLine("using TMPro;");
         sb.AppendLine("using System;");
         sb.AppendLine("");
         if (!string.IsNullOrEmpty(customNamespace))
@@ -332,7 +325,7 @@ public class UIComponentGenerator : EditorWindow
         sb.AppendLine($"        // UI Components");
         foreach (var kvp in components)
         {
-            sb.AppendLine($"        [SerializeField] private {kvp.Value} {kvp.Key};");
+            sb.AppendLine($"        [SerializeField] private {kvp.Value.type} {kvp.Key};");
         }
 
         // 初始化方法
@@ -350,13 +343,13 @@ public class UIComponentGenerator : EditorWindow
         {
             sb.AppendLine($"            if ({kvp.Key} == null)");
             sb.AppendLine($"            {{");
-            sb.AppendLine($"                Debug.LogWarning($\"[{uiObject.name}View] {kvp.Key} ({kvp.Value}) 未绑定\");");
+            sb.AppendLine($"                Debug.LogWarning($\"[{uiObject.name}View] {kvp.Key} ({kvp.Value.type}) 未绑定\");");
             sb.AppendLine($"            }}");
         }
         sb.AppendLine($"        }}");
 
-        // 文本更新方法（如果有 Text 组件）
-        var texts = components.Where(c => c.Value == "Text").ToList();
+        // 文本更新方法（如果有 Text/TMP_Text 组件）
+        var texts = components.Where(c => c.Value.type == "Text" || c.Value.type == "TMP_Text").ToList();
         if (texts.Count > 0)
         {
             sb.AppendLine("");
@@ -390,7 +383,7 @@ public class UIComponentGenerator : EditorWindow
     /// <summary>
     /// 生成 Logic 层代码
     /// </summary>
-    private string GenerateLogicCode(GameObject uiObject, Dictionary<string, string> components)
+    private string GenerateLogicCode(GameObject uiObject, Dictionary<string, (string path, string type)> components)
     {
         StringBuilder sb = new StringBuilder();
 
@@ -410,40 +403,11 @@ public class UIComponentGenerator : EditorWindow
         sb.AppendLine($"    public partial class {uiObject.name}View : MonoBehaviour");
         sb.AppendLine($"    {{");
 
-        // 订阅事件
-        sb.AppendLine($"        private void OnEnable()");
+        // TODO: 在此添加业务逻辑处理方法
+        sb.AppendLine($"        public void Initialize()");
         sb.AppendLine($"        {{");
-
-        var buttons = components.Where(c => c.Value == "Button").ToList();
-        foreach (var btn in buttons)
-        {
-            sb.AppendLine($"            On{CapitalizeFirst(btn.Key)}Clicked += Handle{CapitalizeFirst(btn.Key)}Click;");
-        }
-
+        sb.AppendLine($"            // 初始化逻辑");
         sb.AppendLine($"        }}");
-
-        // 取消订阅事件
-        sb.AppendLine("");
-        sb.AppendLine($"        private void OnDisable()");
-        sb.AppendLine($"        {{");
-
-        foreach (var btn in buttons)
-        {
-            sb.AppendLine($"            On{CapitalizeFirst(btn.Key)}Clicked -= Handle{CapitalizeFirst(btn.Key)}Click;");
-        }
-
-        sb.AppendLine($"        }}");
-
-        // 按钮处理方法
-        foreach (var btn in buttons)
-        {
-            sb.AppendLine("");
-            sb.AppendLine($"        private void Handle{CapitalizeFirst(btn.Key)}Click()");
-            sb.AppendLine($"        {{");
-            sb.AppendLine($"            // TODO: 实现 {btn.Key} 点击的业务逻辑");
-            sb.AppendLine($"            Debug.Log($\"[{uiObject.name}] {btn.Key} clicked\");");
-            sb.AppendLine($"        }}");
-        }
 
         sb.AppendLine($"    }}");
 
