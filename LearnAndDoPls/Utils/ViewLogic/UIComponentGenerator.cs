@@ -43,7 +43,7 @@ public class UIComponentGenerator : EditorWindow
 
         selectedObject = (GameObject)EditorGUILayout.ObjectField("目标 UI 对象", selectedObject, typeof(GameObject), true);
 
-        customNamespace = EditorGUILayout.TextField("命名空间", customNamespace);
+        customNamespace = EditorGUILayout.TextField("命名空间默认为 UI", customNamespace);
 
         GUILayout.Space(10);
         GUILayout.Label("文件生成路径", EditorStyles.boldLabel);
@@ -333,6 +333,7 @@ public class UIComponentGenerator : EditorWindow
         sb.AppendLine($"        private void Start()");
         sb.AppendLine($"        {{");
         sb.AppendLine($"            BindComponents();");
+        sb.AppendLine($"            Initialize();");
         sb.AppendLine($"        }}");
 
         // 绑定组件方法
@@ -359,6 +360,21 @@ public class UIComponentGenerator : EditorWindow
                 sb.AppendLine($"        public void Set{CapitalizeFirst(txt.Key)}(string content)");
                 sb.AppendLine($"        {{");
                 sb.AppendLine($"            if ({txt.Key} != null) {txt.Key}.text = content;");
+                sb.AppendLine($"        }}");
+            }
+        }
+
+        //按钮更新方法
+        var buttons = components.Where(c => c.Value.type == "Button").ToList();
+        if (buttons.Count > 0)
+        {
+            sb.AppendLine("");
+            sb.AppendLine("        /// <summary>绑定 Button 事件</summary>");
+            foreach (var button in buttons)
+            {
+                sb.AppendLine($"        public void Bind{CapitalizeFirst(button.Key)}Button(Action onClickAction)");
+                sb.AppendLine($"        {{");
+                sb.AppendLine($"            if ({button.Key} != null) {button.Key}.onClick.AddListener(() => onClickAction?.Invoke());");
                 sb.AppendLine($"        }}");
             }
         }
@@ -403,11 +419,38 @@ public class UIComponentGenerator : EditorWindow
         sb.AppendLine($"    public partial class {uiObject.name}View : MonoBehaviour");
         sb.AppendLine($"    {{");
 
-        // TODO: 在此添加业务逻辑处理方法
+        var buttons = components.Where(c => c.Value.type == "Button").ToList();
+        var texts = components.Where(c => c.Value.type == "Text" || c.Value.type == "TMP_Text").ToList();
+
+        // 初始化入口：绑定按钮事件，预留业务逻辑
         sb.AppendLine($"        public void Initialize()");
         sb.AppendLine($"        {{");
         sb.AppendLine($"            // 初始化逻辑");
+        if (buttons.Count > 0)
+        {
+            foreach (var button in buttons)
+            {
+                sb.AppendLine($"            Bind{CapitalizeFirst(button.Key)}Button(On{CapitalizeFirst(button.Key)}Clicked);");
+            }
+        }
         sb.AppendLine($"        }}");
+
+        // 按钮点击回调：仅处理业务逻辑，可调用 SetXXX 更新 UI 文本
+        if (buttons.Count > 0)
+        {
+            foreach (var button in buttons)
+            {
+                sb.AppendLine("");
+                sb.AppendLine($"        private void On{CapitalizeFirst(button.Key)}Clicked()");
+                sb.AppendLine($"        {{");
+                sb.AppendLine($"            // TODO: 处理按钮点击后的业务逻辑");
+                if (texts.Count > 0)
+                {
+                    sb.AppendLine($"            // 可在此调用 SetXXX 方法更新文本内容");
+                }
+                sb.AppendLine($"        }}");
+            }
+        }
 
         sb.AppendLine($"    }}");
 
