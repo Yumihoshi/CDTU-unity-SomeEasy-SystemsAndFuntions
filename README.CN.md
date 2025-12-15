@@ -75,6 +75,11 @@ HexMetrics: 定义六边形几何参数和常量，确保网格一致性
 
 - 一个简单易用的Timer
 
+### 6.[支持多Logic和单View绑定的基于UGUI的UI系统](https://github.com/whatevertogo/UnityUGUI-UISystem)
+
+一个基于UGUI的UI系统，支持多个Logic绑定到单个View。
+
+
 ## [工具库(Utils)](LearnAndDoPls/Utils/README.zh-CN_Utils.md)
 
 一个全面的实用工具和辅助类集合：
