@@ -64,6 +64,10 @@ HexMetrics: Defines hexagonal geometric parameters and constants to ensure grid 
 
 - An easy to use Timer
 
+### 6.[支持多Logic和单View绑定的基于UGUI的UI系统](https://github.com/whatevertogo/UnityUGUI-UISystem)
+
+一个基于UGUI的UI系统，支持多个Logic绑定到单个View。
+
 
 ## [Utils](LearnAndDoPls/Utils/README.EN_Utils.md)
 
