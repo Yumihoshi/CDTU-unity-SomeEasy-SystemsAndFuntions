@@ -112,54 +112,5 @@ Written by [@Yumihoshi](https://github.com/Yumihoshi) from the original [Art Ass
 
 
 
-
-
-## Performance Considerations
-
-
-
-### Memory Management
-
-- Use object pooling for frequently created/destroyed objects
-- Implement proper cleanup in OnDisable/OnDestroy
-- Avoid allocations during gameplay
-- Cache component references
-
-### CPU Optimization
-
-- Use coroutines for time-delayed operations
-- Implement efficient update patterns
-- Utilize job system for heavy computations
-- Profile and optimize bottlenecks
-
-### Best Practices
-
-1. Component Organization
-   - Keep components focused and single-purpose
-   - Use proper separation of concerns
-   - Implement interfaces for better abstraction
-
-2. Code Structure
-   - Follow Unity's execution order
-   - Use ScriptableObjects for configuration
-   - Implement proper error handling
-   - Write clear, documented code
-
-3. Scene Management
-   - Organize hierarchies efficiently
-   - Use prefabs consistently
-   - Implement proper scene loading patterns
-
-
-## How to Use
-
-1. Simply copy the System-folders you need into your Unity project
-2. Check the individual README files in each system folder for detailed usage instructions
-3. Follow the conventions to organize and manage project assets
-
-## Contribution
-
-@whatevertogo I welcome anyone to point out the shortcomings of my code to help me improve.
-
 Happy Coding!
 
