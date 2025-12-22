@@ -29,7 +29,7 @@ CN 中文 | [🌏 English](README.md)
 
 但是请不要用这个保存你的游戏数据，因为这个方式保存游戏数据(数据稍微大点)并不好。你可以用它来保存游戏的设置，比如音频、图形等设置。
 
-### 2. [对话系统(DialogueSystem)](LearnAndDoPls/Systems/DialogueSystem/README.CN_DialogueSystem.md)
+### 2. [对话系统(DialogueSystem)](https://github.com/whatevertogo/Unity-DialogueSystem)
 
 一个基于MVC架构的模块化Unity对话系统。该系统通过Control-Controller,可选接口 模式和接口设计实现了高度的扩展性和维护性。功能特点包括：
 
