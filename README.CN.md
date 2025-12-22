@@ -6,7 +6,7 @@ CN 中文 | [🌏 English](README.md)
 
 ## 可用系统
 
-### 1. [设置管理系统(SaveSettingsSystem)](LearnAndDoPls/Systems/SaveSystem/SaveSettingsSystem/SaveSettingsSystemByPlayerPrefs/README.CN.md)
+### 1. [设置管理系统(SaveSettingsSystem)](https://github.com/whatevertogo/Unity-SaveSystem)
 
 #### 将来我可能会添加另外两个系统，一个保存游戏数据(不久的将来)，另一个保存游戏的大数据（稍微有点难，所以可能需要很长时间）
 
