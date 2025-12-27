@@ -73,12 +73,21 @@ HexMetrics: 定义六边形几何参数和常量，确保网格一致性
 
 ### 5.[Timer](https://github.com/whatevertogo/Timer)
 
-- 一个简单易用的Timer
+- 一个用 C# 实现的 “定时器系统”库，用于游戏/Unity 场景中的时间管理（提交说明中提到移除了 Unity 的 .meta 文件和示例 TimerExample，文件/接口命名和实现都与 Unity 或游戏计时相关）。
+主要组件（基于初始提交和后续说明）：
+ITimerSystem / ITimerEntity 接口：定义计时系统和定时器实体的契约。
+TimerEntity：定时器实体实现，用于封装单个定时器的状态和回调。
+TimerSystemManager：集中管理定时器的系统，负责调度、刷新和关闭。
+TimerExtensions：便捷的扩展方法，简化定时器调用和绑定。
+TimerObjectPool：对象池实现，用于减少频繁分配的开销。
+TimerCallback：回调封装/类型定义。
+TimerExample：示例用法/演示。
 
 ### 6.[支持多Logic和单View绑定的基于UGUI的UI系统](https://github.com/whatevertogo/UnityUGUI-UISystem)
 
-一个基于UGUI的UI系统，支持多个Logic绑定到单个View。
-
+一个 轻量级 Unity UI 框架示例，包括 UI 管理器、基础视图类、示例视图，以及实现了 UI 逻辑与视图分离的机制。
+使用编辑器工具自动生成对应模板。
+适合作为 UI 架构参考，以及小型游戏或项目的快速集成模板。
 
 ## [工具库(Utils)](LearnAndDoPls/Utils/README.zh-CN_Utils.md)
 
