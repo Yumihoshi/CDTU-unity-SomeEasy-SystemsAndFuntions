@@ -62,7 +62,15 @@ HexMetrics: Defines hexagonal geometric parameters and constants to ensure grid 
 
 ### 5.[Timer](https://github.com/whatevertogo/Timer)
 
-- An easy to use Timer
+- A "Timer System" library implemented in C#, designed for timing management in game/Unity scenarios (the submission mentions removing Unity .meta files and the example TimerExample, and the file/interface naming and implementation are related to Unity/game timing).
+Main components (based on the initial submission and subsequent notes):
+ITimerSystem / ITimerEntity interfaces: define the contracts for the timing system and timer entities.
+TimerEntity: implementation of a timer entity, used to encapsulate the state/callback of a single timer.
+TimerSystemManager: a centralized system for managing timers, responsible for scheduling, refreshing, and shutdown.
+TimerExtensions: convenient extension methods, possibly used to simplify timer calls/binding.
+TimerObjectPool: an object pool implementation to reduce the overhead of frequent allocations.
+TimerCallback: callback encapsulation/type definition.
+TimerExample: example usage/demo.
 
 ### 6.[支持多Logic和单View绑定的基于UGUI的UI系统](https://github.com/whatevertogo/UnityUGUI-UISystem)
 
