@@ -107,9 +107,9 @@ TimerExample：示例用法/演示。
 
 - 单例模式实现
 - 扩展方法集合
-- 常用辅助函数
-- 数学工具库
-- 文件操作助手
+
+#### 事件总线
+-我习惯于用来不同系统之间的解耦
 
 ## [实用技能(Utility Skills)](LearnAndDoPls/SomeSkills/README.CN_SomeSkills.md)
 
