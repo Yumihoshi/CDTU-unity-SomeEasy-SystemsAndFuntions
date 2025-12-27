@@ -72,7 +72,7 @@ TimerObjectPool: an object pool implementation to reduce the overhead of frequen
 TimerCallback: callback encapsulation/type definition.
 TimerExample: example usage/demo.
 
-### 6.[支持多Logic和单View绑定的基于UGUI的UI系统](https://github.com/whatevertogo/UnityUGUI-UISystem)
+### 6.[UGUI-based UI system that supports multiple logic and single view binding](https://github.com/whatevertogo/UnityUGUI-UISystem)
 
 This is a lightweight UI framework example for Unity, including a UI manager, a base view class, sample views, and an implementation that separates UI logic. It also uses editor tools to automatically generate corresponding templates. It is suitable as a reference for UI architecture and quick integration templates for small games or projects.
 
