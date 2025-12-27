@@ -102,7 +102,6 @@ A comprehensive collection of utility functions and helper classes:
 
 A collection of practical C# implementation examples:
 
-- EventManager - A simple event system for communication between components
 - GameInput - Input handling utilities
 - PlayerController - Basic player movement and control
 - TriggerObject - Easily handle trigger-based interactions
