@@ -74,7 +74,7 @@ TimerExample: example usage/demo.
 
 ### 6.[支持多Logic和单View绑定的基于UGUI的UI系统](https://github.com/whatevertogo/UnityUGUI-UISystem)
 
-一个基于UGUI的UI系统，支持多个Logic绑定到单个View。
+This is a lightweight UI framework example for Unity, including a UI manager, a base view class, sample views, and an implementation that separates UI logic. It also uses editor tools to automatically generate corresponding templates. It is suitable as a reference for UI architecture and quick integration templates for small games or projects.
 
 
 ## [Utils](LearnAndDoPls/Utils/README.EN_Utils.md)
