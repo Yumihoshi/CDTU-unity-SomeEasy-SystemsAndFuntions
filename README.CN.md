@@ -115,7 +115,6 @@ TimerExample：示例用法/演示。
 
 这些脚本展示了一些C#的实用技能：
 
-- EventManager - 用于组件间通信的简单事件系统
 - GameInput - 输入处理工具
 - PlayerController - 基本的玩家移动和控制
 - TriggerObject - 轻松处理基于触发器的交互
