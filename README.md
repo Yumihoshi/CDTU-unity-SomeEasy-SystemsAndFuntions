@@ -94,9 +94,9 @@ A comprehensive collection of utility functions and helper classes:
 #### Core Utilities
 - Singleton implementations
 - Extension methods
-- Common helper functions
-- Math utilities
-- File operations helpers
+
+#### EventBus
+-I usually use it to decouple different systems.
 
 ## [Utility Skills](LearnAndDoPls/SomeSkills/README.EN_SomeSkills.md)
 
