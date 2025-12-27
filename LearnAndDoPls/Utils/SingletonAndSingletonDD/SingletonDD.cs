@@ -1,78 +1,94 @@
 using UnityEngine;
-using System;
 
 namespace CDTU.Utils
 {
     /// <summary>
-    ///     单例模式基类 - DontDestroyOnLoad 版本
-    ///     自动处理多场景环境中的单例创建与销毁
+    /// DontDestroyOnLoad 懒加载单例基类（工程安全版）
+    /// 特性：
+    /// - 第一次访问 Instance 时创建
+    /// - 优先复用场景中已存在实例
+    /// - 自动 DontDestroyOnLoad
+    /// - 防止退出阶段误创建
     /// </summary>
-    /// <typeparam name="T">继承MonoBehaviour的类型</typeparam>
-    public abstract class SingletonDD<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class SingletonDD<T> : MonoBehaviour
+        where T : SingletonDD<T>
     {
-        private static T _instance;
-        private static bool _isDestroying = false;
+        protected static T _instance;
+        private static bool _isQuitting;
 
         public static T Instance
         {
             get
             {
-                if (_isDestroying)
-                {
-                    CDTU.Utils.Logger.LogWarning($"[SingletonDD<{typeof(T).Name}>] 单例正在销毁中，无法获取实例");
+                if (_isQuitting)
                     return null;
-                }
 
-                if (_instance == null)
+                if (_instance != null)
+                    return _instance;
+
+                // 1️⃣ 尝试从场景中查找
+                _instance = FindFirstObjectByType<T>();
+
+                if (_instance != null)
                 {
-                    _instance = FindFirstObjectByType<T>();
-                    
-                    if (_instance == null && Application.isPlaying)
-                    {
-                        CDTU.Utils.Logger.Log($"[SingletonDD<{typeof(T).Name}>] 动态创建新实例");
-                        var go = new GameObject(typeof(T).Name);
-                        _instance = go.AddComponent<T>();
-                    }
+                    DontDestroyOnLoad(_instance.gameObject);
+                    return _instance;
                 }
 
+                // 2️⃣ 创建新对象
+                GameObject go = new GameObject(typeof(T).Name);
+                _instance = go.AddComponent<T>();
+                DontDestroyOnLoad(go);
+
+                _instance.OnSingletonCreated();
                 return _instance;
             }
-            set => _instance = value;
         }
+
+        public static bool HasInstance => _instance != null;
 
         protected virtual void Awake()
         {
-            // 检测多个实例的情况
-            T existingInstance = FindFirstObjectByType<T>();
-            
-            if (existingInstance == null)
+            if (_instance == null)
             {
-                // 这是第一个实例
-                _instance = this as T;
+                _instance = (T)this;
                 DontDestroyOnLoad(gameObject);
-                CDTU.Utils.Logger.Log($"[SingletonDD<{typeof(T).Name}>] 创建单例，应用 DontDestroyOnLoad");
+                OnSingletonAwake();
             }
-            else if (existingInstance != this)
+            else if (_instance != this)
             {
-                // 检测到多个实例，销毁新的
-                CDTU.Utils.Logger.LogWarning($"[SingletonDD<{typeof(T).Name}>] 检测到多个实例，销毁重复对象：{gameObject.name}");
                 Destroy(gameObject);
-            }
-            else
-            {
-                // existingInstance == this，说明已经初始化过了
-                DontDestroyOnLoad(gameObject);
             }
         }
 
         protected virtual void OnDestroy()
         {
-            if (this as T == _instance)
+            if (_instance == this)
             {
-                _isDestroying = true;
                 _instance = null;
-                CDTU.Utils.Logger.Log($"[SingletonDD<{typeof(T).Name}>] 单例已销毁");
             }
+
+            OnSingletonDestroyed();
         }
+
+        protected virtual void OnApplicationQuit()
+        {
+            _isQuitting = true;
+        }
+
+        /// <summary>
+        /// 懒加载创建时调用（仅一次）
+        /// </summary>
+        protected virtual void OnSingletonCreated() { }
+
+        /// <summary>
+        /// Awake 阶段调用（包括场景预放置）
+        /// </summary>
+        protected virtual void OnSingletonAwake() { }
+
+        /// <summary>
+        /// 销毁阶段（解绑事件）
+        /// </summary>
+        protected virtual void OnSingletonDestroyed() { }
     }
 }

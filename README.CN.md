@@ -6,7 +6,7 @@ CN 中文 | [🌏 English](README.md)
 
 ## 可用系统
 
-### 1. [设置管理系统(SaveSettingsSystem)](LearnAndDoPls/Systems/SaveSystem/SaveSettingsSystem/SaveSettingsSystemByPlayerPrefs/README.CN.md)
+### 1. [设置管理系统(SaveSettingsSystem)](https://github.com/whatevertogo/Unity-SaveSystem)
 
 #### 将来我可能会添加另外两个系统，一个保存游戏数据(不久的将来)，另一个保存游戏的大数据（稍微有点难，所以可能需要很长时间）
 
@@ -29,7 +29,7 @@ CN 中文 | [🌏 English](README.md)
 
 但是请不要用这个保存你的游戏数据，因为这个方式保存游戏数据(数据稍微大点)并不好。你可以用它来保存游戏的设置，比如音频、图形等设置。
 
-### 2. [对话系统(DialogueSystem)](LearnAndDoPls/Systems/DialogueSystem/README.CN_DialogueSystem.md)
+### 2. [对话系统(DialogueSystem)](https://github.com/whatevertogo/Unity-DialogueSystem)
 
 一个基于MVC架构的模块化Unity对话系统。该系统通过Control-Controller,可选接口 模式和接口设计实现了高度的扩展性和维护性。功能特点包括：
 
@@ -123,48 +123,6 @@ HexMetrics: 定义六边形几何参数和常量，确保网格一致性
 由[@Yumihoshi](https://github.com/Yumihoshi)编写，来自原版[艺术资产管理](https://github.com/Yumihoshi/Art-Asset-Management)项目。
 
 
-
-
-## 性能考虑
-
-### 内存管理
-
-- 对频繁创建/销毁的对象使用对象池
-- 在OnDisable/OnDestroy中正确清理
-- 避免游戏运行时的内存分配
-- 缓存组件引用
-
-### CPU优化
-
-- 使用协程处理延时操作
-- 实现高效的更新模式
-- 利用Job系统处理重计算
-- 分析和优化性能瓶颈
-
-### 最佳实践
-
-1. 组件组织
-   - 保持组件功能单一明确
-   - 使用适当的关注点分离
-   - 实现接口以获得更好的抽象
-
-2. 代码结构
-   - 遵循Unity的执行顺序
-   - 使用ScriptableObject进行配置
-   - 实现适当的错误处理
-   - 编写清晰、有文档的代码
-
-3. 场景管理
-   - 高效组织层级结构
-   - 一致使用预制体
-   - 实现适当的场景加载模式
-
-
-## 使用方法
-
-1. 只需将您需要的System文件夹复制到Unity项目中
-2. 查看每个系统文件夹中的单独README文件，获取详细使用说明
-3. 按照规范组织和管理项目资源
 
 ## 贡献
 
