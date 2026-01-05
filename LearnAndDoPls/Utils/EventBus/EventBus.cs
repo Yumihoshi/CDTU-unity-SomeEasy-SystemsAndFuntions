@@ -12,18 +12,18 @@ namespace Core.Events
     {
         private static readonly Dictionary<Type, HashSet<Delegate>> _listeners = new();
 
-        public static void Subscribe<T>(Action<T> callback)
+        public static void Subscribe<TEvent>(Action<TEvent> callback)
         {
-            var type = typeof(T);
+            var type = typeof(TEvent);
             if (!_listeners.TryGetValue(type, out var set))
                 _listeners[type] = set = new HashSet<Delegate>();
             set.Add(callback);
         }
 
 #if UNITASK
-        public static void Subscribe<T>(Func<T, UniTaskVoid> handler)
+        public static void Subscribe<TEvent>(Func<TEvent, UniTaskVoid> handler)
         {
-            var type = typeof(T);
+            var type = typeof(TEvent);
             if (!_listeners.TryGetValue(type, out var set))
                 _listeners[type] = set = new HashSet<Delegate>();
             set.Add(handler);
