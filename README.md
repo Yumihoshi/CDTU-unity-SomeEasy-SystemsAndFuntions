@@ -8,9 +8,7 @@ CN 中文 | [🌏 English](README.md)
 
 ### 1. [设置管理系统(SaveSettingsSystem)](https://github.com/whatevertogo/Unity-SaveSystem)
 
-#### 将来我可能会添加另外两个系统，一个保存游戏数据(不久的将来)，另一个保存游戏的大数据（稍微有点难，所以可能需要很长时间）
-
-#### 如果真的要用可以用已经及其完善的[FlexiArchiveSYstem](https://github.com/wenen-creator/FlexiArchiveSystem),写的极好,就是职责分离的太开了,太晕了.
+#### 如果真的要用可以用已经及其完善的[FlexiArchiveSYstem](https://github.com/wenen-creator/FlexiArchiveSystem)
 
 #### 有一些例子也被添加其中(LearnAndDoPls/Systems/SaveSystem/SaveSettingsSystem/PlayerPrefsForSettings/SettingsExamples)
 
