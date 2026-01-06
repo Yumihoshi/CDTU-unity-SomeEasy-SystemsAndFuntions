@@ -76,6 +76,8 @@ TimerExample: example usage/demo.
 
 This is a lightweight UI framework example for Unity, including a UI manager, a base view class, sample views, and an implementation that separates UI logic. It also uses editor tools to automatically generate corresponding templates. It is suitable as a reference for UI architecture and quick integration templates for small games or projects.
 
+### 7.[VFXSystem](https://github.com/whatevertogo/VFXSystem)
+一个VFX系统，用对象池优化性能，同时方便使用
 
 ## [Utils](LearnAndDoPls/Utils/README.EN_Utils.md)
 
